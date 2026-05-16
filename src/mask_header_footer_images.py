@@ -75,7 +75,7 @@ output_pdf = ""                     # 留空表示，程序会自动生成 文�
 
 # 测试场景：只加页头，页头高度自动计算；不加页脚
 my_header_img = "/Users/teacher/Desktop/2026年4月/test/header_img.png"        
-my_footer_img = None      # None: 表示不加页脚             
+my_footer_img = None       # None: 表示不加页脚             
 
 # ================= 调用函数 =================
 add_header_footer_images(
