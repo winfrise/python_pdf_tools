@@ -22,10 +22,17 @@ pip install spire.pdf
 # 导出依赖列表
 pip freeze > requirements.txt
 ```
+## 命令
 
 #### 查看和修改MetaData
 ```
+# Author修改不了
 python ./src/view_and_modify_pdf_meta.py
+```
+
+#### 提取PDF中的所有图片
+```
+python ./src/extract_images.py
 ```
 
 

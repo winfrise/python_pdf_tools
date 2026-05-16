@@ -45,32 +45,45 @@ def modify_pdf_metadata(input_pdf, output_pdf, new_metadata=None):
     if new_metadata:
         # PyMuPDF 会自动将字典中有效的键（title, author等）更新到文档中
         doc.set_metadata(new_metadata)
+
+        # 2. 【关键步骤】同步更新 XMP 元数据
+        # 这行代码会自动根据上面的 new_meta 生成对应的 XML 并覆盖旧的 XMP
+        # doc.set_xml_metadata(doc.get_xml_metadata()) 
+
         print(f"✅ 成功更新元数据：{new_metadata}")
     
-    # 保存为新文件（如果想覆盖原文件，output_pdf 可以和 input_pdf 相同）
+    # 核心修改：如果输出文件名为空，自动生成 "原文件名_1.pdf"
+    if not output_pdf:
+        base_name = os.path.splitext(input_pdf)[0] # 获取不带后缀的文件名
+        output_pdf = f"{base_name}_1.pdf"
+
+    # 保存为新文件
     doc.save(output_pdf)
     doc.close()
     print(f"💾 文件已保存至：{output_pdf}\n")
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    # 替换成你本地的 PDF 文件路径
-    pdf_file = "example.pdf" 
-    output_file = "example_modified.pdf"
+    # 【---1---】替换成本地的 PDF 文件路径
+    pdf_file = "/Users/teacher/Desktop/未命名文件夹/黑B555P5_张强_2255203562026003721.pdf" 
 
-    # 1. 先查看修改前的元数据
+    # 【---2---】修改改输入路径  1. 如果想覆盖原文件，output_pdf 可以和 input_pdf 相同  2. 默认输出文件名是【原文件名_1.pdf】(在原文件名后面加"_1")
+    output_file = "" 
+
+    # 【---3---】是否开启修改
+    is_modify = True  
+
+    # 查看修改前的元数据
     view_pdf_metadata(pdf_file)
 
-    # 2. 定义要修改的新元数据（不需要修改的键可以省略）
+    # 【---4---】 定义要修改的新元数据（不需要修改的键省略）
     new_meta = {
         "title": "PyMuPDF 测试文档",
-        "author": "你的大名",
+        "author": "123456",
         "subject": "元数据修改测试",
         "keywords": "Python, PyMuPDF, 测试"
     }
 
-    # 3. 执行修改并保存
-    modify_pdf_metadata(pdf_file, output_file, new_meta)
-
-    # 4. 再次查看，验证修改结果
-    view_pdf_metadata(output_file)
+    if is_modify:
+        # 3. 执行修改并保存
+        modify_pdf_metadata(pdf_file, output_file, new_meta)
