@@ -35,5 +35,9 @@ python ./src/view_and_modify_pdf_meta.py
 python ./src/extract_images.py
 ```
 
-
+#### 提取PDF中的所有图片
+```
+# 功能待测试
+python ./src/analyze_and_remove_images.py
+```
 
