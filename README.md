@@ -35,6 +35,16 @@ python ./src/view_and_modify_pdf_meta.py
 python ./src/extract_images.py
 ```
 
+#### 将PDF每一页转换成图片输出
+```
+python ./src/pdf2images.py
+```
+
+#### 给PDF文件添加页头页尾
+```
+python ./src/mask_header_footer_images.py
+```
+
 #### 通过图片尺寸删除图片（删除水印）
 ```
 # 功能待测试

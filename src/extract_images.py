@@ -59,8 +59,6 @@ def extract_images_from_pdf(pdf_path, output_dir_name="extracted_images"):
 # ================= 使用示例 =================
 if __name__ == "__main__":
     # 替换成你本地的 PDF 文件路径（可以是相对路径，也可以是绝对路径）
-    pdf_file = "/Users/teacher/Downloads/百度网盘下载/张正发茶餐厅招商手册(电子版1) 2026-5-11 81133 1.pdf" 
-    # 如果 PDF 在其他盘符或文件夹，可以这样写：
-    # pdf_file = r"D:\资料\我的文档\example.pdf"
+    pdf_file = "/Users/teacher/Desktop/2026年4月/test/111.pdf" 
     
     extract_images_from_pdf(pdf_file)
