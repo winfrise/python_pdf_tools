@@ -1,7 +1,7 @@
 import os
 import fitz  # PyMuPDF
 
-def convert_to_scanned_pdf(input_pdf_path, output_pdf_path=None, dpi=300):
+def convert_to_scanned_pdf(input_pdf_path, output_pdf_path=None, dpi=72):
     """
     使用 PyMuPDF 将文字版 PDF 转换为扫描版（图片版）PDF
     :param input_pdf_path: 输入文件路径
@@ -64,4 +64,4 @@ if __name__ == "__main__":
     input_file = "/Users/teacher/Desktop/2026年4月/去公司名（交个朋友）/11.pdf" 
     
     # 调用函数，不传 output_pdf_path 则自动命名，dpi 默认 300
-    convert_to_scanned_pdf(input_file, dpi=300)
+    convert_to_scanned_pdf(input_file, dpi=72)

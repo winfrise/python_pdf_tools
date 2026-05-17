@@ -38,9 +38,15 @@ def add_header_footer_images(pdf_path, output_path=None, header_img_path=None, f
             # 定义页头的矩形区域
             header_rect = fitz.Rect(0, 0, page_width, header_height)
             # 绘制白色实心矩形遮挡原有内容
-            page.draw_rect(header_rect, color=None, fill=(1, 1, 1))
+            # page.draw_rect(header_rect, color=None, fill=(1, 1, 1))
+            
             # 在页头区域插入图片
-            page.insert_image(header_rect, pixmap=header_img)
+            page.insert_image(
+                header_rect, 
+                pixmap=header_img, 
+                keep_proportion=True,
+                overlay=True
+            )
             # 释放图片内存
             header_img = None
         
@@ -70,11 +76,11 @@ def add_header_footer_images(pdf_path, output_path=None, header_img_path=None, f
     print(f"✅ 页头页脚处理完成，已保存至：{output_path}")
 
 # ================= 变量定义区 =================
-input_pdf = "/Users/teacher/Desktop/2026年4月/test/111.pdf"          
+input_pdf = "/Users/teacher/Desktop/未命名文件夹/GuoHao Filter.pdf"          
 output_pdf = ""                     # 留空表示，程序会自动生成 文件名_1.pdf
 
 # 测试场景：只加页头，页头高度自动计算；不加页脚
-my_header_img = "/Users/teacher/Desktop/2026年4月/test/header_img.png"        
+my_header_img = "/Users/teacher/Desktop/未命名文件夹/header.png"        
 my_footer_img = None       # None: 表示不加页脚             
 
 # ================= 调用函数 =================

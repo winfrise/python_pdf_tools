@@ -1,7 +1,7 @@
 import fitz  # PyMuPDF
 import os
 
-def pdf_to_images(pdf_path, output_folder=None, dpi=300, img_format="jpg"):
+def pdf_to_images(pdf_path, output_folder=None, dpi=72, img_format="jpg"):
     """
     将PDF的每一页转换为图片
     :param pdf_path: PDF文件路径
@@ -29,7 +29,7 @@ def pdf_to_images(pdf_path, output_folder=None, dpi=300, img_format="jpg"):
     # 4. 遍历每一页进行转换
     for page_num in range(len(doc)):
         page = doc[page_num]
-        
+
         # 核心步骤：将页面渲染为像素图 (Pixmap)
         pix = page.get_pixmap(matrix=mat, alpha=False) # alpha=False 去除透明通道，对JPG很重要
         
@@ -47,5 +47,5 @@ def pdf_to_images(pdf_path, output_folder=None, dpi=300, img_format="jpg"):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 替换为你的PDF路径
-    pdf_file = "/Users/teacher/Desktop/2026年4月/test/111.pdf" 
-    pdf_to_images(pdf_file, dpi=300)
+    pdf_file = "/Users/teacher/Desktop/未命名文件夹/GuoHao Filter.pdf" 
+    pdf_to_images(pdf_file, dpi=72)
