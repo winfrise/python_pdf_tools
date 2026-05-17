@@ -50,6 +50,10 @@ python ./src/mask_header_footer_images.py
 python ./src/add_image_watermark.py
 ```
 
+#### 转扫描件
+```
+python ./src/pdf_to_scanned.py
+```
 #### 通过图片尺寸删除图片（删除水印）
 ```
 # 功能待测试
