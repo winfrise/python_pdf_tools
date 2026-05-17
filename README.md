@@ -12,12 +12,8 @@ python -m venv venv
 # 2. 激活环境 (Windows)
 source venv/bin/activate
 
-# 3. 安装 PyMuPDF
+# 3. 安装 PyMuPDF(1.27.2.3)
 pip install PyMuPDF
-
-# 安装 spire.pdf
-pip install spire.pdf
-
 
 # 导出依赖列表
 pip freeze > requirements.txt
