@@ -45,6 +45,11 @@ python ./src/pdf2images.py
 python ./src/mask_header_footer_images.py
 ```
 
+#### 添加图片水印
+```
+python ./src/add_image_watermark.py
+```
+
 #### 通过图片尺寸删除图片（删除水印）
 ```
 # 功能待测试
