@@ -15,6 +15,9 @@ source venv/bin/activate
 # 3. 安装 PyMuPDF(1.27.2.3)
 pip install PyMuPDF
 
+# 3. 安spire.pdf
+pip install spire.pdf
+
 # 导出依赖列表
 pip freeze > requirements.txt
 ```
@@ -50,6 +53,12 @@ python ./src/add_image_watermark.py
 ```
 python ./src/pdf_to_scanned.py
 ```
+
+#### 分割页面【一页一个PDF文件】（不影响签名）
+```
+python ./src/split_page.py
+```
+
 #### 通过图片尺寸删除图片（删除水印）
 ```
 # 功能待测试
