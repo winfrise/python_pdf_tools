@@ -59,6 +59,10 @@ python ./src/pdf_to_scanned.py
 python ./src/split_page.py
 ```
 
+#### 删除Spire的警告文字
+```
+python ./src/remove_spire_warn_text.py
+```
 #### 通过图片尺寸删除图片（删除水印）
 ```
 # 功能待测试
