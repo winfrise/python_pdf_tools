@@ -56,7 +56,12 @@ python ./src/pdf_to_scanned.py
 
 #### 分割页面【一页一个PDF文件】（不影响签名）
 ```
-python ./src/split_page.py
+python ./src/spire_split_page.py
+```
+
+#### 批量替换背景颜色
+```
+python ./src/spire_batch_change_background_color.py
 ```
 
 #### 删除Spire的警告文字
