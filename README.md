@@ -15,8 +15,11 @@ source venv/bin/activate
 # 3. 安装 PyMuPDF(1.27.2.3)
 pip install PyMuPDF
 
-# 3. 安spire.pdf
+# 3. 安装 spire.pdf
 pip install spire.pdf
+
+# 安装 Pillow（图片压缩）
+pip install Pillow
 
 # 导出依赖列表
 pip freeze > requirements.txt
