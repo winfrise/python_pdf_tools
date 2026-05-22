@@ -12,7 +12,7 @@ def extract_images_from_pdf(pdf_path, output_dir_name="extracted_images"):
     
     # 2. 拼接出完整的输出文件夹路径
     base_name = os.path.splitext(os.path.basename(pdf_path))[0]
-    output_dir = os.path.join(pdf_dir, f"{base_name}_{output_dir_name}.pdf")
+    output_dir = os.path.join(pdf_dir, f"{base_name}_{output_dir_name}")
 
     # 3. 如果文件夹不存在，则创建它
     if not os.path.exists(output_dir):
