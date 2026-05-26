@@ -111,7 +111,7 @@ if __name__ == "__main__":
         {
             "match_width": 869,   
             "match_height": 150,  
-            "new_width": 110,     # 这里需要看【真实的显示宽度】才能正确填写
+            "new_width": 110,     # 这里需要看【真实的显示宽度】才能正确填写（pdf中的单位可能是pt）目标宽度 (pt)=像素宽度 (px)×72 / DPI
             "new_height": 19,    # 这里需要看【真实的显示高度】才能正确填写
             "offset_x": 0,       # 向右偏移 20像素
             "offset_y": 0        # 向下偏移 10像素
