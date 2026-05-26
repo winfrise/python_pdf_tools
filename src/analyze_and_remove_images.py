@@ -73,5 +73,5 @@ def analyze_and_remove_pdf_images(pdf_path, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Desktop/2026年4月/test/2023 FUSEN   CATALOG.pdf"
+    pdf_file = "/Users/teacher/Desktop/未命名文件夹/Test/测试.pdf"
     analyze_and_remove_pdf_images(pdf_file)
