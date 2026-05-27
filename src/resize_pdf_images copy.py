@@ -17,7 +17,7 @@ def resize_pdf_images_by_dimension(
     dir_name = os.path.dirname(input_file)
     base_name = os.path.basename(input_file)
     name_without_ext = os.path.splitext(base_name)[0]
-    output_file = os.path.join(dir_name, f"{name_without_ext}_【已修改】.pdf")
+    output_file = os.path.join(dir_name, f"{name_without_ext}_已修改.pdf")
 
     try:
         doc = fitz.open(input_file)
@@ -34,8 +34,8 @@ def resize_pdf_images_by_dimension(
             for config in image_configs:
                 match_w = config.get("match_width")
                 match_h = config.get("match_height")
-                scale_width = config.get("scale_width", 1)
-                scale_height = config.get("scale_height", 1)
+                new_width = config.get("new_width", 100)
+                new_height = config.get("new_height", 100)
                 offset_x = config.get("offset_x", 0)
                 offset_y = config.get("offset_y", 0)
 
@@ -66,8 +66,6 @@ def resize_pdf_images_by_dimension(
                         print(f"原始显示宽度: { original_display_width }, 原始显示高度: { original_display_height }")
 
                         # 计算新图片的矩形坐标
-                        new_width = original_display_width * scale_width
-                        new_height = original_display_height * scale_height
                         new_x0 = x0 + offset_x
                         new_y0 = y0 + offset_y 
                         new_x1 = new_x0  + new_width
@@ -97,7 +95,7 @@ def resize_pdf_images_by_dimension(
 
 # ================= 使用配置区 =================
 if __name__ == "__main__":
-    pdf_path = r"/Users/teacher/Desktop/产品标签批量修改/Test/测试.pdf" 
+    pdf_path = r"/Users/teacher/Desktop/未命名文件夹/Test/测试.pdf" 
     
     my_image_configs = [
         {
@@ -105,18 +103,18 @@ if __name__ == "__main__":
             "match_width": 124,   
             "match_height": 124,  
             # 下面填写你期望的【新尺寸】
-            "scale_width": 1.2,     # 这里需要看【真实的显示宽度】才能正确填写
-            "scale_height": 1.2,    # 这里需要看【真实的显示高度】才能正确填写
-            "offset_x": -3,       # 向右偏移 单位为(pt)
-            "offset_y": 0        # 向下偏移 单位为(pt)
+            "new_width": 31,     # 这里需要看【真实的显示宽度】才能正确填写
+            "new_height": 31,    # 这里需要看【真实的显示高度】才能正确填写
+            "offset_x": 0.2,       # 向右偏移 20像素
+            "offset_y": 0        # 向下偏移 10像素
         },
         {
             "match_width": 869,   
             "match_height": 150,  
-            "scale_width": 1.2,     # 这里需要看【真实的显示宽度】才能正确填写（pdf中的单位可能是pt）目标宽度 (pt)=像素宽度 (px)×72 / DPI
-            "scale_height": 1,    # 这里需要看【真实的显示高度】才能正确填写
-            "offset_x": 0,       # 向右偏移 单位为(pt)
-            "offset_y": 0        # 向下偏移 单位为(pt)
+            "new_width": 110,     # 这里需要看【真实的显示宽度】才能正确填写（pdf中的单位可能是pt）目标宽度 (pt)=像素宽度 (px)×72 / DPI
+            "new_height": 19,    # 这里需要看【真实的显示高度】才能正确填写
+            "offset_x": 0,       # 向右偏移 20像素
+            "offset_y": 0        # 向下偏移 10像素
         }
     ]
 
