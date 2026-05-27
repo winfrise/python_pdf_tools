@@ -87,7 +87,7 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 # ==========================================
 
 if __name__ == "__main__":
-    input_file = "/Volumes/西数4T外置/Pdf修改资料/大连图纸修改/图纸TianMsup/743-SEALING_AIR_FUNNEL_C.pdf"
+    input_file = "/Volumes/11.pdf"
     page_range = (1,5)    # all 或 区间(0, 2)代表前3页
     my_images = [
         # {
@@ -96,15 +96,15 @@ if __name__ == "__main__":
         #     'size': (100, 100)        # 强制缩放为 宽100, 高100
         # },
         {
-            'image': '/Volumes/西数4T外置/Pdf修改资料/大连图纸修改/图纸TianMsup/Logo.jpg',  # 第二张图片
-            'pos': (1, 5),        # 放在页面偏下的位置
-            # 不填 'size' 则按原图大小显示
+            'image': '/Volumes/header.png',  # 第二张图片
+            'pos': (2, 5),        # 放在页面偏下的位置
+            'size': (100, 100)        # 强制缩放为 宽100, 高100
         }
     ]
 
     # 调用函数
     # 示例1：在所有页面添加
-    add_images_to_pdf(input_file, my_images, page_range='all')
+    add_images_to_pdf(input_file, my_images, page_range)
     
     # 示例2：只在第1页到第3页添加（注意：页码从0开始，所以0,2代表前3页）
     # add_images_to_pdf('test.pdf', my_images, page_range=(0, 2))
