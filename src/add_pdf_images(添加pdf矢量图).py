@@ -75,7 +75,7 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 
                 # 4. 执行嵌入 (传入 img_doc 对象，而不是路径字符串)
                 # 注意：show_pdf_page 的参数顺序是 (rect, pdf_document, page_number)
-                page.show_pdf_page(target_rect, img_doc, src_page_index)
+                page.show_pdf_page(target_rect, img_doc, src_page_index,  overlay=True)
                 
                 # 5. 关闭图片PDF对象以释放内存
                 img_doc.close()
@@ -100,12 +100,12 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 
 if __name__ == "__main__":
     # 1. 输入PDF路径
-    input_file = "/Volumes/西数4T外置/Pdf修改资料/大连图纸修改/图纸TianMsup/743-SEALING_AIR_FUNNEL_C.pdf"
-    
+    input_file = "/Users/teacher/Desktop/未命名文件夹 2/xxx.pdf"
+    page_range = (4,100)
     # 2. 配置图片列表 (注意：这里的path现在指向你的PDF格式图片)
     my_images = [
         {
-            "path": "/Volumes/西数4T外置/Pdf修改资料/大连图纸修改/图纸TianMsup/模板.pdf",      # 你的SVG转成的PDF
+            "path": "/Users/teacher/Desktop/未命名文件夹 2/提取xxx.pdf",      # 你的SVG转成的PDF
             "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
             "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200
             "page_index": 0          # 取该PDF的第0页
@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
     # 3. 执行函数
     # 示例1: 全部页面添加
-    add_images_to_pdf(input_file, my_images, page_range='all')
+    add_images_to_pdf(input_file, my_images, page_range)
     
     # 示例2: 仅在第1页到第3页添加 (页码从0开始，即 0, 1, 2)
     # add_images_to_pdf(input_file, my_images, page_range=(0, 2))
