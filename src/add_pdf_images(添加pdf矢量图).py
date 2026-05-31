@@ -100,12 +100,12 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 
 if __name__ == "__main__":
     # 1. 输入PDF路径
-    input_file = "/Users/teacher/Desktop/未命名文件夹 2/xxx.pdf"
-    page_range = (4,100)
+    input_file = "/Volumes/西数4T外置/Pdf修改资料/大连图纸修改/樊金/N848-625-0301 集控台接线图.pdf"
+    page_range = (0,0)
     # 2. 配置图片列表 (注意：这里的path现在指向你的PDF格式图片)
     my_images = [
         {
-            "path": "/Users/teacher/Desktop/未命名文件夹 2/提取xxx.pdf",      # 你的SVG转成的PDF
+            "path": "/Volumes/西数4T外置/Pdf修改资料/大连图纸修改/樊金/提取自N848-625-0301 集控台接线图.pdf",      # 你的SVG转成的PDF
             "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
             "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200
             "page_index": 0          # 取该PDF的第0页
