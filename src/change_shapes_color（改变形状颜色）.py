@@ -1,5 +1,6 @@
 import fitz
 import re
+import os
 
 def change_shapes_to_blue(input_path, output_path, signature_rects=None):
     """
@@ -77,9 +78,6 @@ def change_shapes_to_blue(input_path, output_path, signature_rects=None):
 
 # === 使用示例 ===
 if __name__ == "__main__":
-    input_file = "/Users/teacher/Downloads/百度网盘下载/lantu/05-预应力管桩设计说明.pdf"  # 替换为你的输入文件路径
-    output_file = "/Users/teacher/Downloads/百度网盘下载/lantu/05-预应力管桩设计说明-----.pdf"  # 输出文件名
-
 
     # 如果你有签名的坐标，可以在这里填入，目前代码主要演示全局变色
     # 坐标可以通过 Adobe Acrobat 的 "测量工具" 或 PyMuPDF 的 page.get_text("dict") 辅助获取
@@ -89,7 +87,31 @@ if __name__ == "__main__":
     ]
 
     try:
-        change_shapes_to_blue(input_file, output_file, signature_rects=signatures)
+        is_batch = True
+        if not is_batch:
+            input_file = "/Users/teacher/Downloads/xxx.pdf"  # 替换为你的输入文件路径
+            output_file = "/Users/teacher/Downloads/xxx111.pdf"  # 输出文件名
+
+            change_shapes_to_blue(input_file, output_file, signature_rects=signatures)
+        else:
+            input_folder = "/Users/teacher/Downloads/xxx"
+            output_folder = "/Users/teacher/Downloads/百度网盘下载/xxx（处理完成）"
+
+            for root, dirs, files in os.walk(input_folder):
+                for file in files:
+                    if file.lower().endswith('.pdf'):
+                        input_pdf = os.path.join(root, file)
+                        relative_input_pdf = os.path.relpath(input_pdf, input_folder)
+                        output_pdf = os.path.join(output_folder, relative_input_pdf)
+                        
+                        # 确保输出目录存在
+                        output_pdf_dir = os.path.dirname(output_pdf)
+                        os.makedirs(output_pdf_dir, exist_ok=True)
+                        
+                        print(f"正在处理: {relative_input_pdf}")
+     
+                        change_shapes_to_blue(input_pdf, output_pdf, signature_rects=signatures)
+
     except FileNotFoundError:
         print(f"错误: 找不到文件 '{input_file}'，请确认文件名和路径。")
 
