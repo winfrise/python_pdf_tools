@@ -28,9 +28,9 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
         page_indices = range(total_pages)
     elif isinstance(page_range, tuple) and len(page_range) == 2:
         start, end = page_range
-        start = max(0, start)
-        end = min(total_pages - 1, end)
-        page_indices = range(start, end + 1)
+        start = max(1, start)
+        end = min(total_pages, end)
+        page_indices = range(start - 1, end)
     else:
         print("❌ 错误：page_range 格式不正确，应为 'all' 或 (start, end)")
         doc.close()
@@ -100,12 +100,12 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 
 if __name__ == "__main__":
     # 1. 输入PDF路径
-    input_file = "/Volumes/西数4T外置/Pdf修改资料/大连图纸修改/樊金/N848-625-0301 集控台接线图.pdf"
-    page_range = (0,0)
+    input_file = "/Users/teacher/Desktop/未命名文件夹/监测报警接线图.pdf"
+    page_range = (42,42)
     # 2. 配置图片列表 (注意：这里的path现在指向你的PDF格式图片)
     my_images = [
         {
-            "path": "/Volumes/西数4T外置/Pdf修改资料/大连图纸修改/樊金/提取自N848-625-0301 集控台接线图.pdf",      # 你的SVG转成的PDF
+            "path": "/Users/teacher/Desktop/未命名文件夹/提取自监测报警接线图/提取自监测报警接线图_42.pdf",      # 你的SVG转成的PDF
             "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
             "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200
             "page_index": 0          # 取该PDF的第0页
@@ -116,6 +116,3 @@ if __name__ == "__main__":
     # 3. 执行函数
     # 示例1: 全部页面添加
     add_images_to_pdf(input_file, my_images, page_range)
-    
-    # 示例2: 仅在第1页到第3页添加 (页码从0开始，即 0, 1, 2)
-    # add_images_to_pdf(input_file, my_images, page_range=(0, 2))
