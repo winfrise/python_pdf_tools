@@ -1,5 +1,6 @@
 import fitz  # PyMuPDF
 import os
+import re
 
 def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
     """
@@ -11,10 +12,6 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
         print(f"❌ 错误：找不到文件 {input_pdf_path}")
         return
 
-    # 2. 生成输出文件路径
-    base_name, ext = os.path.splitext(input_pdf_path)
-    output_pdf_path = f"{base_name}_【已修改】{ext}"
-
     # 3. 打开目标PDF
     try:
         doc = fitz.open(input_pdf_path)
@@ -24,17 +21,37 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 
     # 4. 确定页面范围
     total_pages = doc.page_count
+    page_indices = set() # 使用集合来存储页码，自动去重
+
     if page_range == 'all':
-        page_indices = range(total_pages)
-    elif isinstance(page_range, tuple) and len(page_range) == 2:
-        start, end = page_range
-        start = max(1, start)
-        end = min(total_pages, end)
-        page_indices = range(start - 1, end)
+        # 如果是 'all'，选择所有页面
+        page_indices = set(range(total_pages))
     else:
-        print("❌ 错误：page_range 格式不正确，应为 'all' 或 (start, end)")
-        doc.close()
-        return
+        # 将输入的字符串按逗号分割
+        parts = str(page_range).split(',')
+        for part in parts:
+            part = part.strip() # 去除空格
+            if '-' in part:
+                # 处理范围，例如 "1-3"
+                range_match = re.match(r'^(\d+)-(\d+)$', part)
+                if range_match:
+                    start = int(range_match.group(1))
+                    end = int(range_match.group(2))
+                    # 确保起始页不大于结束页，并限制在文档范围内
+                    if start <= end:
+                        page_indices.update(range(max(1, start) - 1, min(total_pages, end)))
+            else:
+                # 处理单个页码，例如 "1" 或 "5"
+                try:
+                    page_num = int(part)
+                    if 1 <= page_num <= total_pages:
+                        page_indices.add(page_num - 1) # 转换为0基索引
+                except ValueError:
+                    # 如果转换失败，忽略该部分
+                    print(f"❌ 警告：无法识别的页码格式 '{part}'，已跳过。")
+
+    # 将集合转换为排序后的列表，便于后续处理
+    page_indices = sorted(page_indices)
 
     # 5. 遍历每一页进行添加
     for page_num in page_indices:
@@ -85,13 +102,37 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
             except Exception as e:
                 print(f"❌ 处理图片出错 {img_path}: {e}")
 
-    # 6. 保存并关闭
+    # 6. 保存文件逻辑修改
     try:
-        doc.save(output_pdf_path)
-        doc.close()
-        print(f"🎉 处理完成！文件已保存为: {output_pdf_path}")
+        # 1. 定义备份路径和临时路径
+        base_name, ext = os.path.splitext(input_file)
+        backup_path = f"{base_name}_备份{ext}"
+        temp_path = f"{base_name}_temp{ext}"  # 创建一个临时文件名
+
+        # 2. 先保存为临时文件
+        print(f"正在生成新文件...")
+        doc.save(temp_path)
+        doc.close()  # 必须关闭文档，释放对原文件的占用
+
+        # 3. 执行备份和替换操作
+        if os.path.exists(input_file):
+            # 如果已有备份，先删除旧备份（可选）
+            if os.path.exists(backup_path):
+                os.remove(backup_path)
+
+            # 将原文件重命名为备份文件
+            os.rename(input_file, backup_path)
+            print(f"原文件已备份为: {backup_path}")
+
+        # 4. 将临时文件重命名为原文件名
+        os.rename(temp_path, input_file)
+        print(f"新文件已保存为: {input_file}")
+
     except Exception as e:
-        print(f"❌ 保存文件失败: {e}")
+        print(f"保存文件时出错: {e}")
+        # 如果出错，尝试清理临时文件
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 
 
 # ==========================================
@@ -100,12 +141,13 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 
 if __name__ == "__main__":
     # 1. 输入PDF路径
-    input_file = "/Users/teacher/Desktop/未命名文件夹/监测报警接线图.pdf"
-    page_range = (42,42)
-    # 2. 配置图片列表 (注意：这里的path现在指向你的PDF格式图片)
+    input_file = "xxx/xxx.pdf"
+    # page_range 示例：1,3, 5-9
+    page_range = "3,4, 6, 7, 9-11, 16, 17, 20, 30"
+   
     my_images = [
         {
-            "path": "/Users/teacher/Desktop/未命名文件夹/提取自监测报警接线图/提取自监测报警接线图_42.pdf",      # 你的SVG转成的PDF
+            "path": "/Volumes/西数4T外置/Pdf修改资料/xxxx.pdf",      # 你的SVG转成的PDF
             "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
             "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200
             "page_index": 0          # 取该PDF的第0页
