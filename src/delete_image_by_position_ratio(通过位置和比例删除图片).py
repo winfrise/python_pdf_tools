@@ -112,9 +112,11 @@ def process_pdf(input_path, page_range_str, text_list=None, image_rules=None):
                     page.delete_image(xref)
 
     # 4. 保存文件 (覆盖原文件)
-    doc.save(input_path, garbage=4, deflate=True)
+    # 临时代码：
+    output_path =  f"{base}_完成{ext}"
+    doc.save(output_path, garbage=4, deflate=True)
     doc.close()
-    print(f"\n🎉 处理完成！文件已更新: {input_path}")
+    print(f"\n🎉 处理完成！文件已更新: {output_path}")
 
 
 # ================= 使用示例 =================
@@ -123,7 +125,7 @@ if __name__ == "__main__":
     input_file = "/Users/teacher/Desktop/未命名文件夹 2/Test.pdf"
 
     # 你的目标格式："1, 3-5, 9-10, 12"
-    page_input = "1, 3-5, 9-10, 12"
+    page_input = "1"
 
     # 配置要遮挡的文字
     texts_to_hide = ["机密", "绝密"]
@@ -131,9 +133,9 @@ if __name__ == "__main__":
     # 配置要删除的图片规则 (可选，不需要则传 None)
     # 这里演示：删除位于页面右上角 (x>0.8, y<0.2) 且宽高比在 0.8~1.2 之间的图片
     img_config = {
-        'x_range': (0.6, 0.9),
-        'y_range': (0.4, 0.8),
-        'ratio_range': (1.5, 2)
+        'x_range': (0.1, 1),
+        'y_range': (0.2, 0.8),
+        'ratio_range': (0.1, 3)
     }
 
     process_pdf(
