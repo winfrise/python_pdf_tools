@@ -42,7 +42,7 @@ def parse_page_range(page_str, total_pages):
     return sorted(list(pages))
 
 
-def process_pdf(input_path, page_range_str, text_list=None, image_rules=None):
+def process_pdf(input_path, page_range_str, image_rules=None):
     """
     主处理函数：备份文件 -> 解析页码 -> 执行操作
     """
@@ -73,30 +73,15 @@ def process_pdf(input_path, page_range_str, text_list=None, image_rules=None):
         page = doc[page_num]
         print(f"\n正在处理第 {page_num + 1} 页...")
 
-        # --- 功能 A: 遮挡文字 (红印) ---
-        if text_list:
-            for text in text_list:
-                instances = page.search_for(text)
-                if instances:
-                    print(f"   🔍 找到文字 '{text}'，共 {len(instances)} 处")
-                    for inst in instances:
-                        # 添加红印注释
-                        page.add_redact_annot(inst, fill=(0, 0, 0), text=" ")
-                    # 应用红印 (彻底擦除)
-                    page.apply_redactions()
 
         # --- 功能 B: 删除符合条件的图片 ---
         if image_rules:
             page_w, page_h = page.rect.width, page.rect.height
-            images = page.get_images(full=True)
+            # images = page.get_images(full=True)
+            drawings = page.get_drawings()
+            for drawing in drawings:
+                rect = drawing["rect"]
 
-            for img in images:
-                xref = img[0]
-                rects = page.get_image_rects(xref)
-                if not rects:
-                    continue
-
-                rect = rects[0]
                 # 计算相对位置和比例
                 rel_x = rect.x0 / page_w
                 rel_y = rect.y0 / page_h
@@ -108,8 +93,9 @@ def process_pdf(input_path, page_range_str, text_list=None, image_rules=None):
                     image_rules['y_range'][0] <= rel_y <= image_rules['y_range'][1] and
                     image_rules['ratio_range'][0] <= ratio <= image_rules['ratio_range'][1]):
 
-                    print(f"   🖼️ 匹配到图片 (xref:{xref})，位置: ({rel_x:.2f}, {rel_y:.2f})，比例: {ratio:.2f}")
-                    page.delete_image(xref)
+                    print(f"  🟦 匹配到形状 (位置: {rect}), 比例: {ratio:.2f}")
+                    page.add_redact_annot(rect, fill=(1, 1, 1))
+                    page.apply_redactions()
 
     # 4. 保存文件 (覆盖原文件)
     # 临时代码：
@@ -133,14 +119,13 @@ if __name__ == "__main__":
     # 配置要删除的图片规则 (可选，不需要则传 None)
     # 这里演示：删除位于页面右上角 (x>0.8, y<0.2) 且宽高比在 0.8~1.2 之间的图片
     img_config = {
-        'x_range': (0.1, 1),
-        'y_range': (0.2, 0.8),
+        'x_range': (0.7, 0.95),
+        'y_range': (0.4, 0.6),
         'ratio_range': (0.1, 3)
     }
 
     process_pdf(
         input_path=input_file,
         page_range_str=page_input,
-        text_list=texts_to_hide,
         image_rules=img_config
     )
