@@ -2,6 +2,36 @@ import fitz  # PyMuPDF
 import os
 import sys
 
+def save_file(input_file, temp_file, backup_file=None):
+    try:
+        # 1. 定义备份路径和临时路径
+        base_name, ext = os.path.splitext(input_file)
+        if backup_file == None:
+            backup_file = f"{base_name}_备份{ext}"
+
+        if temp_file == None:
+            temp_file = f"{base_name}_temp{ext}"
+
+        # 3. 执行备份和替换操作
+        if os.path.exists(input_file):
+            # 如果已有备份，先删除旧备份（可选）
+            if os.path.exists(backup_file):
+                os.remove(backup_file)
+
+            # 将原文件重命名为备份文件
+            os.rename(input_file, backup_file)
+            print(f"原文件已备份为: {backup_file}")
+
+        # 4. 将临时文件重命名为原文件名
+        os.rename(temp_file, input_file)
+        print(f"新文件已保存为: {input_file}")
+
+    except Exception as e:
+        print(f"保存文件时出错: {e}")
+        # 如果出错，尝试清理临时文件
+        if os.path.exists(temp_file):
+            os.remove(temp_file)
+
 
 def parse_page_range(page_str, total_pages):
     """
@@ -72,23 +102,13 @@ def draw_advanced_grid(page, minor_step=10, major_step=100):
         )
 
 def process_pdf(input_path, page_range_str, rect_config=None):
-    """
-    主处理函数：备份文件 -> 解析页码 -> 执行操作
-    """
     if not os.path.exists(input_path):
         print(f"错误：找不到文件 {input_path}")
         return
 
     # 1. 自动备份原文件
     base, ext = os.path.splitext(input_path)
-    backup_path = f"{base}_备份{ext}"
-    try:
-        import shutil
-        shutil.copy2(input_path, backup_path)
-        print(f"✅ 原文件已备份为: {backup_path}")
-    except Exception as e:
-        print(f"❌ 备份失败: {e}")
-        return
+
 
     doc = fitz.open(input_path)
     total_pages = len(doc)
@@ -113,8 +133,33 @@ def process_pdf(input_path, page_range_str, rect_config=None):
             width=rect_config.get("width", 1)              # 默认线宽为 1
         )
 
+    # 保存文件 (覆盖原文件)
+    # 临时代码：
+    output_path =  f"{base}_output_check{ext}"
+    doc.save(output_path, garbage=4, deflate=True)
+    doc.close()
+    print(f"\n🎉 处理完成！文件已更新: {output_path}")
 
-        # --- 功能 B: 删除符合条件的图片 ---
+
+def mask_area(input_path, page_range_str, rect_config=None):
+    if not os.path.exists(input_path):
+        print(f"错误：找不到文件 {input_path}")
+        return
+
+
+    doc = fitz.open(input_path)
+    total_pages = len(doc)
+
+    # 2. 解析页码
+    target_pages = parse_page_range(page_range_str, total_pages)
+    print(f"📄 目标页码 (0-based): {target_pages}")
+
+    # 遍历指定页面进行处理
+    for page_num in target_pages:
+        page = doc[page_num]
+        print(f"\n正在处理第 {page_num + 1} 页...")
+
+        # ---  删除区域内的形状 ---
         if rect_config:
             drawings = page.get_drawings()
             target_rect = fitz.Rect(rect_config["rect"])
@@ -128,11 +173,13 @@ def process_pdf(input_path, page_range_str, rect_config=None):
 
     # 4. 保存文件 (覆盖原文件)
     # 临时代码：
-    output_path =  f"{base}_完成{ext}"
+    base, ext = os.path.splitext(input_path)
+    output_path =  f"{base}_output{ext}"
     doc.save(output_path, garbage=4, deflate=True)
     doc.close()
-    print(f"\n🎉 处理完成！文件已更新: {output_path}")
 
+    save_file(input_file, temp_file=output_path)
+    print(f"\n🎉 处理完成！文件已更新: {output_path}")
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
@@ -151,9 +198,20 @@ if __name__ == "__main__":
         "width": 2                        # 边框宽度
     }
 
-    process_pdf(
-        input_path=input_file,
-        page_range_str=page_range,
-        rect_config=rect_config
+    # 开关
+    is_check = False
 
-    )
+    if is_check:
+        # 绘制区域
+        process_pdf(
+            input_path=input_file,
+            page_range_str=page_range,
+            rect_config=rect_config
+        )
+    else:
+        # 删除内容
+        mask_area(
+            input_path=input_file,
+            page_range_str=page_range,
+            rect_config=rect_config
+        )
