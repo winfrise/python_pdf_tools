@@ -41,8 +41,37 @@ def parse_page_range(page_str, total_pages):
 
     return sorted(list(pages))
 
+# 绘制刻度线
+def draw_advanced_grid(page, minor_step=10, major_step=100):
+    rect = page.rect
+    w = rect.width
+    h = rect.height
 
-def process_pdf(input_path, page_range_str, image_rules=None):
+    # 定义样式
+    minor_color = (0.9, 0.9, 0.9)  # 极浅灰
+    major_color = (0.5, 0.5, 0.5)  # 深灰
+    minor_width = 0.5
+    major_width = 1.5
+
+    # 绘制垂直线
+    for x in range(0, int(w) + 1, minor_step):
+        is_major = (x % major_step == 0)
+        page.draw_line(
+            (x, 0), (x, h),
+            color=major_color if is_major else minor_color,
+            width=major_width if is_major else minor_width
+        )
+
+    # 绘制水平线
+    for y in range(0, int(h) + 1, minor_step):
+        is_major = (y % major_step == 0)
+        page.draw_line(
+            (0, y), (w, y),
+            color=major_color if is_major else minor_color,
+            width=major_width if is_major else minor_width
+        )
+
+def process_pdf(input_path, page_range_str, rect_config=None):
     """
     主处理函数：备份文件 -> 解析页码 -> 执行操作
     """
@@ -73,28 +102,28 @@ def process_pdf(input_path, page_range_str, image_rules=None):
         page = doc[page_num]
         print(f"\n正在处理第 {page_num + 1} 页...")
 
+        # 绘制刻度线
+        draw_advanced_grid(page)
+
+        # 绘制矩形
+        page.draw_rect(
+            rect=rect_config["rect"], 
+            color=rect_config.get("color", (0, 0, 0)),     # 默认黑色边框
+            fill=rect_config.get("fill", None),            # 默认无填充 (透明)
+            width=rect_config.get("width", 1)              # 默认线宽为 1
+        )
+
 
         # --- 功能 B: 删除符合条件的图片 ---
-        if image_rules:
-            page_w, page_h = page.rect.width, page.rect.height
-            # images = page.get_images(full=True)
+        if rect_config:
             drawings = page.get_drawings()
+            target_rect = fitz.Rect(rect_config["rect"])
             for drawing in drawings:
-                rect = drawing["rect"]
-
-                # 计算相对位置和比例
-                rel_x = rect.x0 / page_w
-                rel_y = rect.y0 / page_h
-                ratio = rect.width / rect.height if rect.height > 0 else 0
-
-                # 匹配规则 (示例：右上角且接近正方形)
-                # 你可以根据需要修改这里的判断逻辑
-                if (image_rules['x_range'][0] <= rel_x <= image_rules['x_range'][1] and
-                    image_rules['y_range'][0] <= rel_y <= image_rules['y_range'][1] and
-                    image_rules['ratio_range'][0] <= ratio <= image_rules['ratio_range'][1]):
-
-                    print(f"  🟦 匹配到形状 (位置: {rect}), 比例: {ratio:.2f}")
-                    page.add_redact_annot(rect, fill=(1, 1, 1))
+                shape_rect = drawing["rect"]
+                if target_rect.contains(shape_rect):
+                    print(f"发现完全在区域内的形状: {shape_rect}")
+            
+                    page.add_redact_annot(shape_rect, fill=(1, 1, 1))
                     page.apply_redactions()
 
     # 4. 保存文件 (覆盖原文件)
@@ -111,21 +140,20 @@ if __name__ == "__main__":
     input_file = "/Users/teacher/Desktop/未命名文件夹 2/Test.pdf"
 
     # 你的目标格式："1, 3-5, 9-10, 12"
-    page_input = "1"
+    page_range = "1"
 
-    # 配置要遮挡的文字
-    texts_to_hide = ["机密", "绝密"]
 
     # 配置要删除的图片规则 (可选，不需要则传 None)
-    # 这里演示：删除位于页面右上角 (x>0.8, y<0.2) 且宽高比在 0.8~1.2 之间的图片
-    img_config = {
-        'x_range': (0.7, 0.95),
-        'y_range': (0.4, 0.6),
-        'ratio_range': (0.1, 3)
+    rect_config = {
+        "rect": (430, 370, 560, 470),       # 左上角矩形
+        "color": (1, 0, 0),               # 红色边框
+        "fill": None,            # 浅红色填充
+        "width": 2                        # 边框宽度
     }
 
     process_pdf(
         input_path=input_file,
-        page_range_str=page_input,
-        image_rules=img_config
+        page_range_str=page_range,
+        rect_config=rect_config
+
     )
