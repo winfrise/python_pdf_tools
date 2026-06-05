@@ -174,17 +174,16 @@ def mask_area(input_path, page_range_str, rect_config=None):
     # 4. 保存文件 (覆盖原文件)
     # 临时代码：
     base, ext = os.path.splitext(input_path)
-    output_path =  f"{base}_output{ext}"
+    output_path =  f"{base}_完成{ext}"
     doc.save(output_path, garbage=4, deflate=True)
     doc.close()
 
-    save_file(input_file, temp_file=output_path)
     print(f"\n🎉 处理完成！文件已更新: {output_path}")
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
     # 模拟参数输入
-    input_file = "/Users/teacher/Desktop/未命名文件夹 2/Test.pdf"
+    input_file = "/Users/teacher/Desktop/未命名文件夹/消防建施-副本/消防建施-副本_1.pdf"
 
     # 你的目标格式："1, 3-5, 9-10, 12"
     page_range = "1"
@@ -192,26 +191,23 @@ if __name__ == "__main__":
 
     # 配置要删除的图片规则 (可选，不需要则传 None)
     rect_config = {
-        "rect": (430, 370, 560, 470),       # 左上角矩形
+        # "rect": (930, 450, 1180, 670),       # 左上角矩形
+        "rect": (200, 200, 1180, 800),       # 左上角矩形
         "color": (1, 0, 0),               # 红色边框
         "fill": None,            # 浅红色填充
         "width": 2                        # 边框宽度
     }
 
-    # 开关
-    is_check = False
+    # 绘制区域
+    process_pdf(
+        input_path=input_file,
+        page_range_str=page_range,
+        rect_config=rect_config
+    )
 
-    if is_check:
-        # 绘制区域
-        process_pdf(
-            input_path=input_file,
-            page_range_str=page_range,
-            rect_config=rect_config
-        )
-    else:
-        # 删除内容
-        mask_area(
-            input_path=input_file,
-            page_range_str=page_range,
-            rect_config=rect_config
-        )
+    # 删除内容
+    mask_area(
+        input_path=input_file,
+        page_range_str=page_range,
+        rect_config=rect_config
+    )
