@@ -4,7 +4,7 @@ import re
 
 from utils import rename_backup
 
-def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
+def add_images_to_pdf(input_pdf_path, image_configs, page_range='all', output_path = None):
     """
     向PDF中添加图片（支持PDF矢量图，自动处理原始尺寸）
     """
@@ -86,6 +86,8 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
                 if size is None:
                     # 如果size为None，使用原始尺寸
                     w, h = original_width, original_height
+                elif size == 'fullscreen':
+                    w, h = page.rect.width, page.rect.height
                 else:
                     w, h = size
                 
@@ -106,10 +108,11 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 
     # 6. 保存文件逻辑修改
     try:
-        # 1. 定义备份路径和临时路径
-        base_name, ext = os.path.splitext(input_file)
-        output_path = f"{base_name}_output{ext}"
-        temp_path = f"{base_name}_temp{ext}"  # 创建一个临时文件名
+        if output_path == None:
+            # 1. 定义备份路径和临时路径
+            base_name, ext = os.path.splitext(input_file)
+            output_path = f"{base_name}_output{ext}"
+            temp_path = f"{base_name}_temp{ext}"  # 创建一个临时文件名
 
         # 2. 保存文件
         print(f"正在生成新文件...")
@@ -117,17 +120,14 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
         doc.close()  # 必须关闭文档，释放对原文件的占用
 
         # 3. 备份原文件
-        rename_backup(input_file)
+        # rename_backup(input_file)
 
         # 4. 将临时文件重命名为原文件名
-        os.rename(output_path, input_file)
-        print(f"新文件重命名为: {input_file}")
+        # os.rename(output_path, input_file)
+        # print(f"新文件重命名为: {input_file}")
 
     except Exception as e:
         print(f"保存文件时出错: {e}")
-        # 如果出错，尝试清理临时文件
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
 
 
 # ==========================================
@@ -135,21 +135,49 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 # ==========================================
 
 if __name__ == "__main__":
-    # 1. 输入PDF路径
-    input_file = "/Users/teacher/Desktop/未命名文件夹 3/泵站课程设计.pdf"
-    # page_range 示例：1,3, 5-9
-    page_range = "1"
-   
-    my_images = [
-        {
-            "path": "/Users/teacher/Desktop/未命名文件夹 3/泵站课程设计111.pdf",      # 你的SVG转成的PDF
-            "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
-            "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200
-            "page_index": 0          # 取该PDF的第0页
-        },
-        # 可以继续添加更多图片配置...
-    ]
 
-    # 3. 执行函数
-    # 示例1: 全部页面添加
-    add_images_to_pdf(input_file, my_images, page_range)
+    try:
+        is_batch = True
+
+        # page_range 示例：1,3, 5-9
+        page_range = "1"
+        my_images = [
+            {
+                "path": "/Users/teacher/Desktop/图纸修改/遮挡.pdf",      # 你的SVG转成的PDF
+                "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
+                "size": 'fullscreen',      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
+                "page_index": 0          # 取该PDF的第0页
+            },
+            # 可以继续添加更多图片配置...
+        ]
+
+        if not is_batch:
+            # 1. 输入PDF路径
+            input_file = "/Users/teacher/Desktop/pdf(需要绘制图纸)/太卜寺旗农研所临街商住楼加固改造设计施工图/太卜寺旗农研所临街商住楼加固改造设计施工图_2.pdf"
+
+            # 3. 执行函数
+            # 示例1: 全部页面添加
+            add_images_to_pdf(input_file, my_images, page_range)
+        else:
+            input_folder = "/Users/teacher/Desktop/图纸修改/交然桥至大河段-需要修改"
+            output_folder = "/Users/teacher/Desktop/图纸修改/交然桥至大河段-修改后"
+
+            for root, dirs, files in os.walk(input_folder):
+                for file in files:
+                    if file.lower().endswith('.pdf'):
+                        input_file = os.path.join(root, file)
+                        relative_input_pdf = os.path.relpath(input_file, input_folder)
+                        output_file = os.path.join(output_folder, relative_input_pdf)
+                        
+                        # 确保输出目录存在
+                        output_pdf_dir = os.path.dirname(output_file)
+                        os.makedirs(output_pdf_dir, exist_ok=True)
+                        
+                        print(f"正在处理: {relative_input_pdf}")
+     
+                        add_images_to_pdf(input_file, my_images, page_range = "all", output_path = output_file)
+
+    except FileNotFoundError:
+        print(f"错误: 找不到文件 '{input_file}'，请确认文件名和路径。")
+
+
