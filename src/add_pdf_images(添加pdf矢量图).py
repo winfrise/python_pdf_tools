@@ -2,6 +2,8 @@ import fitz  # PyMuPDF
 import os
 import re
 
+from utils import rename_backup
+
 def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
     """
     向PDF中添加图片（支持PDF矢量图，自动处理原始尺寸）
@@ -106,27 +108,20 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
     try:
         # 1. 定义备份路径和临时路径
         base_name, ext = os.path.splitext(input_file)
-        backup_path = f"{base_name}_备份{ext}"
+        output_path = f"{base_name}_output{ext}"
         temp_path = f"{base_name}_temp{ext}"  # 创建一个临时文件名
 
-        # 2. 先保存为临时文件
+        # 2. 保存文件
         print(f"正在生成新文件...")
-        doc.save(temp_path)
+        doc.save(output_path)
         doc.close()  # 必须关闭文档，释放对原文件的占用
 
-        # 3. 执行备份和替换操作
-        if os.path.exists(input_file):
-            # 如果已有备份，先删除旧备份（可选）
-            if os.path.exists(backup_path):
-                os.remove(backup_path)
-
-            # 将原文件重命名为备份文件
-            os.rename(input_file, backup_path)
-            print(f"原文件已备份为: {backup_path}")
+        # 3. 备份原文件
+        rename_backup(input_file)
 
         # 4. 将临时文件重命名为原文件名
-        os.rename(temp_path, input_file)
-        print(f"新文件已保存为: {input_file}")
+        os.rename(output_path, input_file)
+        print(f"新文件重命名为: {input_file}")
 
     except Exception as e:
         print(f"保存文件时出错: {e}")
@@ -141,13 +136,13 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all'):
 
 if __name__ == "__main__":
     # 1. 输入PDF路径
-    input_file = "xxx/xxx.pdf"
+    input_file = "/Users/teacher/Desktop/未命名文件夹 3/泵站课程设计.pdf"
     # page_range 示例：1,3, 5-9
-    page_range = "3,4, 6, 7, 9-11, 16, 17, 20, 30"
+    page_range = "1"
    
     my_images = [
         {
-            "path": "/Volumes/西数4T外置/Pdf修改资料/xxxx.pdf",      # 你的SVG转成的PDF
+            "path": "/Users/teacher/Desktop/未命名文件夹 3/泵站课程设计111.pdf",      # 你的SVG转成的PDF
             "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
             "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200
             "page_index": 0          # 取该PDF的第0页
