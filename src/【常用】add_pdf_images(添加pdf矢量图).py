@@ -115,8 +115,8 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all', output_pa
             temp_path = f"{base_name}_temp{ext}"  # 创建一个临时文件名
 
         # 2. 保存文件
-        print(f"正在生成新文件...")
         doc.save(output_path)
+        print(f"生成文件：{output_path}")
         doc.close()  # 必须关闭文档，释放对原文件的占用
 
         # 3. 备份原文件
@@ -143,7 +143,7 @@ if __name__ == "__main__":
         page_range = "1"
         my_images = [
             {
-                "path": "/Users/teacher/Desktop/图纸修改/遮挡.pdf",      # 你的SVG转成的PDF
+                "path": "/Users/teacher/Desktop/图纸修改/mask_1.pdf",      # 你的SVG转成的PDF
                 "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
                 "size": 'fullscreen',      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
                 "page_index": 0          # 取该PDF的第0页
