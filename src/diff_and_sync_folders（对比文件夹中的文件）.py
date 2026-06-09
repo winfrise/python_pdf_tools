@@ -99,8 +99,8 @@ def diff_and_sync_folders(dir1, dir2, dir3):
 
 # ================= 运行示例 =================
 if __name__ == "__main__":
-    folder_1 = "/Users/teacher/Desktop/图纸修改/1-1交然桥至大河段-需要修改"  # 替换为你的实际文件夹1路径
-    folder_2 = "/Users/teacher/Desktop/图纸修改/1-2交然桥至大河段-修改后"  # 替换为你的实际文件夹2路径
-    folder_3 = "/Users/teacher/Desktop/图纸修改/1-4第一次有问题文件-需要修改" # 复制文件夹2中缺少的文件
+    folder_1 = "/Users/teacher/Desktop/图纸修改/2-1第一次有问题文件-需要修改"  # 替换为你的实际文件夹1路径
+    folder_2 = "/Users/teacher/Desktop/图纸修改/2-1第二次修改后"  # 替换为你的实际文件夹2路径
+    folder_3 = "/Users/teacher/Desktop/图纸修改/3-1需要修改" # 复制文件夹2中缺少的文件
     
     diff_and_sync_folders(folder_1, folder_2, folder_3)

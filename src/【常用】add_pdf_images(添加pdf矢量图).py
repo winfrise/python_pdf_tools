@@ -137,15 +137,15 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all', output_pa
 if __name__ == "__main__":
 
     try:
-        is_batch = True
+        is_batch = False
 
         # page_range 示例：1,3, 5-9
-        page_range = "1"
+        page_range = "1-1000"
         my_images = [
             {
-                "path": "/Users/teacher/Desktop/图纸修改/mask_1.pdf",      # 你的SVG转成的PDF
+                "path": "/Users/teacher/Desktop/未命名文件夹/mask.pdf",      # 你的SVG转成的PDF
                 "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
-                "size": 'fullscreen',      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
+                "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
                 "page_index": 0          # 取该PDF的第0页
             },
             # 可以继续添加更多图片配置...
@@ -153,14 +153,14 @@ if __name__ == "__main__":
 
         if not is_batch:
             # 1. 输入PDF路径
-            input_file = "/Users/teacher/Desktop/pdf(需要绘制图纸)/太卜寺旗农研所临街商住楼加固改造设计施工图/太卜寺旗农研所临街商住楼加固改造设计施工图_2.pdf"
+            input_file = "/Users/teacher/Desktop/未命名文件夹/1.离心泵.pdf"
 
             # 3. 执行函数
             # 示例1: 全部页面添加
             add_images_to_pdf(input_file, my_images, page_range)
         else:
-            input_folder = "/Users/teacher/Desktop/图纸修改/交然桥至大河段-需要修改"
-            output_folder = "/Users/teacher/Desktop/图纸修改/交然桥至大河段-修改后"
+            input_folder = "/Users/teacher/Desktop/图纸修改/4-1需要修改"
+            output_folder = "/Users/teacher/Desktop/图纸修改/4-2修改后"
 
             for root, dirs, files in os.walk(input_folder):
                 for file in files:
