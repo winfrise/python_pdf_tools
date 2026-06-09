@@ -2,14 +2,14 @@ import os
 import shutil
 import filecmp
 
-def diff_and_sync_folders(dir1, dir2):
+def diff_and_sync_folders(dir1, dir2, dir3):
     """
     对比两个文件夹的差异，并可选择将缺失的文件复制到新文件夹。
     :param dir1: 文件夹1的路径
     :param dir2: 文件夹2的路径
     """
     # 检查文件夹是否存在
-    if not os.path.exists(dir1) or not os.path.exists(dir2):
+    if not os.path.exists(dir1) or not os.path.exists(dir2) or not os.path.exists(dir3):
         print("错误：请确保提供的两个文件夹路径都存在！")
         return
 
@@ -22,6 +22,9 @@ def diff_and_sync_folders(dir1, dir2):
         counterpart_root = os.path.join(dir2, rel_path)
         
         for file_name in files:
+            if file_name == '.DS_Store':  # 忽略 .DS_Store
+                continue
+
             path1 = os.path.join(root, file_name)
             path2 = os.path.join(counterpart_root, file_name)
             
@@ -34,6 +37,9 @@ def diff_and_sync_folders(dir1, dir2):
         counterpart_root = os.path.join(dir1, rel_path)
         
         for file_name in files:
+            if file_name == '.DS_Store':  # 忽略 .DS_Store
+                continue
+            
             path2 = os.path.join(root, file_name)
             path1 = os.path.join(counterpart_root, file_name)
             
@@ -61,7 +67,7 @@ def diff_and_sync_folders(dir1, dir2):
     choice = input("❓ 是否将所有缺少的文件统一复制到一个【新文件夹】中？ (y/n): ").strip().lower()
     
     if choice == 'y':
-        new_folder = input("📝 请输入新文件夹的名称或路径 (例如: ./merged_missing_files): ").strip()
+        new_folder = dir3
         
         # 创建新文件夹
         os.makedirs(new_folder, exist_ok=True)
@@ -93,7 +99,8 @@ def diff_and_sync_folders(dir1, dir2):
 
 # ================= 运行示例 =================
 if __name__ == "__main__":
-    folder_1 = "./test_folder_1"  # 替换为你的实际文件夹1路径
-    folder_2 = "./test_folder_2"  # 替换为你的实际文件夹2路径
+    folder_1 = "/Users/teacher/Desktop/图纸修改/1-1交然桥至大河段-需要修改"  # 替换为你的实际文件夹1路径
+    folder_2 = "/Users/teacher/Desktop/图纸修改/1-2交然桥至大河段-修改后"  # 替换为你的实际文件夹2路径
+    folder_3 = "/Users/teacher/Desktop/图纸修改/1-4第一次有问题文件-需要修改" # 复制文件夹2中缺少的文件
     
-    diff_and_sync_folders(folder_1, folder_2)
+    diff_and_sync_folders(folder_1, folder_2, folder_3)
