@@ -51,6 +51,10 @@ def redact_pdf(input_path, page_range_str, text_list):
     # 3. 打开备份文件进行处理
     doc = fitz.open(backup_path)
     target_pages = parse_page_range(page_range_str)
+
+    # --- 初始化统计字典 ---
+    occurrence_count = {text: 0 for text in text_list}
+
     print(f"目标页码 (0-based): {target_pages}")
     print(f"待遮挡文字: {text_list}")
 
@@ -64,19 +68,29 @@ def redact_pdf(input_path, page_range_str, text_list):
         for text_to_hide in text_list:
             instances = page.search_for(text_to_hide)
             if instances:
+                # --- 统计找到的数量 ---
+                occurrence_count[text_to_hide] += len(instances)
                 print(f"在第 {page_num + 1} 页找到 {len(instances)} 处 '{text_to_hide}'")
                 for inst in instances:
                     page.add_redact_annot(inst, fill=(1, 1, 1))  # 白色填充
             else:
                 print(f"在第 {page_num + 1} 页未找到 '{text_to_hide}'")
 
-        # ⚠️ 关键修正：对当前页应用红印，而非整个文档
+        # 对当前页应用红印，而非整个文档
         page.apply_redactions()
 
     # 5. 保存修改后的文件（覆盖原文件名）
     try:
         doc.save(input_path)
         doc.close()
+
+        # --- 新增：打印最终统计结果 ---
+        print("\n" + "="*30)
+        print("🔍 替换统计结果：")
+        for text, count in occurrence_count.items():
+            print(f"  '{text}' : 共 {count} 处")
+        print("="*30)
+
         print(f"处理完成！新文件已保存为：{input_path}")
         return True
     except Exception as e:
