@@ -1,31 +1,7 @@
 import fitz
 import os
 import sys
-
-
-def parse_page_range(page_str):
-    """解析页码字符串，例如 "1,3-5,7" -> [0, 2, 3, 4, 6] (转换为0-based索引)"""
-    pages = set()
-    if not page_str:
-        return []
-
-    parts = page_str.split(",")
-    for part in parts:
-        part = part.strip()
-        if "-" in part:
-            try:
-                start, end = map(int, part.split("-"))
-                for i in range(start - 1, end):
-                    pages.add(i)
-            except ValueError:
-                print(f"警告：无法解析页码区间 '{part}'，已跳过。")
-        else:
-            try:
-                pages.add(int(part) - 1)
-            except ValueError:
-                print(f"警告：无法解析页码 '{part}'，已跳过。")
-
-    return sorted(pages)
+from utils import parse_page_range
 
 
 def redact_pdf(input_path, page_range_str, text_list):
@@ -50,7 +26,8 @@ def redact_pdf(input_path, page_range_str, text_list):
 
     # 3. 打开备份文件进行处理
     doc = fitz.open(backup_path)
-    target_pages = parse_page_range(page_range_str)
+    total_pages = len(doc)
+    target_pages = parse_page_range(page_range_str, total_pages)
 
     # --- 初始化统计字典 ---
     occurrence_count = {text: 0 for text in text_list}
@@ -102,9 +79,9 @@ def redact_pdf(input_path, page_range_str, text_list):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 配置参数
-    file_path = "/Users/teacher/Desktop/二次修改/【08-2表】分项工程预算表.pdf"  # 你的PDF文件路径
+    file_path = "/Users/teacher/Desktop/二次修改/【11表】机械台班单价计算表.pdf"  # 你的PDF文件路径
     pages = "1-1000"         # 页码范围 1,3-5,7
-    words = ["xxx", "xx1"]  # 要遮挡的文字列表
+    words = ["赵祖滨", "吴颖娜"]  # 要遮挡的文字列表
 
     # 运行函数
     redact_pdf(file_path, pages, words)
