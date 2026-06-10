@@ -90,7 +90,7 @@ if __name__ == "__main__":
     # 配置参数
     file_path = "/Users/teacher/Desktop/二次修改/【08-2表】分项工程预算表.pdf"  # 你的PDF文件路径
     pages = "1-1000"         # 页码范围 1,3-5,7
-    words = ["xxx"]  # 要遮挡的文字列表
+    words = ["xxx", "xx1"]  # 要遮挡的文字列表
 
     # 运行函数
     redact_pdf(file_path, pages, words)
