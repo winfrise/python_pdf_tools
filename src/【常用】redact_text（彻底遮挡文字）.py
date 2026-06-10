@@ -27,6 +27,7 @@ def redact_pdf(input_path, page_range_str, text_list):
     # 3. 打开备份文件进行处理
     doc = fitz.open(backup_path)
     total_pages = len(doc)
+
     target_pages = parse_page_range(page_range_str, total_pages)
 
     # --- 初始化统计字典 ---
@@ -79,7 +80,7 @@ def redact_pdf(input_path, page_range_str, text_list):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 配置参数
-    file_path = "/Users/teacher/Desktop/二次修改/【11表】机械台班单价计算表.pdf"  # 你的PDF文件路径
+    file_path = "/Users/teacher/Desktop/test/11.pdf"  # 你的PDF文件路径
     pages = "1-1000"         # 页码范围 1,3-5,7
     words = ["赵祖滨", "吴颖娜"]  # 要遮挡的文字列表
 
