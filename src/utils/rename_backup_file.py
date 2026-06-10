@@ -1,9 +1,9 @@
 import os
 
-def rename_backup(input_path, output_path = None):
+def rename_backup_file(input_path, backup_path = None):
     base_name, ext = os.path.splitext(input_path)
     
-    if output_path == None:
+    if backup_path == None:
         backup_path = f"{base_name}_backup{ext}"
 
     if os.path.exists(input_path):

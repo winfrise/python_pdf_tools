@@ -15,17 +15,9 @@ def redact_pdf(input_path, page_range_str, text_list):
         print(f"错误：输入文件 '{input_path}' 不存在！")
         return False
 
-    # 2. 创建备份文件
-    backup_path = input_path.replace('.pdf', '_备份.pdf')
-    try:
-        os.rename(input_path, backup_path)
-        print(f"原文件已备份为：{backup_path}")
-    except Exception as e:
-        print(f"备份失败：{e}")
-        return False
 
     # 3. 打开备份文件进行处理
-    doc = fitz.open(backup_path)
+    doc = fitz.open(input_path)
     total_pages = len(doc)
 
     target_pages = parse_page_range(page_range_str, total_pages)
@@ -59,7 +51,11 @@ def redact_pdf(input_path, page_range_str, text_list):
 
     # 5. 保存修改后的文件（覆盖原文件名）
     try:
-        doc.save(input_path)
+        base_name, ext = os.path.splitext(input_path)
+        output_path = f"{base_name}_output{ext}"
+
+        # 2. 保存文件
+        doc.save(output_path)
         doc.close()
 
         # --- 新增：打印最终统计结果 ---

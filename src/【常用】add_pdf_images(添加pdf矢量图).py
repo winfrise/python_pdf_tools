@@ -2,7 +2,7 @@ import fitz  # PyMuPDF
 import os
 import re
 
-from utils import rename_backup
+from utils import rename_backup_file
 
 def add_images_to_pdf(input_pdf_path, image_configs, page_range='all', output_path = None):
     """
@@ -112,7 +112,6 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all', output_pa
             # 1. 定义备份路径和临时路径
             base_name, ext = os.path.splitext(input_file)
             output_path = f"{base_name}_output{ext}"
-            temp_path = f"{base_name}_temp{ext}"  # 创建一个临时文件名
 
         # 2. 保存文件
         doc.save(output_path)
@@ -120,7 +119,7 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all', output_pa
         doc.close()  # 必须关闭文档，释放对原文件的占用
 
         # 3. 备份原文件
-        # rename_backup(input_file)
+        # rename_backup_file(input_file)
 
         # 4. 将临时文件重命名为原文件名
         # os.rename(output_path, input_file)
