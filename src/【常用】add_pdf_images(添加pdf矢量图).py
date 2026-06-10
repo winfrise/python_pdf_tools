@@ -4,19 +4,19 @@ import re
 
 from utils import rename_backup_file
 
-def add_images_to_pdf(input_pdf_path, image_configs, page_range='all', output_path = None):
+def add_shape_to_pdf(input_path, image_configs, page_range='all', output_path = None):
     """
     向PDF中添加图片（支持PDF矢量图，自动处理原始尺寸）
     """
     
     # 1. 检查原文件是否存在
-    if not os.path.exists(input_pdf_path):
-        print(f"❌ 错误：找不到文件 {input_pdf_path}")
+    if not os.path.exists(input_path):
+        print(f"❌ 错误：找不到文件 {input_path}")
         return
 
     # 3. 打开目标PDF
     try:
-        doc = fitz.open(input_pdf_path)
+        doc = fitz.open(input_path)
     except Exception as e:
         print(f"❌ 错误：无法打开PDF文件: {e}")
         return
@@ -110,7 +110,7 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all', output_pa
     try:
         if output_path == None:
             # 1. 定义备份路径和临时路径
-            base_name, ext = os.path.splitext(input_file)
+            base_name, ext = os.path.splitext(input_path)
             output_path = f"{base_name}_output{ext}"
 
         # 2. 保存文件
@@ -129,54 +129,58 @@ def add_images_to_pdf(input_pdf_path, image_configs, page_range='all', output_pa
         print(f"保存文件时出错: {e}")
 
 
+def batch_add_shape(input_folder,image_configs, page_range, output_folder):
+
+    for root, dirs, files in os.walk(input_folder):
+        for file in files:
+            if file.lower().endswith('.pdf'):
+                input_file = os.path.join(root, file)
+                relative_input_pdf = os.path.relpath(input_file, input_folder)
+                output_file = os.path.join(output_folder, relative_input_pdf)
+                
+                # 确保输出目录存在
+                output_pdf_dir = os.path.dirname(output_file)
+                os.makedirs(output_pdf_dir, exist_ok=True)
+                
+                print(f"正在处理: {relative_input_pdf}")
+
+                add_shape_to_pdf(input_path=input_file, image_configs=image_configs, page_range = page_range, output_path = output_file)
+
 # ==========================================
 # 使用示例
 # ==========================================
 
 if __name__ == "__main__":
+    is_batch = False
+    input_path = "/Users/teacher/Desktop/xxx.pdf"
+    output_path = "/Users/teacher/Desktop/xxx"
 
-    try:
-        is_batch = False
+    page_range = "1-1000" # page_range 示例：1,3, 5-9
 
-        # page_range 示例：1,3, 5-9
-        page_range = "1-1000"
-        my_images = [
-            {
-                "path": "/Users/teacher/Desktop/未命名文件夹/mask.pdf",      # 你的SVG转成的PDF
-                "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
-                "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
-                "page_index": 0          # 取该PDF的第0页
-            },
-            # 可以继续添加更多图片配置...
-        ]
+    my_images = [
+        {
+            "path": "/Users/teacher/Desktop/三次/mask.pdf",      # 你的SVG转成的PDF
+            "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
+            "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
+            "page_index": 0          # 取该PDF的第0页
+        },
+        # 可以继续添加更多图片配置...
+    ]
 
-        if not is_batch:
-            # 1. 输入PDF路径
-            input_file = "/Users/teacher/Desktop/未命名文件夹/1.离心泵.pdf"
-
-            # 3. 执行函数
-            # 示例1: 全部页面添加
-            add_images_to_pdf(input_file, my_images, page_range)
-        else:
-            input_folder = "/Users/teacher/Desktop/图纸修改/4-1需要修改"
-            output_folder = "/Users/teacher/Desktop/图纸修改/4-2修改后"
-
-            for root, dirs, files in os.walk(input_folder):
-                for file in files:
-                    if file.lower().endswith('.pdf'):
-                        input_file = os.path.join(root, file)
-                        relative_input_pdf = os.path.relpath(input_file, input_folder)
-                        output_file = os.path.join(output_folder, relative_input_pdf)
-                        
-                        # 确保输出目录存在
-                        output_pdf_dir = os.path.dirname(output_file)
-                        os.makedirs(output_pdf_dir, exist_ok=True)
-                        
-                        print(f"正在处理: {relative_input_pdf}")
-     
-                        add_images_to_pdf(input_file, my_images, page_range = "all", output_path = output_file)
-
-    except FileNotFoundError:
-        print(f"错误: 找不到文件 '{input_file}'，请确认文件名和路径。")
+    # 单个文件处理
+    if not is_batch:
+        add_shape_to_pdf(
+                input_path=input_path, 
+                image_configs=my_images, 
+                page_range=page_range, 
+                output_path = None
+        )
+    else: # 批量处理
+        batch_add_shape(
+            input_folder=input_path,
+            image_configs=my_images,
+            page_range=page_range,
+            output_folder=output_path
+        )
 
 
