@@ -60,6 +60,6 @@ def extract_images_from_pdf(pdf_path, output_dir_name="extracted_images"):
 # ================= 使用示例 =================
 if __name__ == "__main__":
     # 替换成你本地的 PDF 文件路径（可以是相对路径，也可以是绝对路径）
-    pdf_file = "/Users/teacher/Desktop/《临床基础检验技术》复习要点/《临床基础检验技术》复习要点.pdf" 
+    pdf_file = "/Users/teacher/Desktop/路面砖检验报告/路面砖检验报告.pdf" 
     
     extract_images_from_pdf(pdf_file)
