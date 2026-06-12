@@ -15,6 +15,7 @@ def add_vector_graphics(input_path, output_path, page_range, vector_items):
                 vec_path = item["path"]
                 vec_width = item.get("width")
                 vec_height = item.get("height")
+                vec_page_index = 0
                 
                 # 解析位置参数
                 vec_pos_top = item.get("top")
@@ -25,10 +26,9 @@ def add_vector_graphics(input_path, output_path, page_range, vector_items):
                 
                 # 1. 打开矢量图 PDF 并获取其原始尺寸
                 vec_doc = pymupdf.open(vec_path)
-                vec_page = vec_doc
+                vec_page = vec_doc.load_page(vec_page_index)
                 vec_orig_w = vec_page.rect.width
                 vec_orig_h = vec_page.rect.height
-                vec_doc.close()
                 
                 # 2. 计算实际宽高（如果未指定，则使用原始尺寸）
                 vec_final_w = vec_width if vec_width is not None else vec_orig_w
@@ -61,7 +61,8 @@ def add_vector_graphics(input_path, output_path, page_range, vector_items):
                 )
                 
                 # 4. 将矢量图 PDF 的第一页嵌入到目标区域
-                page.show_pdf_page(target_rect, pymupdf.open(vec_path), 0)
+                page.show_pdf_page(target_rect, vec_doc, vec_page_index, overlay=True)
+                vec_doc.close()
                 
         doc.save(output_path)
         doc.close()
@@ -83,51 +84,62 @@ def batch_add_vector_graphics(input_dir, output_dir, page_range, vector_items):
         print(f"已自动创建输出文件夹：{output_dir}")
 
     # 3. 定义支持处理的图片后缀
-    image_extensions = ('.pdf')
+
 
     success_count = 0
     fail_count = 0
 
     # 4. 遍历输入文件夹中的所有文件
-    for filename in os.listdir(input_dir):
-        # 仅处理图片文件
-        if filename.lower().endswith(image_extensions):
-            input_path = os.path.join(input_dir, filename)
-            output_path = os.path.join(output_dir, filename)
+    file_extensions = ('.pdf')
+    for root, dirs, files in os.walk(input_dir):
+        for file in files:
+            # --- 过滤 macOS 自动生成的 ._ 开头文件 ---
+            if file.startswith('._'):
+                continue
+            
+            if file.lower().endswith(file_extensions):
+                input_path = os.path.join(root, file)
+                relative_input_path = os.path.relpath(input_path, input_dir)
+                output_path = os.path.join(output_dir, relative_input_path)
+                
+                # 确保输出目录存在
+                output_pdf_dir = os.path.dirname(output_path)
+                os.makedirs(output_pdf_dir, exist_ok=True)
 
-            # --- 关键：直接调用核心函数，不重复实现逻辑 ---
-            status = add_vector_graphics(
-                input_path=input_path,
-                output_path=output_path,
-                vector_items=vector_items
-            )
-            if status == True:
-                success_count = success_count + 1
-            else:
-                fail_count = fail_count + 1
+                # --- 关键：直接调用核心函数，不重复实现逻辑 ---
+                status = add_vector_graphics(
+                    input_path=input_path,
+                    output_path=output_path,
+                    page_range=page_range,
+                    vector_items=vector_items
+                )
+                if status == True:
+                    success_count = success_count + 1
+                else:
+                    fail_count = fail_count + 1
 
 
-    print("\n🎉 批量任务完成！，成功数量： {success_count}，失败数量：{fail_count}")
+    print(f"\n🎉 批量任务完成！，成功数量： {success_count}，失败数量：{fail_count}")
 
 
 if __name__ == "__main__":
-    is_batch = False
+    is_batch = True
 
-    input_path = ""
-    output_path = ""
+    input_path = "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/西三期竣工图PDF"
+    output_path = "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/西三期竣工图PDF222"
     
     page_range = "1-10000"
 
     vector_items = [
+        # {
+        #     "path": "logo.pdf",
+        #     "page_index": 0,
+        #     "top": 50,      # 距离页面顶部 50pt
+        #     "left": 50,     # 距离页面左侧 50pt
+        #     # 宽高不填，自动按照 logo.pdf 原始尺寸插入
+        # },
         {
-            "path": "logo.pdf",
-            "page_index": 0,
-            "top": 50,      # 距离页面顶部 50pt
-            "left": 50,     # 距离页面左侧 50pt
-            # 宽高不填，自动按照 logo.pdf 原始尺寸插入
-        },
-        {
-            "path": "chart.pdf",
+            "path": "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/test/01.pdf",
             "page_index": 0,
             "width": 200,   # 强制指定宽度为 200pt
             "height": 150,  # 强制指定高度为 150pt
@@ -141,11 +153,12 @@ if __name__ == "__main__":
             input_dir=input_path,
             output_dir=output_path,
             page_range=page_range,
-            vector_tasks=vector_items
+            vector_items=vector_items
         )
-    add_vector_graphics(
-        input_path=input_path,
-        output_path=output_path,
-        page_range=page_range,
-        vector_items=vector_items
-    )
+    else:
+        add_vector_graphics(
+            input_path=input_path,
+            output_path=output_path,
+            page_range=page_range,
+            vector_items=vector_items
+        )
