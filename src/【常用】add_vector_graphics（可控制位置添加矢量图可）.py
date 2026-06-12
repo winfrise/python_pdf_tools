@@ -6,6 +6,11 @@ def add_vector_graphics(input_path, output_path, page_range, vector_items):
     try:
         doc = pymupdf.open(input_path)
         target_pages = parse_page_range(page_range, len(doc))
+
+        if output_path == None:
+            base_name, ext = os.path.splitext(input_path)
+            output_path = f"{base_name}_output{ext}"
+
         for page_num in target_pages:
             page = doc[page_num]
             page_rect = page.rect
@@ -15,7 +20,7 @@ def add_vector_graphics(input_path, output_path, page_range, vector_items):
                 vec_path = item["path"]
                 vec_width = item.get("width")
                 vec_height = item.get("height")
-                vec_page_index = 0
+                vec_page_index = item.get("page_index")
                 
                 # 解析位置参数
                 vec_pos_top = item.get("top")
@@ -96,7 +101,7 @@ def batch_add_vector_graphics(input_dir, output_dir, page_range, vector_items):
             # --- 过滤 macOS 自动生成的 ._ 开头文件 ---
             if file.startswith('._'):
                 continue
-            
+
             if file.lower().endswith(file_extensions):
                 input_path = os.path.join(root, file)
                 relative_input_path = os.path.relpath(input_path, input_dir)
@@ -119,27 +124,27 @@ def batch_add_vector_graphics(input_dir, output_dir, page_range, vector_items):
                     fail_count = fail_count + 1
 
 
-    print(f"\n🎉 批量任务完成！，成功数量： {success_count}，失败数量：{fail_count}")
+    print(f"\n🎉 批量任务完成！，成功文件数量： {success_count}，失败文件数量：{fail_count}")
 
 
 if __name__ == "__main__":
-    is_batch = True
+    is_batch = False
 
-    input_path = "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/西三期竣工图PDF"
-    output_path = "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/西三期竣工图PDF222"
+    input_path = "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/西三期竣工图PDF/63#、64#、65#公建火灾自动报警系统 PDF图纸/138-63#公建地下二层消防平面图(E20-63-01F).pdf"
+    output_path = None
     
     page_range = "1-10000"
 
     vector_items = [
-        # {
-        #     "path": "logo.pdf",
-        #     "page_index": 0,
-        #     "top": 50,      # 距离页面顶部 50pt
-        #     "left": 50,     # 距离页面左侧 50pt
-        #     # 宽高不填，自动按照 logo.pdf 原始尺寸插入
-        # },
         {
-            "path": "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/test/01.pdf",
+            "path": "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/test/02.pdf",
+            "page_index": 0,
+            "top": 50,      # 距离页面顶部 50pt
+            "left": 50,     # 距离页面左侧 50pt
+            # 宽高不填，自动按照 logo.pdf 原始尺寸插入
+        },
+        {
+            "path": "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/test/02.pdf",
             "page_index": 0,
             "width": 200,   # 强制指定宽度为 200pt
             "height": 150,  # 强制指定高度为 150pt
