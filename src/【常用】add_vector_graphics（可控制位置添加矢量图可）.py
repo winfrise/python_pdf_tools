@@ -1,64 +1,68 @@
 import os
 import pymupdf
+from utils import parse_page_range
 
-def add_vector_graphics(input_path, output_path, vector_items):
+def add_vector_graphics(input_path, output_path, page_range, vector_items):
     try:
         doc = pymupdf.open(input_path)
-        
-        for item in vector_items:
-            page_index = item.get("page_index", 0)
-            vec_path = item["path"]
-            width = item.get("width")
-            height = item.get("height")
-            
-            # 解析位置参数
-            pos_top = item.get("top")
-            pos_left = item.get("left")
-            pos_right = item.get("right")
-            pos_bottom = item.get("bottom")
-            
-            if page_index >= len(doc):
-                print(f"警告: 页面索引 {page_index} 超出范围，跳过。")
-                continue
-                
-            page = doc[page_index]
+        target_pages = parse_page_range(page_range, len(doc))
+        for page_num in target_pages:
+            page = doc[page_num]
             page_rect = page.rect
-            
-            # 1. 打开矢量图 PDF 并获取其原始尺寸
-            vec_doc = pymupdf.open(vec_path)
-            vec_page = vec_doc
-            orig_w = vec_page.rect.width
-            orig_h = vec_page.rect.height
-            vec_doc.close()
-            
-            # 2. 计算实际宽高（如果未指定，则使用原始尺寸）
-            final_w = width if width is not None else orig_w
-            final_h = height if height is not None else orig_h
-            
-            # 3. 根据 top/left/right/bottom 计算目标矩形 (x0, y0, x1, y1)
-            # 默认从页面左上角 (0,0) 开始
-            x0, y0 = 0, 0 
-            
-            # 处理水平位置 (left / right)
-            if pos_left is not None:
-                x0 = pos_left
-            elif pos_right is not None:
-                # right 是从矢量图右侧到页面右侧的距离
-                x0 = page_rect.width - pos_right - final_w
+            print(f"\n正在处理第 {page_num + 1} 页...")
+
+            for item in vector_items:
+                vec_path = item["path"]
+                vec_width = item.get("width")
+                vec_height = item.get("height")
                 
-            # 处理垂直位置 (top / bottom)
-            if pos_top is not None:
-                y0 = pos_top
-            elif pos_bottom is not None:
-                # bottom 是从矢量图底部到页面底部的距离
-                y0 = page_rect.height - pos_bottom - final_h
+                # 解析位置参数
+                vec_pos_top = item.get("top")
+                vec_pos_left = item.get("left")
+                vec_pos_right = item.get("right")
+                vec_pos_bottom = item.get("bottom")
+            
                 
-            # 构建目标矩形区域
-            target_rect = pymupdf.Rect(x0, y0, x0 + final_w, y0 + final_h)
-            
-            # 4. 将矢量图 PDF 的第一页嵌入到目标区域
-            page.show_pdf_page(target_rect, pymupdf.open(vec_path), 0)
-            
+                # 1. 打开矢量图 PDF 并获取其原始尺寸
+                vec_doc = pymupdf.open(vec_path)
+                vec_page = vec_doc
+                vec_orig_w = vec_page.rect.width
+                vec_orig_h = vec_page.rect.height
+                vec_doc.close()
+                
+                # 2. 计算实际宽高（如果未指定，则使用原始尺寸）
+                vec_final_w = vec_width if vec_width is not None else vec_orig_w
+                vec_final_h = vec_height if vec_height is not None else vec_orig_h
+                
+                # 3. 根据 top/left/right/bottom 计算目标矩形 (x0, y0, x1, y1)
+                # 默认从页面左上角 (0,0) 开始
+                vec_x0, vec_y0 = 0, 0 
+                
+                # 处理水平位置 (left / right)
+                if vec_pos_left is not None:
+                    vec_x0 = vec_pos_left
+                elif vec_pos_right is not None:
+                    # right 是从矢量图右侧到页面右侧的距离
+                    vec_x0 = page_rect.width - vec_pos_right - vec_final_w
+                    
+                # 处理垂直位置 (top / bottom)
+                if vec_pos_top is not None:
+                    vec_y0 = vec_pos_top
+                elif vec_pos_bottom is not None:
+                    # bottom 是从矢量图底部到页面底部的距离
+                    vec_y0 = page_rect.height - vec_pos_bottom - vec_final_h
+                    
+                # 构建目标矩形区域
+                target_rect = pymupdf.Rect(
+                    vec_x0, 
+                    vec_y0, 
+                    vec_x0 + vec_final_w, 
+                    vec_y0 + vec_final_h
+                )
+                
+                # 4. 将矢量图 PDF 的第一页嵌入到目标区域
+                page.show_pdf_page(target_rect, pymupdf.open(vec_path), 0)
+                
         doc.save(output_path)
         doc.close()
         print(f"处理完成，已保存至: {output_path}")
@@ -68,7 +72,7 @@ def add_vector_graphics(input_path, output_path, vector_items):
         return False
 
 
-def batch_add_vector_graphics(input_dir, output_dir, vector_items):
+def batch_add_vector_graphics(input_dir, output_dir, page_range, vector_items):
     if not os.path.exists(input_dir):
         print(f"错误：输入文件夹不存在 -> {input_dir}")
         return
@@ -107,7 +111,14 @@ def batch_add_vector_graphics(input_dir, output_dir, vector_items):
 
 
 if __name__ == "__main__":
-    vector_tasks = [
+    is_batch = False
+
+    input_path = ""
+    output_path = ""
+    
+    page_range = "1-10000"
+
+    vector_items = [
         {
             "path": "logo.pdf",
             "page_index": 0,
@@ -125,4 +136,16 @@ if __name__ == "__main__":
         }
     ]
 
-    add_vector_graphics("base.pdf", "output.pdf", vector_tasks)
+    if is_batch:
+        batch_add_vector_graphics(
+            input_dir=input_path,
+            output_dir=output_path,
+            page_range=page_range,
+            vector_tasks=vector_items
+        )
+    add_vector_graphics(
+        input_path=input_path,
+        output_path=output_path,
+        page_range=page_range,
+        vector_items=vector_items
+    )
