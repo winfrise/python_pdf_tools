@@ -168,19 +168,20 @@ if __name__ == "__main__":
     ]
 
     # 单个文件处理
-    if not is_batch:
+    if os.path.isfile(input_path):
         add_shape_to_pdf(
                 input_path=input_path, 
                 image_configs=my_images, 
                 page_range=page_range, 
                 output_path = None
         )
-    else: # 批量处理
+    elif os.path.isdir(input_path):
         batch_add_shape(
             input_folder=input_path,
             image_configs=my_images,
             page_range=page_range,
             output_folder=output_path
         )
-
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")
 

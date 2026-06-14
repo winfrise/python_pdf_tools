@@ -153,7 +153,14 @@ if __name__ == "__main__":
         }
     ]
 
-    if is_batch:
+    if os.path.isfile(input_path):
+        add_vector_graphics(
+            input_path=input_path,
+            output_path=output_path,
+            page_range=page_range,
+            vector_items=vector_items
+        )
+    elif os.path.isdir(input_path):
         batch_add_vector_graphics(
             input_dir=input_path,
             output_dir=output_path,
@@ -161,9 +168,4 @@ if __name__ == "__main__":
             vector_items=vector_items
         )
     else:
-        add_vector_graphics(
-            input_path=input_path,
-            output_path=output_path,
-            page_range=page_range,
-            vector_items=vector_items
-        )
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")
