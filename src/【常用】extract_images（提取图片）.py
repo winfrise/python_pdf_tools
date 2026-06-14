@@ -1,28 +1,23 @@
 import fitz  # PyMuPDF
 import os
 
-def extract_images_from_pdf(pdf_path, output_dir_name="extracted_images"):
-    """
-    从指定的PDF文件中提取所有图片，并保存到 PDF 文件所在的同级目录中
-    :param pdf_path: PDF文件的路径
-    :param output_dir_name: 保存图片的文件夹名称（默认为 extracted_images）
-    """
+def extract_images(input_file):
     # 1. 获取 PDF 文件所在的目录路径
-    pdf_dir = os.path.dirname(pdf_path)
+    input_file_dir = os.path.dirname(input_file)
     
     # 2. 拼接出完整的输出文件夹路径
-    base_name = os.path.splitext(os.path.basename(pdf_path))[0]
-    output_dir = os.path.join(pdf_dir, f"{base_name}_{output_dir_name}")
+    base_name = os.path.splitext(os.path.basename(input_file))[0]
+    output_dir = os.path.join(input_file_dir, f"{base_name}_提取的图片")
 
     # 3. 如果文件夹不存在，则创建它
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
     # 4. 打开PDF文件
-    doc = fitz.open(pdf_path)
+    doc = fitz.open(input_file)
     img_count = 0  # 用于统计总共提取的图片数量
 
-    print(f"📄 开始处理文件：{pdf_path}")
+    print(f"📄 开始处理文件：{input_file}")
 
     # 5. 遍历PDF的每一页
     for page_num in range(len(doc)):
@@ -57,9 +52,23 @@ def extract_images_from_pdf(pdf_path, output_dir_name="extracted_images"):
     print(f"🎉 提取完成！共从 PDF 中提取了 {img_count} 张图片。")
     print(f"📂 图片已保存在：{output_dir}")
 
+
+def batch_extract_images(input_dir):
+    for root, dirs, files in os.walk(input_dir):
+        for file in files:
+            if file.lower().endswith('.pdf'):
+                input_file = os.path.join(root, file)
+                extract_images(input_file)
+
+
 # ================= 使用示例 =================
 if __name__ == "__main__":
     # 替换成你本地的 PDF 文件路径（可以是相对路径，也可以是绝对路径）
-    pdf_file = "/Users/teacher/Desktop/路面砖检验报告/路面砖检验报告.pdf" 
+    input_path = "/Users/teacher/Desktop/高考资料/1.pdf" 
     
-    extract_images_from_pdf(pdf_file)
+    if os.path.isfile(input_path):
+        extract_images(input_path)
+    elif os.path.isdir(input_path):
+        batch_extract_images(input_path)
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")
