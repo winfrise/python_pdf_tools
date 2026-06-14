@@ -151,7 +151,6 @@ def batch_add_shape(input_folder,image_configs, page_range, output_folder):
 # ==========================================
 
 if __name__ == "__main__":
-    is_batch = False
     input_path = "/Users/teacher/Desktop/xxx.pdf"
     output_path = "/Users/teacher/Desktop/xxx"
 

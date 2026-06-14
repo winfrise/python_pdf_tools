@@ -128,8 +128,6 @@ def batch_add_vector_graphics(input_dir, output_dir, page_range, vector_items):
 
 
 if __name__ == "__main__":
-    is_batch = False
-
     input_path = "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/西三期竣工图PDF/63#、64#、65#公建火灾自动报警系统 PDF图纸/138-63#公建地下二层消防平面图(E20-63-01F).pdf"
     output_path = None
     
