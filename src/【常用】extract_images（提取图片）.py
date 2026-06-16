@@ -1,17 +1,13 @@
 import fitz  # PyMuPDF
 import os
 
-def extract_images(input_file):
+def extract_images(input_file, is_flat_output = False):
     # 1. 获取 PDF 文件所在的目录路径
     input_file_dir = os.path.dirname(input_file)
     
     # 2. 拼接出完整的输出文件夹路径
     base_name = os.path.splitext(os.path.basename(input_file))[0]
     output_dir = os.path.join(input_file_dir, f"{base_name}_提取的图片")
-
-    # 3. 如果文件夹不存在，则创建它
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
 
     # 4. 打开PDF文件
     doc = fitz.open(input_file)
@@ -22,6 +18,16 @@ def extract_images(input_file):
     # 5. 遍历PDF的每一页
     for page_num in range(len(doc)):
         page = doc[page_num]
+
+        # 1. 确定当前页的输出目录
+        if is_flat_output:
+            current_page_dir = output_dir  # 扁平化：直接用总输出目录
+            os.makedirs(current_page_dir, exist_ok=True)  # 自动创建不存在的文件夹
+        else:
+            # 非扁平化：创建 "page_页码" 子文件夹（页码从1开始）
+            current_page_dir = os.path.join(output_dir, f"page_{page_num + 1}")
+            os.makedirs(current_page_dir, exist_ok=True)  # 自动创建不存在的文件夹
+
         # 获取当前页面的所有图片列表
         image_list = page.get_images(full=True)
 
@@ -37,8 +43,10 @@ def extract_images(input_file):
             
             # 7. 构造图片保存的文件名
             img_filename = f"page{page_num + 1}_img{img_index + 1}.{image_ext}"
+
             # 将文件名拼接到输出文件夹路径中
             img_path = os.path.join(output_dir, img_filename)
+            img_path = os.path.join(current_page_dir, img_filename)
             
             # 8. 将图片写入本地文件
             with open(img_path, "wb") as img_file:
@@ -53,22 +61,23 @@ def extract_images(input_file):
     print(f"📂 图片已保存在：{output_dir}")
 
 
-def batch_extract_images(input_dir):
+def batch_extract_images(input_dir, is_flat_output):
     for root, dirs, files in os.walk(input_dir):
         for file in files:
             if file.lower().endswith('.pdf'):
                 input_file = os.path.join(root, file)
-                extract_images(input_file)
+                extract_images(input_file, is_flat_output)
 
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
     # 替换成你本地的 PDF 文件路径（可以是相对路径，也可以是绝对路径）
-    input_path = "/Users/teacher/Desktop/高考资料/1.pdf" 
+    input_path = "/Users/teacher/Desktop/未命名文件夹 2/2.5氟碳漆铝单板-金奥维.pdf" 
+    is_flat_output = True
     
     if os.path.isfile(input_path):
-        extract_images(input_path)
+        extract_images(input_path, is_flat_output)
     elif os.path.isdir(input_path):
-        batch_extract_images(input_path)
+        batch_extract_images(input_path, is_flat_output)
     else:
         print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")

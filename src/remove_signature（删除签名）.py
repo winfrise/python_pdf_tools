@@ -206,13 +206,12 @@ def remove_signatures(input_path, output_path):
 
 if __name__ == "__main__":
     # 使用示例
-    input_file = "/Users/teacher/Desktop/未命名文件夹/消防建施.pdf"
-    output_file = "/Users/teacher/Desktop/未命名文件夹/消防建施.pdf"
-    signatures_index_range="1-2" # 示例1,2-3,9
+    input_file = "/Users/teacher/Downloads/百度网盘下载/水/支付宝交易明细(20260101-20260612).pdf"
+    output_file = "/Users/teacher/Downloads/百度网盘下载/水/支付宝交易明细(20260101-20260612)333.pdf"
 
     is_check = True
     if is_check:
         # 检查签名类型
         check_signature_type(input_file)
 
-    # remove_signatures(input_file, output_file)
+    remove_signatures(input_file, output_file)

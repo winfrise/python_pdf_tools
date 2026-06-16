@@ -47,5 +47,5 @@ def pdf_to_images(pdf_path, output_folder=None, dpi=72, img_format="jpg"):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 替换为你的PDF路径
-    pdf_file = "/Users/teacher/Desktop/未命名文件夹/GuoHao Filter.pdf" 
+    pdf_file = "/Users/teacher/Desktop/未命名文件夹 2/2.5氟碳漆铝单板-金奥维.pdf" 
     pdf_to_images(pdf_file, dpi=72)
