@@ -69,6 +69,7 @@ def check_signature_type(input_file):
     # 1. 检查是否为“表单控件 (Widget)”类型的签名
     print(f"------------1.【检查表单控件签名】---------")
     for page in doc:
+        print(f"【检查】第{page.number + 1}页")
         widgets = list(page.widgets())
         if widgets:
             print(f"第 {page.number + 1} 页包含表单控件 (Widgets):")
@@ -109,20 +110,56 @@ def check_signature_type(input_file):
 
     doc.close()
 
+# 删除表单类型的签名
+def remove_form_signatures(doc):
+    
+    for page in doc:
+        # 获取页面上的所有 Widget（表单字段）
+        widgets = page.widgets()
+        if widgets:
+            for widget in widgets:
+                # 判断字段类型，'9' 通常代表签名类型 (Signature)
+                if widget.field_type == 9: 
+                    print("正在删除表单签名")
+                    page.delete_widget(widget)
+                    
+
+# 删除数字签名
+def remove_digital_signatures(doc):
+
+    
+    # 获取 PDF 中对象的总数
+    xref_length = doc.xref_length()
+    
+    # 遍历所有的交叉引用对象
+    for xref in range(1, xref_length):
+        try:
+            # 获取对象的底层字典字符串
+            obj_str = doc.xref_object(xref)
+            
+            # 检查该对象是否为数字签名类型 (/Type /Sig)
+            if "/Type /Sig" in obj_str:
+                # 将该对象替换为空字典，从而彻底抹除签名数据
+                doc.update_object(xref, "<<>>")
+                
+        except Exception as e:
+            # 忽略无效或无法读取的对象
+            continue
 
 
-def remove_signatures_by_index(pdf_path, output_path, index_range):
+def remove_annot_signatures_by_index(doc):
     """
     pdf_path: 输入文件路径
     output_path: 输出文件路径
-    index_range: 字符串格式，如 "1", "1,3", "2-5", "1,3-6"
+    signatures_index_range: 字符串格式，如 "1", "1,3", "2-5", "1,3-6"
                  (注：这里默认用户习惯从 1 开始计数)
     """
-    doc = fitz.open(pdf_path)
+
+    signatures_index_range = "1-10"
 
     # 1. 解析用户输入的索引，转换为一个包含所有目标数字的集合 (Set)
     # 假设用户输入的是人类习惯的 1-based 索引 (第1个，第2个...)
-    target_indices = parse_range(index_range)
+    target_indices = parse_range(signatures_index_range, len(doc))
 
     print(f"===============================")
     print(f"准备删除的目标索引 (1-based): {sorted(target_indices)}")
@@ -135,12 +172,11 @@ def remove_signatures_by_index(pdf_path, output_path, index_range):
         page_find_count = 0
         page_removed_count = 0
 
-        # 获取页面所有注释的列表
-        annots = list(page.annots())
+        # 删除【表单类型】的签名
 
-        # 4. 遍历该页面的每一个注释
-        # 注意：必须倒序遍历或使用 list 副本，防止删除时改变列表长度导致报错
-        # 但在这里我们只是读取信息，真正的删除操作在下面判断后进行
+
+        # 删除【注释类型】的签名
+        annots = list(page.annots())
         for annot in annots:
             # 检查是否为 Screen 类型 (Type 22) 且标题包含 xlsign
             is_target_type = (annot.type[0] == 22 and 'xlsign' in annot.info.get('title', '').lower())
@@ -155,18 +191,32 @@ def remove_signatures_by_index(pdf_path, output_path, index_range):
                     if(page_removed_count >= len(target_indices)):
                         break
 
-     
+
+def remove_signatures(input_path, output_path):
+    doc = fitz.open(input_path)        
+
+    # 删除【注释类型】的签名
+    remove_annot_signatures_by_index(doc) 
+
+    # 删除【表单类型】的签名 
+    remove_form_signatures(doc) 
+
+    # 删除数字签名
+    remove_digital_signatures(doc)
+
+    # 保存文档，garbage=4 会进行最高级别的垃圾回收，彻底清除未引用的签名数据
     doc.save(output_path, garbage=4, deflate=True)
-    print(f"【处理完成】文件已保存至: {output_path}")
-
-
     doc.close()
-# 使用示例
-input_file = "/Users/teacher/Desktop/未命名文件夹/消防建施-副本.pdf"
-output_file = "/Users/teacher/Desktop/未命名文件夹/消防建施2.pdf"
 
-# 检查签名类型
-# check_signature_type(input_file)
+if __name__ == "__main__":
+    # 使用示例
+    input_file = "/Users/teacher/Downloads/百度网盘下载/水/支付宝交易明细(20260101-20260612).pdf"
+    output_file = "/Users/teacher/Desktop/未命名文件夹/消防建施2.pdf"
+    signatures_index_range="1-2" # 示例1,2-3,9
 
-index_range="1-2" # 示例1,2-3,9
-remove_signatures_by_index(input_file, output_file, index_range)
+    is_check = True
+    if is_check:
+        # 检查签名类型
+        check_signature_type(input_file)
+
+    remove_signatures(input_file, output_file)
