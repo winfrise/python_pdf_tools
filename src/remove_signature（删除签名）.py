@@ -69,7 +69,6 @@ def check_signature_type(input_file):
     # 1. 检查是否为“表单控件 (Widget)”类型的签名
     print(f"------------1.【检查表单控件签名】---------")
     for page in doc:
-        print(f"【检查】第{page.number + 1}页")
         widgets = list(page.widgets())
         if widgets:
             print(f"第 {page.number + 1} 页包含表单控件 (Widgets):")
@@ -115,14 +114,11 @@ def remove_form_signatures(doc):
     
     for page in doc:
         # 获取页面上的所有 Widget（表单字段）
-        widgets = page.widgets()
-        if widgets:
-            for widget in widgets:
-                # 判断字段类型，'9' 通常代表签名类型 (Signature)
-                if widget.field_type == 9: 
-                    print("正在删除表单签名")
-                    page.delete_widget(widget)
-                    
+        widgets = list(page.widgets())
+        for widget in reversed(widgets):
+            if widget.field_type == fitz.PDF_WIDGET_TYPE_SIGNATURE: # 推荐使用常量代替数字 9
+                print(f"正在删除: {widget.field_name}")
+                page.delete_widget(widget)   
 
 # 删除数字签名
 def remove_digital_signatures(doc):
@@ -210,8 +206,8 @@ def remove_signatures(input_path, output_path):
 
 if __name__ == "__main__":
     # 使用示例
-    input_file = "/Users/teacher/Downloads/百度网盘下载/水/支付宝交易明细(20260101-20260612).pdf"
-    output_file = "/Users/teacher/Desktop/未命名文件夹/消防建施2.pdf"
+    input_file = "/Users/teacher/Desktop/未命名文件夹/消防建施.pdf"
+    output_file = "/Users/teacher/Desktop/未命名文件夹/消防建施.pdf"
     signatures_index_range="1-2" # 示例1,2-3,9
 
     is_check = True
@@ -219,4 +215,4 @@ if __name__ == "__main__":
         # 检查签名类型
         check_signature_type(input_file)
 
-    remove_signatures(input_file, output_file)
+    # remove_signatures(input_file, output_file)
