@@ -74,17 +74,19 @@ if __name__ == "__main__":
     # ================= 配置区域 =================
     
     # 1. 源文件夹路径 (请修改)
-    SOURCE_DIR = r"/Users/teacher/Desktop/未命名文件夹 2/split_pages"
+    SOURCE_DIR = r"/Users/teacher/Downloads/百度网盘下载/水/生成的文件_page_seal_signed.pdf"
     
     # 2. 目标文件夹路径 (请修改)
-    TARGET_DIR = r"/Users/teacher/Desktop/未命名文件夹 2/split_pages2"
+    TARGET_DIR = r"/Users/teacher/Downloads/百度网盘下载/水/生成的文件_page_seal_signed2.pdf"
     
     # 3. 要删除的关键字
     KEYWORD = "Evaluation Warning : The document was created with Spire.PDF for Python." 
     
     # ===========================================
     
-    if not os.path.exists(SOURCE_DIR):
-        print(f"错误：找不到源目录 '{SOURCE_DIR}'，请检查路径。")
-    else:
+    if os.path.isfile(SOURCE_DIR):
+        process_pdf(SOURCE_DIR, TARGET_DIR, KEYWORD)
+    elif os.path.isdir(SOURCE_DIR):
         batch_remove_text(SOURCE_DIR, TARGET_DIR, KEYWORD)
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {SOURCE_DIR}")
