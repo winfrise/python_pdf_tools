@@ -2,22 +2,19 @@ import fitz
 import re
 import os
 
-def change_shapes_to_blue(input_path, output_path, signature_rects=None):
+def change_shapes_to_blue(input_path, output_path):
     """
     将PDF中的黑色/灰色形状变为蓝色。
 
     :param input_path: 输入文件路径
     :param output_path: 输出文件路径
-    :param signature_rects: 需要保留原色的区域列表 (签名位置)
-                            格式: [(x0, y0, x1, y1), ...]
-                            如果不知道坐标，可以先设为 None，运行后查看效果再调整。
     """
     doc = fitz.open(input_path)
 
-    # 定义目标颜色 (R, G, B)，这里是纯蓝
-    TARGET_COLOR_R = 0
+    # 定义目标颜色 (R, G, B)
+    TARGET_COLOR_R = 255
     TARGET_COLOR_G = 0
-    TARGET_COLOR_B = 1
+    TARGET_COLOR_B = 0
 
     # 预编译正则表达式，用于匹配 PDF 中的颜色设置指令
     # 匹配 0 g (灰度黑), 0 G, 0 0 0 rg (RGB黑), 0 0 0 RG 等
@@ -86,32 +83,32 @@ if __name__ == "__main__":
         # 例如: (400, 650, 550, 700)
     ]
 
-    try:
-        is_batch = True
-        if not is_batch:
-            input_file = "/Users/teacher/Downloads/xxx.pdf"  # 替换为你的输入文件路径
-            output_file = "/Users/teacher/Downloads/xxx111.pdf"  # 输出文件名
+    input_path = "/Users/teacher/Desktop/20260714去水印/《公基》《常识》系统课讲义（第二至第四章是敏感课内容讲义）.pdf"
+    output_path = "/Users/teacher/Desktop/20260714去水印/《公基》《常识》系统课讲义（第二至第四章是敏感课内容讲义）_2.pdf"
 
-            change_shapes_to_blue(input_file, output_file, signature_rects=signatures)
-        else:
-            input_folder = "/Users/teacher/Downloads/xxx"
-            output_folder = "/Users/teacher/Downloads/百度网盘下载/xxx（处理完成）"
+    if os.path.isfile(input_path):
+        input_file = input_path
+        output_file = output_path
 
-            for root, dirs, files in os.walk(input_folder):
-                for file in files:
-                    if file.lower().endswith('.pdf'):
-                        input_pdf = os.path.join(root, file)
-                        relative_input_pdf = os.path.relpath(input_pdf, input_folder)
-                        output_pdf = os.path.join(output_folder, relative_input_pdf)
-                        
-                        # 确保输出目录存在
-                        output_pdf_dir = os.path.dirname(output_pdf)
-                        os.makedirs(output_pdf_dir, exist_ok=True)
-                        
-                        print(f"正在处理: {relative_input_pdf}")
-     
-                        change_shapes_to_blue(input_pdf, output_pdf, signature_rects=signatures)
+        change_shapes_to_blue(input_file, output_file)
+    elif os.path.isdir(input_path):
+        input_folder = input_path
+        output_folder = output_path
 
-    except FileNotFoundError:
-        print(f"错误: 找不到文件 '{input_file}'，请确认文件名和路径。")
+        for root, dirs, files in os.walk(input_folder):
+            for file in files:
+                if file.lower().endswith('.pdf'):
+                    input_pdf = os.path.join(root, file)
+                    relative_input_pdf = os.path.relpath(input_pdf, input_folder)
+                    output_pdf = os.path.join(output_folder, relative_input_pdf)
+                    
+                    # 确保输出目录存在
+                    output_pdf_dir = os.path.dirname(output_pdf)
+                    os.makedirs(output_pdf_dir, exist_ok=True)
+                    
+                    print(f"正在处理: {relative_input_pdf}")
+
+                    change_shapes_to_blue(input_pdf, output_pdf)
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")
 
