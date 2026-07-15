@@ -17,7 +17,6 @@ def process_file_with_callback(input_file, output_file, page_range, callback_fun
 
     # 获取页码
     target_pages = parse_page_range(page_range, total_pages)
-    print(target_pages)
 
     # 处理每一页
     for page_index in target_pages:
@@ -43,3 +42,5 @@ def process_file_with_callback(input_file, output_file, page_range, callback_fun
             print(f"保存失败：{e}")
             doc.close()
             return False
+    
+    print(f"🎉 🎉 🎉 🎉 处理完成！🎉 🎉 🎉 ")
