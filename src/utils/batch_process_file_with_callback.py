@@ -1,6 +1,6 @@
 import os
 
-def batch_process_file_with_callback(input_dir, output_dir, callback_func, **kwargs):
+def batch_process_file_with_callback(input_dir, output_dir, page_range, callback_func, **kwargs):
     """
     通用文件批量处理框架
     :param input_dir: 输入文件夹路径
@@ -44,6 +44,7 @@ def batch_process_file_with_callback(input_dir, output_dir, callback_func, **kwa
                     callback_func(
                         input_file, 
                         output_file, 
+                        page_range,
                         **kwargs
                     )
                 except Exception as e:
