@@ -1,32 +1,19 @@
 import fitz  # PyMuPDF
 import os
+from utils import process_file_with_callback, batch_process_file_with_callback
 
-def extract_images(input_file, is_flat_output = False):
-    # 1. 获取 PDF 文件所在的目录路径
-    input_file_dir = os.path.dirname(input_file)
+
+INPUT_FILE = "/Users/teacher/Desktop/1503认证证书/ST-1503A智能按摩梳    IPX7 防水   Q01A25090599L00501.pdf" 
+PAGE_RANGE = "1-1000"
+IS_FLAT_OUTPUT = False
+
+def extract_images(input_file, page_range, is_flat_output=True):
+    output_dir = os.path.splitext(input_file)[0] + "__提取的图片"
     
-    # 2. 拼接出完整的输出文件夹路径
-    base_name = os.path.splitext(os.path.basename(input_file))[0]
-    output_dir = os.path.join(input_file_dir, f"{base_name}_提取的图片")
+    # 自动创建不存在的文件夹
+    os.makedirs(output_dir, exist_ok=True) 
 
-    # 4. 打开PDF文件
-    doc = fitz.open(input_file)
-    img_count = 0  # 用于统计总共提取的图片数量
-
-    print(f"📄 开始处理文件：{input_file}")
-
-    # 5. 遍历PDF的每一页
-    for page_num in range(len(doc)):
-        page = doc[page_num]
-
-        # 1. 确定当前页的输出目录
-        if is_flat_output:
-            current_page_dir = output_dir  # 扁平化：直接用总输出目录
-            os.makedirs(current_page_dir, exist_ok=True)  # 自动创建不存在的文件夹
-        else:
-            # 非扁平化：创建 "page_页码" 子文件夹（页码从1开始）
-            current_page_dir = os.path.join(output_dir, f"page_{page_num + 1}")
-            os.makedirs(current_page_dir, exist_ok=True)  # 自动创建不存在的文件夹
+    def callback_func(page, page_num, doc):
 
         # 获取当前页面的所有图片列表
         image_list = page.get_images(full=True)
@@ -38,27 +25,36 @@ def extract_images(input_file, is_flat_output = False):
             
             # 根据 xref 提取图片的原始数据
             base_image = doc.extract_image(xref)
-            image_bytes = base_image["image"]  # 图片的二进制数据
-            image_ext = base_image["ext"]      # 图片的原始扩展名 (如 jpg, png)
+            image_bytes, image_ext = base_image["image"], base_image["ext"]
             
             # 7. 构造图片保存的文件名
-            img_filename = f"page{page_num + 1}_img{img_index + 1}.{image_ext}"
+            image_filename = f"page{page_num}_img{img_index + 1}.{image_ext}"
+            image_full_path = os.path.join(output_dir, image_filename)
 
-            # 将文件名拼接到输出文件夹路径中
-            img_path = os.path.join(output_dir, img_filename)
-            img_path = os.path.join(current_page_dir, img_filename)
-            
+            # 1. 确定当前页的输出目录
+            if not is_flat_output:
+                # 非扁平化：创建 "page_页码" 子文件夹（页码从1开始）
+                current_page_dir = os.path.join(output_dir, f"page_{page_num}")
+                os.makedirs(current_page_dir, exist_ok=True)  # 自动创建不存在的文件夹
+                image_full_path = os.path.join(current_page_dir, image_filename)
+
+    
             # 8. 将图片写入本地文件
-            with open(img_path, "wb") as img_file:
+            with open(image_full_path, "wb") as img_file:
                 img_file.write(image_bytes)
             
-            img_count += 1
-            print(f"✅ 已保存: {img_filename}")
 
-    doc.close()
-    print("-" * 30)
-    print(f"🎉 提取完成！共从 PDF 中提取了 {img_count} 张图片。")
-    print(f"📂 图片已保存在：{output_dir}")
+            print(f"✅ 已保存: {image_filename}")
+
+    process_file_with_callback(
+        input_file=input_file, 
+        output_file="NOT_SAVE", 
+        page_range=page_range, 
+        callback_func=callback_func,
+    )
+
+# def batch_extract_images(input_dir, output_dir, page_range, is_flat_output):
+
 
 
 def batch_extract_images(input_dir, is_flat_output):
@@ -71,13 +67,14 @@ def batch_extract_images(input_dir, is_flat_output):
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    # 替换成你本地的 PDF 文件路径（可以是相对路径，也可以是绝对路径）
-    input_path = "/Users/teacher/Desktop/未命名文件夹 2/2.5氟碳漆铝单板-金奥维.pdf" 
-    is_flat_output = True
-    
-    if os.path.isfile(input_path):
-        extract_images(input_path, is_flat_output)
-    elif os.path.isdir(input_path):
-        batch_extract_images(input_path, is_flat_output)
+
+    if os.path.isfile(INPUT_FILE):
+        extract_images(
+            input_file = INPUT_FILE, 
+            page_range = PAGE_RANGE, 
+            is_flat_output = IS_FLAT_OUTPUT
+        )
+    elif os.path.isdir(INPUT_FILE):
+        batch_extract_images(INPUT_FILE,PAGE_RANGE, IS_FLAT_OUTPUT)
     else:
-        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {INPUT_FILE}")
