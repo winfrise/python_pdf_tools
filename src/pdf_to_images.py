@@ -1,7 +1,10 @@
 import fitz  # PyMuPDF
 import os
 
-def pdf_to_images(pdf_path, output_folder=None, dpi=72, img_format="jpg"):
+INPUT_FILE = "/Users/teacher/Desktop/1503认证证书/未命名文件夹/ST-1503A  智能按摩梳  质检报告  S01A25090599P00101.pdf" 
+DPI = 300
+
+def pdf_to_images(input_file, output_folder=None, dpi=72, img_format="jpg"):
     """
     将PDF的每一页转换为图片
     :param pdf_path: PDF文件路径
@@ -11,15 +14,15 @@ def pdf_to_images(pdf_path, output_folder=None, dpi=72, img_format="jpg"):
     """
     # 1. 准备输出目录
     if output_folder is None:
-        pdf_dir = os.path.dirname(pdf_path)
+        pdf_dir = os.path.dirname(input_file)
         output_folder = os.path.join(pdf_dir, "output_images")
     
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
     # 2. 打开PDF
-    doc = fitz.open(pdf_path)
-    print(f"📄 开始转换：{os.path.basename(pdf_path)}，共 {len(doc)} 页...")
+    doc = fitz.open(input_file)
+    print(f"📄 开始转换：{os.path.basename(input_file)}，共 {len(doc)} 页...")
 
     # 3. 设置缩放矩阵（控制清晰度）
     # PDF 默认是 72 DPI，我们要转换成目标 DPI，需要计算缩放比例
@@ -46,6 +49,7 @@ def pdf_to_images(pdf_path, output_folder=None, dpi=72, img_format="jpg"):
 
 # --- 使用示例 ---
 if __name__ == "__main__":
-    # 替换为你的PDF路径
-    pdf_file = "/Users/teacher/Desktop/未命名文件夹 3/思凡尼2026图册.pdf" 
-    pdf_to_images(pdf_file, dpi=300)
+    pdf_to_images(
+        input_file = INPUT_FILE, 
+        dpi = DPI
+    )
