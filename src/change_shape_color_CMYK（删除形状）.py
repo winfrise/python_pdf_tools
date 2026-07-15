@@ -44,6 +44,7 @@ def change_shapes_to_blue(input_path, output_path):
     # cmyk_red_fill   = b'0 1 1 0 k '
     # cmyk_red_gray   = b'0 1 1 0 k ' # 灰度模式下没有直接的CMYK指令，通常转为填充指令或黑色K
 
+    # CMYK 白色
     cmyk_red_stroke = b'0 0 0 0 K ' 
     cmyk_red_fill   = b'0 0 0 0 k '
     cmyk_red_gray   = b'0 0 0 0 k ' # 灰度模式下没有直接的CMYK指令，通常转为填充指令或黑色K
