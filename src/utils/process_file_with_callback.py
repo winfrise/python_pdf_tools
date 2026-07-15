@@ -2,17 +2,17 @@ import os
 import fitz
 from utils import parse_page_range
 
-def process_file_with_callback(input_path, output_path, page_range, callback_func, **extra_kwargs):
-    print(f"正在打开文件: {input_path} -> {output_path}")
+def process_file_with_callback(input_file, output_file, page_range, callback_func, **extra_kwargs):
+    print(f"正在打开文件: {input_file} -> {output_file}")
 
     # 检查输入文件是否存在
-    if not os.path.exists(input_path):
-        print(f"错误：输入文件 '{input_path}' 不存在！")
+    if not os.path.exists(input_file):
+        print(f"错误：输入文件 '{input_file}' 不存在！")
         return False
 
 
     # 打开文件
-    doc = fitz.open(input_path)
+    doc = fitz.open(input_file)
     total_pages = len(doc)
 
     # 获取页码
@@ -28,12 +28,12 @@ def process_file_with_callback(input_path, output_path, page_range, callback_fun
 
     # 保存文件
     try:
-        if not output_path:
-            base_name, ext = os.path.splitext(input_path)
-            output_path = f"{base_name}_output{ext}"
+        if not output_file:
+            base_name, ext = os.path.splitext(input_file)
+            output_file = f"{base_name}_output{ext}"
 
         # 2. 保存文件
-        doc.save(output_path)
+        doc.save(output_file)
         doc.close()
 
         return True
