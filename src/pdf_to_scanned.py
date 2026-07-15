@@ -1,16 +1,23 @@
 import os
 import fitz  # PyMuPDF
+from utils import process_file_with_callback, batch_process_file_with_callback
 
-def convert_to_scanned_pdf(input_path, output_path, dpi=300):
+INPUT_FILE = "/Users/teacher/Desktop/1503认证证书/未命名文件夹/ST-1503A  智能按摩梳  质检报告  S01A25090599P00101.pdf" 
+DPI = 300
 
-    print(f"📄 输入文件: {input_path}")
+def convert_to_scanned_pdf(input_file, dpi=300):
+    
+    output_file = input_file.replace(".pdf", "_转图片版.pdf")
+
+    print(f"📄 输入文件: {input_file}")
     print(f"⚙️ 设置分辨率: {dpi} DPI")
     
-    # 打开原始 PDF
-    doc = fitz.open(input_path)
-    
+
     # 创建一个新的空 PDF 用于写入
     new_doc = fitz.open()
+
+    # 打开原始 PDF
+    doc = fitz.open(input_file)
     
     # 2. 计算缩放倍率 (PyMuPDF 基础分辨率为 72 DPI)
     # 例如：300 / 72 ≈ 4.16 倍
@@ -41,20 +48,15 @@ def convert_to_scanned_pdf(input_path, output_path, dpi=300):
         print(f"   ...已处理 {page_num + 1}/{doc.page_count} 页")
 
     # 3. 保存新文件
-    new_doc.save(output_path)
+    new_doc.save(output_file)
     new_doc.close()
     doc.close()
 
-    print(f"✅ 转换完成！文件已保存至: {output_path}")
+    print(f"✅ 转换完成！文件已保存至: {output_file}")
 
 # --- 使用示例 ---
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/未命名文件夹 3/思凡尼2026图册.pdf" 
-    output_path = input_path.replace(".pdf", "_转图片版.pdf")
-    dpi = 300
-
     convert_to_scanned_pdf(
-        input_path = input_path,
-        output_path = output_path,
-        dpi=dpi
+        input_file = INPUT_FILE,
+        dpi = DPI,
     )
