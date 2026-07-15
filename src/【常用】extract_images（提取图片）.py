@@ -3,9 +3,9 @@ import os
 from utils import process_file_with_callback, batch_process_file_with_callback
 
 
-INPUT_FILE = "/Users/teacher/Desktop/1503认证证书/ST-1503A智能按摩梳    IPX7 防水   Q01A25090599L00501.pdf" 
+INPUT_FILE = "/Users/teacher/Desktop/1503认证证书/未命名文件夹" 
 PAGE_RANGE = "1-1000"
-IS_FLAT_OUTPUT = False
+IS_FLAT_OUTPUT = True
 
 def extract_images(input_file, page_range, is_flat_output=True):
     output_dir = os.path.splitext(input_file)[0] + "__提取的图片"
@@ -53,16 +53,22 @@ def extract_images(input_file, page_range, is_flat_output=True):
         callback_func=callback_func,
     )
 
-# def batch_extract_images(input_dir, output_dir, page_range, is_flat_output):
+def batch_extract_images(input_dir, page_range, is_flat_output=True):
+    def callback_func(input_file, output_file):
+        extract_images(
+            input_file=input_file,
+            page_range = page_range,
+            is_flat_output = is_flat_output
+
+        )
+
+    batch_process_file_with_callback(
+        input_dir=input_dir, 
+        output_dir="NOT_SAVE",
+        callback_func=callback_func    
+    )
 
 
-
-def batch_extract_images(input_dir, is_flat_output):
-    for root, dirs, files in os.walk(input_dir):
-        for file in files:
-            if file.lower().endswith('.pdf'):
-                input_file = os.path.join(root, file)
-                extract_images(input_file, is_flat_output)
 
 
 # ================= 使用示例 =================

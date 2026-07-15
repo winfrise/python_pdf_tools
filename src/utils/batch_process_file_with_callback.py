@@ -1,12 +1,11 @@
 import os
 
-def batch_process_file_with_callback(input_dir, output_dir, page_range, callback_func, **kwargs):
+def batch_process_file_with_callback(input_dir, output_dir, callback_func):
     """
     通用文件批量处理框架
     :param input_dir: 输入文件夹路径
     :param file_ext: 需要处理的文件后缀 (例如 '.pdf')
     :param callback_func: 回调函数，定义对每个文件的具体操作
-    :param kwargs: 传递给回调函数的额外参数 (如 is_flat_output)
     """
     # 1. 公共逻辑：校验目录是否存在
     if not os.path.isdir(input_dir):
@@ -44,8 +43,6 @@ def batch_process_file_with_callback(input_dir, output_dir, page_range, callback
                     callback_func(
                         input_file, 
                         output_file, 
-                        page_range,
-                        **kwargs
                     )
                 except Exception as e:
                     print(f"处理文件失败 [{input_file}]: {e}")
