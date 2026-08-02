@@ -84,24 +84,24 @@ def batch_add_shape(input_folder,image_configs, page_range, output_folder):
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Downloads/百度网盘下载/未命名文件夹 2"
-    output_path = "/Users/teacher/Downloads/百度网盘下载/未命名文件夹 3"
+    input_path = "/Users/teacher/Downloads/百度网盘Download/111_mask_output.pdf"
+    output_path = "" # 单文件时为空，批量处理时为输入文件夹
 
-    page_range = "3-1000" # page_range 示例：1,3, 5-9
+    page_range = "5" # page_range 示例：1,3, 5-9
 
     my_images = [
         {
-            "path": "/Users/teacher/Downloads/百度网盘下载/mask.pdf",      # 你的SVG转成的PDF
+            "path": "/Users/teacher/Downloads/百度网盘Download/mask_副本.pdf",      # 你的SVG转成的PDF
             "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
             "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
             "page_index": 0          # 取该PDF的第0页
         },
-        {
-            "path": "/Users/teacher/Downloads/百度网盘下载/mask2.pdf",      # 你的SVG转成的PDF
-            "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
-            "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
-            "page_index": 0          # 取该PDF的第0页
-        },
+        # {
+        #     "path": "/Users/teacher/Downloads/百度网盘下载/mask2.pdf",      # 你的SVG转成的PDF
+        #     "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
+        #     "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
+        #     "page_index": 0          # 取该PDF的第0页
+        # },
         # 可以继续添加更多图片配置...
     ]
 
