@@ -29,10 +29,14 @@ def mask_pdf_areas(input_file, page_range, mask_regions, mask_color=(0, 0, 0)):
     output_pdf = os.path.join(dir_name, f"{name}_mask_output{ext}")
 
     def callback_func(page, page_num, doc):
+        page_width = page.rect.width
+        page_height = page.rect.height
+
        # 遍历当前页需要遮挡的所有区域
         for x, y, width, height in mask_regions:
             # 构建遮挡矩形区域 (x0, y0, x1, y1)
             rect = fitz.Rect(x, y, x + width, y + height)
+        
             
             # 添加红注标记（默认填充为白色）
             page.add_redact_annot(rect, fill=mask_color)
@@ -60,7 +64,7 @@ if __name__ == "__main__":
     # 参数2：撤档的区域列表 (x, y, width, height)
     # 你可以添加多个区域，例如：[(50, 100, 200, 30), (300, 400, 150, 50)]
     regions = [
-        mm_to_pt(0, 234, 210, 11),  # 第1个遮挡区域
+        mm_to_pt(104.9, 239.7, 159.5, 10.5),  # 第1个遮挡区域
         # mm_to_pt(104, 239, 160, 11),  # 第2个遮挡区域
     ]
     
