@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     my_images = [
         {
-            "path": "/Users/teacher/Downloads/百度网盘Download/mask_副本.pdf",      # 你的SVG转成的PDF
+            "path": "/Users/teacher/Downloads/百度网盘Download/mask.pdf",      # 你的SVG转成的PDF
             "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
             "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
             "page_index": 0          # 取该PDF的第0页
