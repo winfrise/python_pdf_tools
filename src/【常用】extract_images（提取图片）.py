@@ -3,8 +3,8 @@ import os
 from utils import process_file_with_callback, batch_process_file_with_callback
 
 
-INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹 4/JN20220153检测报告-最新.pdf" 
-PAGE_RANGE = "1-1000"
+INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹 2/电子版-海南匀莉招贸易有限公司(1).pdf" 
+PAGE_RANGE = "1"
 IS_FLAT_OUTPUT = True
 
 def extract_images(input_file, page_range, is_flat_output=True):
