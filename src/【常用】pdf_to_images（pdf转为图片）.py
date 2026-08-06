@@ -2,14 +2,14 @@ import fitz  # PyMuPDF
 import os
 from utils import process_file_with_callback, batch_process_file_with_callback
 
-INPUT_FILE = "/Users/teacher/Desktop/1503认证证书/未命名文件夹/ST-1503A  智能按摩梳  质检报告  S01A25090599P00101.pdf" 
+INPUT_FILE = "/Users/teacher/Desktop/秋季（去水印）/秋季.pdf" 
 DPI = 300
 PAGE_RANGE = '1-1000'
 IMG_FORMAT = 'jpg'
 
 def pdf_to_images(input_file, page_range, dpi=72, img_format="jpg"):
 
-    output_dir = os.path.splitext(input_file)[0] + "__OUTPUT_IMAGES"
+    output_dir = os.path.splitext(input_file)[0] + "__合成的图片"
     os.makedirs(output_dir, exist_ok=True) 
 
     def callback_func(page, page_num, doc):
