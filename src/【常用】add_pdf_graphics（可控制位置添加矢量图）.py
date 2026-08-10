@@ -34,10 +34,23 @@ def add_vector_graphics(input_path, output_path, page_range, vector_items):
                 vec_page = vec_doc.load_page(vec_page_index)
                 vec_orig_w = vec_page.rect.width
                 vec_orig_h = vec_page.rect.height
-                
-                # 2. 计算实际宽高（如果未指定，则使用原始尺寸）
-                vec_final_w = vec_width if vec_width is not None else vec_orig_w
-                vec_final_h = vec_height if vec_height is not None else vec_orig_h
+
+
+                # 默认比例为 1 (即不缩放)
+                scale_ratio = 1.0 
+
+                if vec_width is not None:
+                    # 如果指定了宽度，计算宽度的缩放比例
+                    scale_ratio = vec_width / vec_orig_w
+                elif vec_height is not None:
+                    # 如果没指定宽度但指定了高度，计算高度的缩放比例
+                    scale_ratio = vec_height / vec_orig_h
+
+                # 3. 根据比例计算最终的宽高
+                # 这样即使只传了一个参数，另一个也会自动按比例变化
+                vec_final_w = vec_orig_w * scale_ratio
+                vec_final_h = vec_orig_h * scale_ratio
+            
                 
                 # 3. 根据 top/left/right/bottom 计算目标矩形 (x0, y0, x1, y1)
                 # 默认从页面左上角 (0,0) 开始
@@ -128,27 +141,28 @@ def batch_add_vector_graphics(input_dir, output_dir, page_range, vector_items):
 
 
 if __name__ == "__main__":
-    input_path = "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/西三期竣工图PDF/63#、64#、65#公建火灾自动报警系统 PDF图纸/138-63#公建地下二层消防平面图(E20-63-01F).pdf"
+    input_path = "/Users/teacher/Desktop/图纸修改/3#浅圆仓、4#提升发放塔、5#提升发放塔_2_建施01_建筑设计说明、建筑设计防火设计专篇、节能设计专篇、防水设计专篇、选用标准图集、工程做法表、门窗表、门窗分格示意图 第2版1481KB-副本.pdf"
     output_path = None
     
     page_range = "1-10000"
 
     vector_items = [
         {
-            "path": "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/test/02.pdf",
+            "path": "//Users/teacher/Desktop/图纸修改/mask.pdf",
             "page_index": 0,
-            "top": 50,      # 距离页面顶部 50pt
-            "left": 50,     # 距离页面左侧 50pt
+            "width": 200,
+            "top": 0,      # 距离页面顶部 50pt
+            "left": 0,     # 距离页面左侧 50pt
             # 宽高不填，自动按照 logo.pdf 原始尺寸插入
         },
-        {
-            "path": "/Volumes/西数4T外置/Pdf修改资料/0523图纸修改(嵌章)/test/02.pdf",
-            "page_index": 0,
-            "width": 200,   # 强制指定宽度为 200pt
-            "height": 150,  # 强制指定高度为 150pt
-            "bottom": 30,   # 距离页面底部 30pt
-            "right": 30     # 距离页面右侧 30pt
-        }
+        # {
+        #     "path": "/Users/teacher/Desktop/图纸修改/mask.pdf",
+        #     "page_index": 0,
+        #     "width": 800,   # 强制指定宽度为 200pt
+        #     # "height": 150,  # 强制指定高度为 150pt
+        #     "bottom": 0,   # 距离页面底部 30pt
+        #     "right": 0     # 距离页面右侧 30pt
+        # }
     ]
 
     if os.path.isfile(input_path):

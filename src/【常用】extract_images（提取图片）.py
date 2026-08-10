@@ -3,7 +3,7 @@ import os
 from utils import process_file_with_callback, batch_process_file_with_callback
 
 
-INPUT_FILE = "/Users/teacher/Desktop/秋季（去水印）/秋季.pdf" 
+INPUT_FILE = "/Users/teacher/Desktop/图纸修改/3#浅圆仓、4#提升发放塔、5#提升发放塔_2_建施01_建筑设计说明、建筑设计防火设计专篇、节能设计专篇、防水设计专篇、选用标准图集、工程做法表、门窗表、门窗分格示意图 第2版1481KB-副本.pdf" 
 PAGE_RANGE = "1-1000"
 IS_FLAT_OUTPUT = True
 
