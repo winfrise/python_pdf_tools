@@ -58,7 +58,7 @@ def remove_pdf_password(input_file, password):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 替换为你实际的文件路径和密码
-    file_path = "/Users/teacher/Desktop/未命名文件夹/KA02000387e01e16c640001 (1).pdf"
-    pwd = "212421"
+    file_path = "/Users/teacher/Desktop/图纸修改/mask_empty.pdf"
+    pwd = ""
     
     remove_pdf_password(file_path, pwd)
