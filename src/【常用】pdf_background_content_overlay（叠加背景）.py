@@ -2,6 +2,9 @@ import fitz  # PyMuPDF
 import os
 import re
 
+
+# 代码不够键合：input_file为多页的时候会有问题
+
 from utils import process_file_with_callback, batch_process_file_with_callback
 
 def background_overlay(input_file, background_config, page_range, output_file = None):
