@@ -3,7 +3,7 @@ import os
 from utils import process_file_with_callback, batch_process_file_with_callback
 
 
-INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹/奥想家防盗4级24(1).pdf" 
+INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹 2/外委单位安全资质审查报告.pdf" 
 PAGE_RANGE = "1-1000"
 IS_FLAT_OUTPUT = True
 
