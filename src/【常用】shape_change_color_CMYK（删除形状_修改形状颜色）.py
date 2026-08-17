@@ -3,6 +3,8 @@ import re
 import os
 from utils import process_file_with_callback, batch_process_file_with_callback
 
+# 使用场景：批量删除形状水印
+
 
 INPUT_PATH = "/Users/teacher/Desktop/test_output"
 OUTPUT_PATH = ""
