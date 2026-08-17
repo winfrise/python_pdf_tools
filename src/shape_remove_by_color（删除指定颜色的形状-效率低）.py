@@ -1,14 +1,14 @@
 import fitz
 import os
 
-def clean_pdf_by_pixel_color(input_path, output_path):
+def clean_pdf_by_pixel_color(input_path, output_path, target_color):
     """
     通过像素扫描方式删除指定颜色的背景/形状
     原理：将页面渲染为图像 -> 找到目标颜色区域 -> 在原PDF上覆盖白色方块
     """
     # 1. 设定目标颜色 (RGB 0-255 整数格式，方便理解)
     # 对应之前的 (0.95, 0.95, 0.95) * 255 ≈ 242
-    TARGET_R, TARGET_G, TARGET_B = 242, 242, 242 
+    TARGET_R, TARGET_G, TARGET_B = target_color
     
     # 容差范围 (防止 241 或 243 漏网)
     TOLERANCE = 5 
@@ -94,10 +94,11 @@ def clean_pdf_by_pixel_color(input_path, output_path):
 
 # 使用示例
 # 请将路径替换为你实际的文件路径
-input_file = "/Users/teacher/Desktop/未命名文件夹 2/提取自2026胡源 高二数学精讲精练.pdf"
+input_file = "/Users/teacher/Desktop/未命名文件夹 2/2026胡源 高二数学精讲精练.pdf"
 output_file = "/Users/teacher/Desktop/未命名文件夹 2/2026胡源_清理后.pdf"
+target_color = (241, 242, 242)
 
 if os.path.exists(input_file):
-    clean_pdf_by_pixel_color(input_file, output_file)
+    clean_pdf_by_pixel_color(input_file, output_file, target_color)
 else:
     print("找不到文件，请检查路径")
