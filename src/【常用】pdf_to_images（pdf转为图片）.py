@@ -2,7 +2,7 @@ import fitz  # PyMuPDF
 import os
 from utils import process_file_with_callback, batch_process_file_with_callback
 
-INPUT_FILE = "/Users/teacher/Desktop/秋季（去水印）/秋季.pdf" 
+INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹 2/2026胡源 高二数学精讲精练·配套习题(1).pdf" 
 DPI = 300
 PAGE_RANGE = '1-1000'
 IMG_FORMAT = 'jpg'
