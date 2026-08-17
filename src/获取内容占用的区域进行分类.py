@@ -144,6 +144,6 @@ if __name__ == "__main__":
         (171, 104)
     ] 
     
-    pdf_file = "/Users/teacher/Desktop/区域/Sevenbest Пена проф 45  D203.pdf"
+    pdf_file = "/Users/teacher/Desktop/区域/Sevenbest Пена-мини  300мл D208.pdf"
     
     classify_pdf_pages(pdf_file, target_dims, tolerance=5.0)
