@@ -48,7 +48,7 @@ def extract_pdf_shapes_to_svg(input_file):
         doc.close()
 
 # --- 使用示例 ---
-input_file = "/Users/teacher/Downloads/百度网盘Download/WDFCGBF32172406.pdf"
+input_file = "/Users/teacher/Desktop/排版/（已压缩）海连内部图册2025.9.2（原）_297X840.pdf"
 extract_pdf_shapes_to_svg(
     input_file = input_file
 )
