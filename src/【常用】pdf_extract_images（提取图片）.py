@@ -1,13 +1,16 @@
 import fitz  # PyMuPDF
 import os
 from utils import process_file_with_callback, batch_process_file_with_callback
+from PIL import Image
+import io
 
 
-INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹 2/外委单位安全资质审查报告.pdf" 
+INPUT_FILE = "/Users/teacher/Desktop/试卷改时间/小升初真题（英语）_20260820_104927.pdf" 
 PAGE_RANGE = "1-1000"
 IS_FLAT_OUTPUT = True
+ROTATION_ANGLE = 90
 
-def extract_images(input_file, page_range, is_flat_output=True):
+def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0):
     output_dir = os.path.splitext(input_file)[0] + "__提取的图片"
     
     # 自动创建不存在的文件夹
@@ -38,6 +41,24 @@ def extract_images(input_file, page_range, is_flat_output=True):
                 os.makedirs(current_page_dir, exist_ok=True)  # 自动创建不存在的文件夹
                 image_full_path = os.path.join(current_page_dir, image_filename)
 
+
+            if rotation_angle != 0:
+                # 将图片字节数据加载到内存中
+                image_stream = io.BytesIO(image_bytes)
+                # 使用 Pillow 打开图片
+                try:
+                    pil_image = Image.open(image_stream)
+                    # 旋转图片。expand=True 会自动调整画布大小以容纳整个旋转后的图片
+                    rotated_image = pil_image.rotate(rotation_angle, expand=True)
+                    
+                    # 将旋转后的图片保存到另一个内存流中
+                    output_stream = io.BytesIO()
+                    rotated_image.save(output_stream, format='PNG')
+                    # 获取旋转后的图片字节数据
+                    image_bytes = output_stream.getvalue()
+                except Exception as e:
+                    print(f"❌ Pillow 处理图片失败: {e}")
+                    # 如果 Pillow 处理失败，则使用原始未旋转的图片
     
             # 8. 将图片写入本地文件
             with open(image_full_path, "wb") as img_file:
@@ -53,12 +74,13 @@ def extract_images(input_file, page_range, is_flat_output=True):
         callback_func=callback_func,
     )
 
-def batch_extract_images(input_dir, page_range, is_flat_output=True):
+def batch_extract_images(input_dir, page_range):
     def callback_func(input_file, output_file):
         extract_images(
             input_file=input_file,
             page_range = page_range,
-            is_flat_output = is_flat_output
+            is_flat_output = IS_FLAT_OUTPUT,
+            rotation_angle = ROTATION_ANGLE,
 
         )
 
@@ -78,6 +100,7 @@ if __name__ == "__main__":
         extract_images(
             input_file = INPUT_FILE, 
             page_range = PAGE_RANGE, 
+            rotation_angle = ROTATION_ANGLE,
             is_flat_output = IS_FLAT_OUTPUT
         )
     elif os.path.isdir(INPUT_FILE):
