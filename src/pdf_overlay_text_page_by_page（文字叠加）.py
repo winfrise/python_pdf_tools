@@ -1,7 +1,7 @@
 import fitz  # PyMuPDF
 import os
 
-def merge_pdfs(base_path, overlay_path, output_path):
+def merge_pdfs(base_path, overlay_path, output_path, offset_x=0, offset_y=0):
     """
     将 overlay_path 的内容叠加到 base_path 的对应页面上
     :param base_path: 底层 PDF 路径 (被覆盖的)
@@ -30,7 +30,22 @@ def merge_pdfs(base_path, overlay_path, output_path):
         # 获取底层页面
         base_page = base_doc[page_num]
         
-        base_page.show_pdf_page(base_page.rect, overlay_doc, page_num)
+        page_rect = base_page.rect
+        
+        # 2. 创建一个新的矩形，应用偏移量
+        # fitz.Rect(left, top, right, bottom)
+        # 正数 offset_x 会让 left/right 变大（向右移）
+        # 正数 offset_y 会让 top/bottom 变大（向下移）
+        dest_rect = fitz.Rect(
+            page_rect.x0 + offset_x, 
+            page_rect.y0 + offset_y, 
+            page_rect.x1 + offset_x, 
+            page_rect.y1 + offset_y
+        )
+        
+        # 3. 将覆盖层页面绘制到这个偏移后的矩形区域中
+        # 注意：如果偏移量过大导致 dest_rect 超出页面范围，内容可能会被裁剪
+        base_page.show_pdf_page(dest_rect, overlay_doc, page_num)
 
     # 保存结果
     base_doc.save(output_path, garbage=4, clean=True, deflate=True )
@@ -46,10 +61,14 @@ if __name__ == "__main__":
     base_path = "/Users/teacher/Desktop/未命名文件夹/01/1.pdf"      # 底层文件
     overlay_path = "/Users/teacher/Desktop/未命名文件夹/01/overlay.pdf" # 要叠上去的文件
     output_path = None  # 输出文件
+    offset_x = 0 # 单位为pt，1 厘米 (cm) ≈ 28.35 pt
+    offset_y = 0
 
     # 执行合并
     merge_pdfs(
         base_path = base_path, 
         overlay_path = overlay_path,
-        output_path = output_path
+        output_path = output_path,
+        offset_x = offset_x,
+        offset_y = offset_y,
     )
