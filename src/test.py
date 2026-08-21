@@ -27,13 +27,10 @@ def merge_pdfs(base_path, overlay_path, output_path):
         # 获取底层页面
         base_page = base_doc[page_num]
         
-        # 核心操作：将 overlay_doc 的第 page_num 页内容渲染到 base_page 上
-        # rect=base_page.rect 表示铺满整个页面
-        # opacity=1.0 表示不透明，如果需要半透明水印可改为 0.5 等
         base_page.show_pdf_page(base_page.rect, overlay_doc, page_num)
 
     # 保存结果
-    base_doc.save(output_path)
+    base_doc.save(output_path, garbage=4, clean=True, deflate=True )
     base_doc.close()
     overlay_doc.close()
     print(f"成功！已保存至：{output_path}")
