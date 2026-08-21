@@ -86,7 +86,7 @@ def recreate_pdf_with_text(input_pdf, output_pdf = None, local_font_path = None)
                         # )
 
     # 6. 保存新 PDF
-    new_doc.save(output_pdf)
+    new_doc.save(output_pdf, garbage=4, deflate=True, clean=True)
     doc.close()
     new_doc.close()
     print(f"PDF 重新创建成功，已保存至: {output_pdf}")
