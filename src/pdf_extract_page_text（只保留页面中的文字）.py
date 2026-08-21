@@ -1,6 +1,7 @@
 import fitz  # PyMuPDF
+import sys 
 
-def recreate_pdf_with_text(input_pdf, output_pdf = None):
+def recreate_pdf_with_text(input_pdf, output_pdf = None, local_font_path = None):
     if not output_pdf:
         output_pdf = input_pdf.replace('.pdf', '_output_text.pdf')
     # 1. 打开原始 PDF
@@ -45,6 +46,7 @@ def recreate_pdf_with_text(input_pdf, output_pdf = None):
                     
                     # 尝试使用原字体，如果系统中没有则回退到默认字体
                     try:
+                        print(f'font_name:{font_name}')
                         # 注册并使用原始字体
                         new_page.insert_font(fontname=font_name)
                         new_page.insert_text(
@@ -54,15 +56,34 @@ def recreate_pdf_with_text(input_pdf, output_pdf = None):
                             fontsize=font_size,
                             color=(r, g, b)
                         )
-                    except Exception:
+                    except Exception as e:
+                        if local_font_path:
+                            print("使用本地字体")
+                            # 如果传入了本地字体，使用自定义的 fontname 注册并插入
+                            custom_font_name = 'custom_font_song'
+                            new_page.insert_font(fontname=custom_font_name, fontfile=local_font_path)
+                            new_page.insert_text(
+                                insert_point,
+                                text,
+                                fontname=custom_font_name,
+                                fontsize=font_size,
+                                color=(r, g, b)
+                            )
+                        else:
+                            # 1. 打印自定义提示
+                            print(f"严重错误：字体处理失败 ({font_name})，程序即将停止。")
+
+                            
+
+                            sys.exit(1) 
                         # 字体缺失时的降级处理
-                        new_page.insert_text(
-                            insert_point,
-                            text,
-                            fontname="helv",
-                            fontsize=font_size,
-                            color=(r, g, b)
-                        )
+                        # new_page.insert_text(
+                        #     insert_point,
+                        #     text,
+                        #     fontname="helv",
+                        #     fontsize=font_size,
+                        #     color=(r, g, b)
+                        # )
 
     # 6. 保存新 PDF
     new_doc.save(output_pdf)
@@ -73,6 +94,8 @@ def recreate_pdf_with_text(input_pdf, output_pdf = None):
 # 使用示例
 if __name__ == "__main__":
     input_pdf = "/Users/teacher/Desktop/未命名文件夹/01/1.pdf"
+    local_font_path = "/Users/teacher/Library/Fonts/simsun_0.ttc"
     recreate_pdf_with_text(
         input_pdf,
+        local_font_path=local_font_path
     )
