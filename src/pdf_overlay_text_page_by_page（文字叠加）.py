@@ -13,6 +13,9 @@ def merge_pdfs(base_path, overlay_path, output_path):
         print("错误：找不到输入的 PDF 文件，请检查路径。")
         return
 
+    if not output_path:
+        output_path = base_path.replace('.pdf', '_output_text_overlay.pdf')
+
     # 打开文档
     base_doc = fitz.open(base_path)
     overlay_doc = fitz.open(overlay_path)
@@ -40,9 +43,13 @@ if __name__ == "__main__":
     # 请在这里修改你的实际文件路径
     # 注意：为了避免报错，函数名叫 merge_pdfs，不要和变量名搞混
     
-    file_base = "/Users/teacher/Desktop/未命名文件夹/02/2.pdf"      # 底层文件
-    file_overlay = "/Users/teacher/Desktop/未命名文件夹/01/1_output_text.pdf" # 要叠上去的文件
-    file_output = "/Users/teacher/Desktop/未命名文件夹/02/2_merged.pdf"  # 输出文件
+    base_path = "/Users/teacher/Desktop/未命名文件夹/01/1.pdf"      # 底层文件
+    overlay_path = "/Users/teacher/Desktop/未命名文件夹/01/overlay.pdf" # 要叠上去的文件
+    output_path = None  # 输出文件
 
     # 执行合并
-    merge_pdfs(file_base, file_overlay, file_output)
+    merge_pdfs(
+        base_path = base_path, 
+        overlay_path = overlay_path,
+        output_path = output_path
+    )
