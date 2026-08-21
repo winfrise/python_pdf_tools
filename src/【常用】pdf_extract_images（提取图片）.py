@@ -5,10 +5,10 @@ from PIL import Image
 import io
 
 
-INPUT_FILE = "/Users/teacher/Desktop/试卷改时间/小升初真题（英语）_20260820_104927.pdf" 
+INPUT_FILE = "/Users/teacher/Desktop/印象沙雅/印象沙雅酒店高程平面图.pdf" 
 PAGE_RANGE = "1-1000"
 IS_FLAT_OUTPUT = True
-ROTATION_ANGLE = 90 # 正数：逆时针旋转，负数：顺时针旋转
+ROTATION_ANGLE = 0 # 正数：逆时针旋转，负数：顺时针旋转
 
 def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0):
     output_dir = os.path.splitext(input_file)[0] + "__提取的图片"
