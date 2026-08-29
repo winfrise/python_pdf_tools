@@ -93,14 +93,14 @@ def batch_add_shape(input_folder,image_configs, page_range, output_folder):
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/页眉页脚/二道2026.1九上期末语文b.pdf"
+    input_path = "/Users/teacher/Desktop/卫浴画册150元/浴室柜图册.pdf"
     output_path = "" # 单文件时为空，批量处理时为输入文件夹
 
-    page_range = "1-1000" # page_range 示例：1,3, 5-9
+    page_range = "2-1000" # page_range 示例：1,3, 5-9
 
     my_images = [
         {
-            "path": "/Users/teacher/Desktop/页眉页脚/mask3.pdf",      # 你的SVG转成的PDF
+            "path": "/Users/teacher/Desktop/卫浴画册150元/mask.pdf",      # 你的SVG转成的PDF
             "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
             "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
             "page_index": 0,          # 取该PDF的第0页

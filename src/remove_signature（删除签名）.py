@@ -188,7 +188,7 @@ def remove_annot_signatures_by_index(doc):
                         break
 
 
-def remove_signatures(input_path, output_path):
+def remove_signatures(input_path, output_path = None):
     doc = fitz.open(input_path)        
 
     # 删除【注释类型】的签名
@@ -200,18 +200,20 @@ def remove_signatures(input_path, output_path):
     # 删除数字签名
     remove_digital_signatures(doc)
 
+    if not output_path:
+        output_path = input_file.replace('.pdf', '_output_remove_sign.pdf')
+
     # 保存文档，garbage=4 会进行最高级别的垃圾回收，彻底清除未引用的签名数据
     doc.save(output_path, garbage=4, deflate=True)
     doc.close()
 
 if __name__ == "__main__":
     # 使用示例
-    input_file = "/Users/teacher/Downloads/百度网盘下载/水/支付宝交易明细(20260101-20260612).pdf"
-    output_file = "/Users/teacher/Downloads/百度网盘下载/水/支付宝交易明细(20260101-20260612)333.pdf"
+    input_file = "/Users/teacher/Desktop/去签名/二风场升压站地勘报告（签章）-副本.pdf"
 
     is_check = True
     if is_check:
         # 检查签名类型
         check_signature_type(input_file)
 
-    remove_signatures(input_file, output_file)
+    remove_signatures(input_file)
