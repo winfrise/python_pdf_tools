@@ -5,8 +5,8 @@ from PIL import Image
 import io
 
 
-INPUT_FILE = "/Users/teacher/Desktop/卫浴画册/星龙（樱亮）卫浴 图册.pdf" 
-PAGE_RANGE = "1-7"
+INPUT_FILE = "/Users/teacher/Desktop/20260830/改公司名称100元/11.pdf" 
+PAGE_RANGE = "1-1000"
 IS_FLAT_OUTPUT = True
 ROTATION_ANGLE = 0 # 正数：逆时针旋转，负数：顺时针旋转
 
