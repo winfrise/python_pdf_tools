@@ -29,7 +29,7 @@ def analyze_images(pdf_path, output_path=None, show_xref_info = False):
             w, h = img_info['width'], img_info['height']
             ratio = round(w / h, 2)  # 宽高比保留两位小数
 
-            size_count[(w, h, xref)] += 1
+            size_count[(w, h)] += 1
             size_xref_count[(w, h, xref)] += 1
 
             image_details.append({
@@ -67,7 +67,7 @@ def analyze_images(pdf_path, output_path=None, show_xref_info = False):
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
     pdf_file = "/Users/teacher/Desktop/pdf_command/pdf解密/output/沪教5上语法讲义与练习题（8.12）_已解密.pdf"
-    show_xref_info = True
+    show_xref_info = False
 
     analyze_images(
         pdf_path = pdf_file, 
