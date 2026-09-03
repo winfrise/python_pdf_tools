@@ -49,5 +49,5 @@ def analyze_images(pdf_path, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Downloads/百度网盘Download/未命名文件夹 2/1-1.pdf"
+    pdf_file = "/Users/teacher/Desktop/去水印0903/001_output_去水印/6上语法+习题/Unit3语法  .pdf"
     analyze_images(pdf_file)

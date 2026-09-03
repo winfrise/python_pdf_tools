@@ -1,6 +1,7 @@
 import fitz  # PyMuPDF
 import os
 from collections import defaultdict
+from utils import batch_process_file_with_callback
 
 def remove_pdf_images(pdf_path, target_sizes, output_path=None):
     if output_path is None:
@@ -82,12 +83,29 @@ def remove_pdf_images(pdf_path, target_sizes, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Desktop/pdf_command/pdf解密/output/沪教5上语法讲义与练习题（8.12）_已解密.pdf"
+    pdf_file = "/Users/teacher/Desktop/去水印0903/002"
     
     # target_sizes 改为数组，可以同时指定多个尺寸
-    target_sizes = ["1276x756", "461x154"]
-    
-    remove_pdf_images(
-        pdf_path=pdf_file, 
-        target_sizes=target_sizes
-    )
+    target_sizes = ["1276x756", "1277x757"]
+
+    if os.path.isfile(pdf_file):
+        remove_pdf_images(
+            pdf_path=pdf_file, 
+            target_sizes=target_sizes
+        )
+    elif os.path.isdir(pdf_file):
+        def callback_func(input_file, output_file):
+            remove_pdf_images(
+                pdf_path=input_file, 
+                output_path = output_file,
+                target_sizes=target_sizes
+            )
+        input_dir = pdf_file
+        output_dir = f"{input_dir}_output_去水印"
+        batch_process_file_with_callback(
+            input_dir=input_dir, 
+            output_dir=output_dir,
+            callback_func=callback_func    
+        )
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {pdf_file}")
