@@ -73,5 +73,5 @@ def analyze_and_remove_pdf_images(pdf_path, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Desktop/页眉页脚/2025-2026九上文件夹_output/PDF合并/PDF合并_183-244_processed_processed.pdf"
+    pdf_file = "/Users/teacher/Desktop/pdf_command/pdf解密/output/沪教5上语法讲义与练习题（8.12）_已解密.pdf"
     analyze_and_remove_pdf_images(pdf_file)

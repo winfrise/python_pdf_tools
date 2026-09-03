@@ -5,7 +5,7 @@ from PIL import Image
 import io
 
 
-INPUT_FILE = "/Users/teacher/Desktop/20260830/改公司名称100元/11.pdf" 
+INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹/沪教5上语法讲义与练习题（8.12）.pdf" 
 PAGE_RANGE = "1-1000"
 IS_FLAT_OUTPUT = True
 ROTATION_ANGLE = 0 # 正数：逆时针旋转，负数：顺时针旋转

@@ -2,7 +2,7 @@ import fitz  # PyMuPDF
 import os
 from collections import defaultdict
 
-def analyze_images(pdf_path, output_path=None):
+def analyze_images(pdf_path, output_path=None, show_xref_info = False):
     if output_path is None:
         pdf_dir = os.path.dirname(pdf_path)
         pdf_name = os.path.basename(pdf_path).replace('.pdf', '')
@@ -52,18 +52,24 @@ def analyze_images(pdf_path, output_path=None):
         field3 = f"共 {count} 张"                            # 字段3：数量
         print(f" {field1:<15} {field2:<10} {field3:<10}")
 
-    print("\n--- 📏 尺寸(宽x高)相同 且 xref(唯一标识)相同 统计 ---")
-    for size, count in sorted(size_xref_count.items(), key=lambda x: x[1], reverse=True):
-        # 构造每个字段并指定宽度
-        field1 = f"size:{size[0]}x{size[1]}:"  # 字段1：尺寸+标识
-        field4 = f"xref:{size[2]}"
-        field2 = f"{size[0]}x{size[1]}"                      # 字段2：尺寸
-        field3 = f"共 {count} 张"                            # 字段3：数量
-        
-        # 用 :宽度 强制每个字段占满对应宽度，实现竖列对齐
-        print(f" {field1:<15} {field4:<10} {field2:<10} {field3:<10}")
+    if show_xref_info:
+        print("\n--- 📏 尺寸(宽x高)相同 且 xref(唯一标识)相同 统计 ---")
+        for size, count in sorted(size_xref_count.items(), key=lambda x: x[1], reverse=True):
+            # 构造每个字段并指定宽度
+            field1 = f"size:{size[0]}x{size[1]}:"  # 字段1：尺寸+标识
+            field4 = f"xref:{size[2]}"
+            field2 = f"{size[0]}x{size[1]}"                      # 字段2：尺寸
+            field3 = f"共 {count} 张"                            # 字段3：数量
+            
+            # 用 :宽度 强制每个字段占满对应宽度，实现竖列对齐
+            print(f" {field1:<15} {field4:<10} {field2:<10} {field3:<10}")
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Downloads/百度网盘Download/未命名文件夹 2/1-1.pdf"
-    analyze_images(pdf_file)
+    pdf_file = "/Users/teacher/Desktop/pdf_command/pdf解密/output/沪教5上语法讲义与练习题（8.12）_已解密.pdf"
+    show_xref_info = True
+
+    analyze_images(
+        pdf_path = pdf_file, 
+        show_xref_info = show_xref_info
+    )
