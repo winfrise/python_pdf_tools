@@ -1,11 +1,22 @@
 import fitz  # PyMuPDF
 import os
+
+import sys
+import os
+
+# 获取当前脚本所在目录
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 计算父级目录（假设utils在src目录下，即当前目录的上一级）
+parent_dir = os.path.dirname(current_dir)
+# 将父级目录加入模块搜索路径
+sys.path.append(parent_dir)
+
 from utils import process_file_with_callback, batch_process_file_with_callback
 from PIL import Image
 import io
 
 
-INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹/沪教5上语法讲义与练习题（8.12）.pdf" 
+INPUT_FILE = "/Users/teacher/Desktop/不/赵贺新少儿硬笔书法基础训练-部首三练习册-41.pdf" 
 PAGE_RANGE = "1-1000"
 IS_FLAT_OUTPUT = True
 ROTATION_ANGLE = 0 # 正数：逆时针旋转，负数：顺时针旋转
