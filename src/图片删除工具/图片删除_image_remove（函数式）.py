@@ -1,7 +1,18 @@
 import fitz  # PyMuPDF
 import os
 from collections import defaultdict
+
+import sys
+
+# 获取当前脚本所在目录
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 计算父级目录（假设utils在src目录下，即当前目录的上一级）
+parent_dir = os.path.dirname(current_dir)
+# 将父级目录加入模块搜索路径
+sys.path.append(parent_dir)
 from utils import batch_process_file_with_callback
+
+
 
 def remove_pdf_images(pdf_path, target_sizes, output_path=None):
     if output_path is None:
@@ -83,7 +94,7 @@ def remove_pdf_images(pdf_path, target_sizes, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Desktop/去水印0903/002"
+    pdf_file = "/Users/teacher/Desktop/英语去水印0903/002"
     
     # target_sizes 改为数组，可以同时指定多个尺寸
     target_sizes = ["1276x756", "1277x757"]
