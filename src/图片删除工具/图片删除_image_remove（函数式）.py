@@ -36,8 +36,18 @@ def remove_pdf_images(pdf_path, target_sizes, output_path=None):
         for img in image_list:
             xref = img[0]
             # 提取图片的原始像素尺寸
-            img_info = doc.extract_image(xref)
-            w, h = img_info['width'], img_info['height']
+            try:
+                img_info = doc.extract_image(xref)
+            except Exception as e:
+                print(f"警告: 无法提取页面 {page_num} 中 xref={xref} 的图片: {e}")
+                continue
+
+            try:
+                w, h = map(int, ts.split('x'))
+            except (ValueError, AttributeError) as e:
+                print(f"警告: 无效的尺寸格式 '{ts}'，应为 '宽x高' 格式")
+                continue
+            
             ratio = round(w / h, 2)  # 宽高比保留两位小数
             
             size_count[(w, h)] += 1
@@ -94,10 +104,10 @@ def remove_pdf_images(pdf_path, target_sizes, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Desktop/英语去水印0903/002"
+    pdf_file = "/Users/teacher/Desktop/未命名文件夹 2/PDF合并.pdf"
     
     # target_sizes 改为数组，可以同时指定多个尺寸
-    target_sizes = ["1276x756", "1277x757"]
+    target_sizes = ["1002x263"]
 
     if os.path.isfile(pdf_file):
         remove_pdf_images(
