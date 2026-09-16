@@ -1,15 +1,13 @@
 import fitz  # PyMuPDF
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils import process_file_with_callback, batch_process_file_with_callback
-
-INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹 2/2026胡源 高二数学精讲精练·配套习题(1).pdf" 
-DPI = 300
-PAGE_RANGE = '1-1000'
-IMG_FORMAT = 'jpg'
 
 def pdf_to_images(input_file, page_range, dpi=72, img_format="jpg"):
 
-    output_dir = os.path.splitext(input_file)[0] + "__合成的图片"
+    base_name, ext = os.path.splitext(input_file)
+    output_dir = f"{base_name}__合成的图片_DPI_{dpi}"
     os.makedirs(output_dir, exist_ok=True) 
 
     def callback_func(page, page_num, doc):
@@ -38,6 +36,12 @@ def pdf_to_images(input_file, page_range, dpi=72, img_format="jpg"):
 
 # --- 使用示例 ---
 if __name__ == "__main__":
+
+    INPUT_FILE = "/Users/teacher/Desktop/变清晰/民法学冲刺必背题.pdf" 
+    DPI = 300
+    PAGE_RANGE = '1-1000'
+    IMG_FORMAT = 'jpg'
+
     pdf_to_images(
         input_file = INPUT_FILE,
         dpi = DPI,
