@@ -6,7 +6,7 @@ from utils import process_file_with_callback, batch_process_file_with_callback
 
 def add_shape_to_pdf(input_file, output_file, image_configs, page_range):
     if not output_file:
-        output_file = input_file.replace(".pdf", "_output_add_shape.pdf")
+        output_file = input_file.replace(".pdf", "_output_遮挡.pdf")
 
     def callback_func(page, page_num, doc):
         # 遍历配置列表，在同一页添加多张图片
@@ -55,7 +55,12 @@ def add_shape_to_pdf(input_file, output_file, image_configs, page_range):
 
                 # 4. 执行嵌入 (传入 img_doc 对象，而不是路径字符串)
                 # 注意：show_pdf_page 的参数顺序是 (rect, pdf_document, page_number)
-                page.show_pdf_page(target_rect, img_doc, src_page_index, rotate=rotate, overlay=True)
+                page.show_pdf_page(
+                    target_rect, img_doc, src_page_index, 
+                    keep_proportion=True,
+                    rotate=rotate, 
+                    overlay=True
+                )
                 
                 # 5. 关闭图片PDF对象以释放内存
                 img_doc.close()
@@ -93,14 +98,14 @@ def batch_add_shape(input_folder,image_configs, page_range, output_folder):
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/卫浴画册150元/浴室柜图册.pdf"
+    input_path = "/Users/teacher/Downloads/百度网盘Download/Desktop-1/3.6万亩路径图---塔木托拉克镇(1).pdf"
     output_path = "" # 单文件时为空，批量处理时为输入文件夹
 
-    page_range = "2-1000" # page_range 示例：1,3, 5-9
+    page_range = "1-1000" # page_range 示例：1,3, 5-9
 
     my_images = [
         {
-            "path": "/Users/teacher/Desktop/卫浴画册150元/mask.pdf",      # 你的SVG转成的PDF
+            "path": "/Users/teacher/Downloads/百度网盘Download/Desktop-1/mask36.pdf",      # 你的SVG转成的PDF
             "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
             "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
             "page_index": 0,          # 取该PDF的第0页

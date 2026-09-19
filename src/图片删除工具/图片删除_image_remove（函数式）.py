@@ -43,7 +43,8 @@ def remove_pdf_images(pdf_path, target_sizes, output_path=None):
                 continue
 
             try:
-                w, h = map(int, ts.split('x'))
+                w = img_info['width']
+                h = img_info['height']
             except (ValueError, AttributeError) as e:
                 print(f"警告: 无效的尺寸格式 '{ts}'，应为 '宽x高' 格式")
                 continue
@@ -104,10 +105,10 @@ def remove_pdf_images(pdf_path, target_sizes, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Desktop/未命名文件夹 2/PDF合并.pdf"
+    pdf_file = "/Users/teacher/Desktop/去水印/必考单词漫画版_已解密.pdf"
     
     # target_sizes 改为数组，可以同时指定多个尺寸
-    target_sizes = ["1002x263"]
+    target_sizes = ["472x472", "316x222"]
 
     if os.path.isfile(pdf_file):
         remove_pdf_images(
