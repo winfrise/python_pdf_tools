@@ -1,7 +1,15 @@
 import fitz
 import re
+from tools.find_img_by_size import find_img_by_size
 
-def remove_images_by_names(pdf_path, output_path, image_names):
+def remove_images_by_names(pdf_path, output_path, target_sizes):
+
+    target_img_list = find_img_by_size(
+        input_pdf = pdf_path,
+        target_sizes = target_sizes,
+    )
+
+
     """
     根据图片名称列表，彻底删除PDF中的图片及其绘制指令
     
@@ -13,7 +21,7 @@ def remove_images_by_names(pdf_path, output_path, image_names):
     
     # 1. 预处理名称：PDF内容流中对象名通常带斜杠，如 /Im1
     # 使用正则转义防止特殊字符干扰，并加上 / 前缀
-    target_refs = [f"/{re.escape(name)}" for name in image_names]
+    target_refs = [f"/{re.escape(img_item['name'])}" for img_item in target_img_list]
     
     print(f"正在处理，目标图片标记: {target_refs}")
 
@@ -100,9 +108,14 @@ def remove_images_by_names(pdf_path, output_path, image_names):
 # ================= 使用示例 =================
 if __name__ == "__main__":
     # 你的图片名称列表
-    my_image_list = ["Im1", "Im2", "Logo_Image"] 
+
+    target_sizes = ["1791x645"]
     
-    input_pdf = "input.pdf"
+    input_pdf = "/Users/teacher/Desktop/20260920去水印2/11.pdf"
     output_pdf = "output_cleaned.pdf"
     
-    remove_images_by_names(input_pdf, output_pdf, my_image_list)
+    remove_images_by_names(
+        input_pdf, 
+        output_pdf, 
+        target_sizes = target_sizes
+    )
