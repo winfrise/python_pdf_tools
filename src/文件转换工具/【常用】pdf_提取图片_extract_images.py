@@ -10,16 +10,8 @@ from utils import process_file_with_callback, batch_process_file_with_callback
 from PIL import Image
 import io
 
-
-INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/未命名文件夹/信息技术章节练.pdf" 
-PAGE_RANGE = "1-1000"
-IS_FLAT_OUTPUT = True
-ROTATION_ANGLE = 0 # 正数：逆时针旋转，负数：顺时针旋转
-TARGET_IMG_INDEX = 0
-
 def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0, target_img_index = -1):
     output_dir = os.path.splitext(input_file)[0] + "__提取的图片"
-    
     # 自动创建不存在的文件夹
     os.makedirs(output_dir, exist_ok=True) 
 
@@ -81,28 +73,15 @@ def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0
         callback_func=callback_func,
     )
 
-def batch_extract_images(input_dir, page_range):
-    def callback_func(input_file, output_file):
-        extract_images(
-            input_file=input_file,
-            page_range = page_range,
-            is_flat_output = IS_FLAT_OUTPUT,
-            rotation_angle = ROTATION_ANGLE,
-            target_img_index=TARGET_IMG_INDEX,
-        )
-
-    batch_process_file_with_callback(
-        input_dir=input_dir, 
-        output_dir="NOT_SAVE",
-        callback_func=callback_func    
-    )
-
-
 
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    target_img_index = 0
+    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/去水印/001" 
+    PAGE_RANGE = "1-1000"
+    IS_FLAT_OUTPUT = True
+    ROTATION_ANGLE = 0 # 正数：逆时针旋转，负数：顺时针旋转
+    TARGET_IMG_INDEX = 0
 
     if os.path.isfile(INPUT_FILE):
         extract_images(
@@ -113,6 +92,19 @@ if __name__ == "__main__":
             target_img_index=TARGET_IMG_INDEX,
         )
     elif os.path.isdir(INPUT_FILE):
-        batch_extract_images(INPUT_FILE,PAGE_RANGE, IS_FLAT_OUTPUT)
+        def callback_func(input_file, output_file):
+            extract_images(
+                input_file=input_file,
+                page_range = PAGE_RANGE,
+                is_flat_output = IS_FLAT_OUTPUT,
+                rotation_angle = ROTATION_ANGLE,
+                target_img_index=TARGET_IMG_INDEX,
+            )
+        input_dir = INPUT_FILE
+        batch_process_file_with_callback(
+            input_dir=input_dir, 
+            output_dir="NO_SAVE",
+            callback_func=callback_func    
+        )
     else:
         print(f"【错误】：输入路径既不是文件也不是目录 -> {INPUT_FILE}")

@@ -29,13 +29,14 @@ def batch_process_file_with_callback(input_dir, output_dir, callback_func):
 
                 # 计算当前遍历到的文件夹相对于 input_dir 的路径
                 relative_path = os.path.relpath(input_file, input_dir)
-                
-                # 拼接出目标文件夹的完整路径
-                output_file = os.path.join(output_dir, relative_path)
-                
-                # 确保目标文件夹存在
-                dir_name = os.path.dirname(output_file)
-                os.makedirs(dir_name, exist_ok=True)
+
+                output_file = ""
+                if output_dir != "NO_SAVE":
+                    # 拼接出目标文件夹的完整路径
+                    output_file = os.path.join(output_dir, relative_path)
+                    # 确保目标文件夹存在
+                    dir_name = os.path.dirname(output_file)
+                    os.makedirs(dir_name, exist_ok=True)
                 
                 # 核心：执行传入的回调函数
                 # 将当前文件路径和额外的配置参数传给具体业务逻辑
