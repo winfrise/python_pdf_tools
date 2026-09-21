@@ -17,6 +17,10 @@ def add_shape_to_pdf(input_file, output_file, image_configs, page_range):
             src_page_index = config.get('page_index', 0) # 默认为PDF图片的第0页
             rotate = config.get('rotate', 0)
 
+            # 执行函数获取实际路径
+            if callable(img_path):
+                img_path = img_path(page_num)
+
             if not os.path.exists(img_path):
                 print(f"⚠️ 警告：图片文件不存在 {img_path}")
                 continue
@@ -98,25 +102,31 @@ def batch_add_shape(input_folder,image_configs, page_range, output_folder):
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Downloads/百度网盘Download/Desktop-1/3.6万亩路径图---塔木托拉克镇(1).pdf"
+    input_path = "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/施工版W1-龙湖国芳天街-A-4F-22-23(东北老家）-2023.02.13.pdf"
     output_path = "" # 单文件时为空，批量处理时为输入文件夹
 
     page_range = "1-1000" # page_range 示例：1,3, 5-9
 
+    def get_mask_path (page_num):
+        if page_num in [1, 6, 10, 13]:
+            return "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/mask1.pdf"
+        else:
+            return "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/mask2.pdf"
+
     my_images = [
-        {
-            "path": "/Users/teacher/Downloads/百度网盘Download/Desktop-1/mask36.pdf",      # 你的SVG转成的PDF
-            "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
-            "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
-            "page_index": 0,          # 取该PDF的第0页
-            "rotate": 0,  # 新增：设置为True以旋转90度
-        },
         # {
-        #     "path": "/Users/teacher/Downloads/百度网盘下载/mask2.pdf",      # 你的SVG转成的PDF
+        #     "path": "/Users/teacher/Downloads/百度网盘Download/Desktop-1/mask36.pdf",      # 你的SVG转成的PDF
         #     "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
         #     "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
-        #     "page_index": 0          # 取该PDF的第0页
+        #     "page_index": 0,          # 取该PDF的第0页
+        #     "rotate": 0,  # 新增：设置为True以旋转90度
         # },
+        {
+            "path": get_mask_path,      # 你的SVG转成的PDF
+            "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
+            "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
+            "page_index": 0          # 取该PDF的第0页
+        },
         # 可以继续添加更多图片配置...
     ]
 
