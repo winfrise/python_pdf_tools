@@ -49,5 +49,5 @@ def analyze_images(pdf_path, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Desktop/去水印/必考单词漫画版_已解密.pdf"
+    pdf_file = "/Users/teacher/Desktop/test/森木磊石BP-让天下没有难做的电源.pdf"
     analyze_images(pdf_file)
