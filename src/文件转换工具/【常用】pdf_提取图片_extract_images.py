@@ -23,7 +23,7 @@ def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0
         # 6. 遍历当前页面的所有图片
         for img_index, img in enumerate(image_list):
 
-            if (img_index >= 0) & (img_index != target_img_index):
+            if (target_img_index >= 0) & (img_index != target_img_index):
                 continue
             
             xref = img[0]  # 图片的引用ID (xref)
@@ -77,11 +77,11 @@ def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/去水印/001" 
+    INPUT_FILE = "/Users/teacher/Desktop/test/森木磊石BP-让天下没有难做的电源.pdf" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
     ROTATION_ANGLE = 0 # 正数：逆时针旋转，负数：顺时针旋转
-    TARGET_IMG_INDEX = 0
+    TARGET_IMG_INDEX = -1
 
     if os.path.isfile(INPUT_FILE):
         extract_images(
