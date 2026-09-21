@@ -77,7 +77,7 @@ def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    INPUT_FILE = "/Users/teacher/Desktop/test/森木磊石BP-让天下没有难做的电源.pdf" 
+    INPUT_FILE = "/Users/teacher/Desktop/月考试卷整合/太原五中23-24/试卷" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
     ROTATION_ANGLE = 0 # 正数：逆时针旋转，负数：顺时针旋转
