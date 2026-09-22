@@ -10,7 +10,7 @@ from utils import process_file_with_callback, batch_process_file_with_callback
 from PIL import Image
 import io
 
-def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0, target_img_index = -1):
+def extract_images(input_file, page_range, is_flat_output=True, rotate_angle=0, target_img_index = -1):
     output_dir = os.path.splitext(input_file)[0] + "__提取的图片"
     # 自动创建不存在的文件夹
     os.makedirs(output_dir, exist_ok=True) 
@@ -44,14 +44,22 @@ def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0
                 os.makedirs(current_page_dir, exist_ok=True)  # 自动创建不存在的文件夹
                 image_full_path = os.path.join(current_page_dir, image_filename)
 
+            current_rotate = rotate_angle
+            if callable(current_rotate):
+                width = img[2]  # 图片宽度（像素）
+                height = img[3]  # 图片高度（像素）
+                current_rotate = current_rotate(
+                    page, 
+                    {'width': width, 'height':height}
+                )
 
-            if rotation_angle != 0:
+            if current_rotate != 0:
                 # 将图片字节数据加载到内存中
                 image_stream = io.BytesIO(image_bytes)
                 # 使用 Pillow 打开图片
                 pil_image = Image.open(image_stream)
                 # 旋转图片。expand=True 会自动调整画布大小以容纳整个旋转后的图片
-                rotated_image = pil_image.rotate(rotation_angle, expand=True)
+                rotated_image = pil_image.rotate(current_rotate, expand=True)
                 
                 # 将旋转后的图片保存到另一个内存流中
                 output_stream = io.BytesIO()
@@ -78,10 +86,19 @@ def extract_images(input_file, page_range, is_flat_output=True, rotation_angle=0
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/制度改公司名称/汗克尔标准化制度牌2024.pdf" 
+    def rotate_angele_func (page, img_info):
+        width = img_info['width']
+        height = img_info['height']
+        print(width)
+        if width > height:
+            return -90
+        # 正数：逆时针旋转，负数：顺时针旋转
+        return 0
+
+    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/未命名文件夹/未命名文件夹" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
-    ROTATION_ANGLE = 0 # 正数：逆时针旋转，负数：顺时针旋转
+    ROTATE_ANGLE = rotate_angele_func
     TARGET_IMG_INDEX = -1
 
     if os.path.isfile(INPUT_FILE):
@@ -89,7 +106,7 @@ if __name__ == "__main__":
             input_file = INPUT_FILE, 
             page_range = PAGE_RANGE, 
             is_flat_output = IS_FLAT_OUTPUT,
-            rotation_angle = ROTATION_ANGLE,
+            rotate_angle = ROTATE_ANGLE,
             target_img_index=TARGET_IMG_INDEX,
         )
     elif os.path.isdir(INPUT_FILE):
@@ -98,7 +115,7 @@ if __name__ == "__main__":
                 input_file=input_file,
                 page_range = PAGE_RANGE,
                 is_flat_output = IS_FLAT_OUTPUT,
-                rotation_angle = ROTATION_ANGLE,
+                rotate_angle = ROTATE_ANGLE,
                 target_img_index=TARGET_IMG_INDEX,
             )
         input_dir = INPUT_FILE
