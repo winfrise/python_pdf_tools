@@ -102,16 +102,16 @@ def batch_add_shape(input_folder,image_configs, page_range, output_folder):
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/施工版W1-龙湖国芳天街-A-4F-22-23(东北老家）-2023.02.13.pdf"
+    input_path = "/Users/teacher/Downloads/百度网盘Download/去水印/0-中石油历年笔试真题（2014-2025年）⭐_outpout_已解密"
     output_path = "" # 单文件时为空，批量处理时为输入文件夹
 
     page_range = "1-1000" # page_range 示例：1,3, 5-9
 
     def get_mask_path (page_num):
-        if page_num in [1, 6, 10, 13]:
-            return "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/mask1.pdf"
-        else:
-            return "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/mask2.pdf"
+        # if page_num in [1, 6, 10, 13]:
+        #     return "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/mask1.pdf"
+
+        return "/Users/teacher/Downloads/百度网盘Download/去水印/mask.pdf"
 
     my_images = [
         # {

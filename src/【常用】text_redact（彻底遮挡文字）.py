@@ -2,12 +2,14 @@ import fitz
 import os
 import sys
 from utils import parse_page_range
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils import  batch_process_file_with_callback
 
 
-def redact_pdf(input_path, page_range_str, text_list):
+def redact_pdf(input_path,  pages, text_list, output_path=None):
     """
     :param input_path: 输入PDF文件路径
-    :param page_range_str: 页码范围字符串，如 "1,3-5,7"
+    :param pages: 页码范围字符串，如 "1,3-5,7"
     :param text_list: 需要遮挡的文字列表，如 ['上海中远海运重工', 'NO. 24 SERIES']
     """
     # 1. 检查输入文件是否存在
@@ -15,12 +17,14 @@ def redact_pdf(input_path, page_range_str, text_list):
         print(f"错误：输入文件 '{input_path}' 不存在！")
         return False
 
+    if not output_path:
+        output_path = input_path.replace('.pdf', '_output_替换文字.pdf')
 
     # 3. 打开备份文件进行处理
     doc = fitz.open(input_path)
     total_pages = len(doc)
 
-    target_pages = parse_page_range(page_range_str, total_pages)
+    target_pages = parse_page_range(pages, total_pages)
 
     # --- 初始化统计字典 ---
     occurrence_count = {text: 0 for text in text_list}
@@ -51,9 +55,6 @@ def redact_pdf(input_path, page_range_str, text_list):
 
     # 5. 保存修改后的文件（覆盖原文件名）
     try:
-        base_name, ext = os.path.splitext(input_path)
-        output_path = f"{base_name}_output{ext}"
-
         # 2. 保存文件
         doc.save(output_path)
         doc.close()
@@ -76,9 +77,36 @@ def redact_pdf(input_path, page_range_str, text_list):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 配置参数
-    file_path = "/Users/teacher/Downloads/百度网盘Download/未命名文件夹/2026高中物理手写笔记-孔老师(1).pdf"  # 你的PDF文件路径
+    input_path = "/Users/teacher/Downloads/百度网盘Download/去水印/0-中石油历年笔试真题（2014-2025年）⭐"  # 你的PDF文件路径
     pages = "1-1000"         # 页码范围 1,3-5,7
-    words = ["扫描全能王 创建"]  # 要遮挡的文字列表
+    words = ["专业助考 品质保证各类国企央企银行证券笔试代做包过微信：deoffer","各类国企央企银行证券笔试代做包过微信：deoffer", "各类国企央企银行证券笔试代做包过微信：offertop"]  # 要遮挡的文字列表
 
-    # 运行函数
-    redact_pdf(file_path, pages, words)
+    if os.path.isfile(input_path):
+        redact_pdf(
+            input_path = input_path, 
+            pages = pages, 
+            text_list = words
+        )
+    elif os.path.isdir(input_path):
+        input_dir = input_path
+        output_dir = f"{input_dir}_outpout_已解密"
+
+        batch_process_file_with_callback
+
+
+        def callback_func(input_file, output_file):
+            redact_pdf(
+                input_path=input_file,
+                output_path=output_file,
+                pages = pages, 
+                text_list = words
+            )
+
+        batch_process_file_with_callback(
+            input_dir = input_dir,
+            output_dir = output_dir,
+            callback_func = callback_func
+        )
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")
+
