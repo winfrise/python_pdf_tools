@@ -87,15 +87,15 @@ def extract_images(input_file, page_range, is_flat_output=True, rotate_angle=0, 
 # ================= 使用示例 =================
 if __name__ == "__main__":
     def rotate_angele_func (page, img_info):
-        width = img_info['width']
-        height = img_info['height']
-        print(width)
-        if width > height:
-            return -90
+        # width = img_info['width']
+        # height = img_info['height']
+
+        # if width > height:
+        #     return -90
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/未命名文件夹/未命名文件夹" 
+    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/未命名文件夹/山西奕成新能源重卡充电站_recover 2026-9-23 103229 1.pdf" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
     ROTATE_ANGLE = rotate_angele_func
