@@ -95,7 +95,7 @@ if __name__ == "__main__":
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Desktop/未命名文件夹/24-26年PET口语全国考场真题-Part2.pdf" 
+    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/传承红旗渠凌云志，践行航空青年报国魂.pdf" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
     ROTATE_ANGLE = rotate_angele_func

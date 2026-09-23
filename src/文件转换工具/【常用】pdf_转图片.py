@@ -37,9 +37,9 @@ def pdf_to_images(input_file, page_range, dpi=72, img_format="jpg"):
 # --- 使用示例 ---
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/去水印/001/政治章节练.pdf" 
+    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/传承红旗渠凌云志，践行航空青年报国魂.pdf" 
     DPI = 300
-    PAGE_RANGE = '1-1000'
+    PAGE_RANGE = '12'
     IMG_FORMAT = 'jpg'
 
     pdf_to_images(
