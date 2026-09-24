@@ -1,64 +1,63 @@
 import fitz  # PyMuPDF
 
-def list_pdf_layers(pdf_path):
-    """遍历并打印 PDF 中所有的图层信息"""
+def delete_last_drawings_safe(pdf_path, output_path, count=10):
     doc = fitz.open(pdf_path)
-    # 获取所有图层（OCGs）
-    ocgs = doc.get_ocgs()
     
-    if not ocgs:
-        print("该 PDF 文件中没有图层 (OCGs)。")
-        doc.close()
-        return
-
-    print(f"共发现 {len(ocgs)} 个图层：")
-    print("-" * 40)
-    for xref, info in ocgs.items():
-        # info 是一个字典，包含 'name', 'creator', 'usage' 等
-        print(f"图层 XREF: {xref}")
-        print(f"图层名称: {info['name']}")
-        print(f"创建者: {info.get('creator', 'N/A')}")
-        print("-" * 40)
-    
-    doc.close()
-
-def delete_pdf_layers(pdf_path, output_path, layer_names_to_delete):
-    """
-    删除指定名称的图层及其内容
-    :param pdf_path: 输入 PDF 路径
-    :param output_path: 输出 PDF 路径
-    :param layer_names_to_delete: 需要删除的图层名称列表
-    """
-    doc = fitz.open(pdf_path)
-    ocgs = doc.get_ocgs()
-    
-    deleted_count = 0
-    for xref, info in ocgs.items():
-        layer_name = info['name']
-        # 如果图层名称在待删除列表中
-        if layer_name in layer_names_to_delete:
-            # 删除图层对象及其关联的内容
-            doc.delete_object(xref)
-            deleted_count += 1
-            print(f"已删除图层: {layer_name} (XREF: {xref})")
+    for page_num, page in enumerate(doc):
+        # 1. 获取页面内容流的引用 (xref)
+        # get_contents() 可能返回 int 或 list[int]
+        xrefs = page.get_contents()
+        
+        # 统一转为列表处理
+        if isinstance(xrefs, int):
+            xrefs = [xrefs]
             
-    if deleted_count == 0:
-        print("未找到匹配的图层，未进行任何删除操作。")
-    else:
-        # 保存并清理冗余对象
-        doc.save(output_path, garbage=4, deflate=True)
-        print(f"成功删除 {deleted_count} 个图层，已保存至: {output_path}")
-    
+        if not xrefs:
+            continue
+
+        print(f"正在处理第 {page_num + 1} 页...")
+
+        # 2. 读取并合并所有流数据 (保持 bytes 类型)
+        full_stream = b""
+        for xref in xrefs:
+            stream_data = doc.xref_stream(xref)
+            if stream_data:
+                full_stream += stream_data
+        
+        # 3. 按行切割并删除最后 N 行
+        # 注意：这里必须使用 b'\n' (bytes) 进行切割
+        lines = full_stream.split(b'\n')
+        
+        total_lines = len(lines)
+        if total_lines <= count:
+            print(f"  警告：行数不足，将清空该页内容流。")
+            new_stream = b""
+        else:
+            new_lines = lines[:-count]
+            # 重新拼接为 bytes
+            new_stream = b'\n'.join(new_lines)
+            print(f"  已移除最后 {count} 行指令。")
+
+        # 4. 【核心修复】使用 update_stream 更新第一个 xref
+        # 这个方法专门用于更新 Stream 对象，直接接受 bytes
+        target_xref = xrefs[0]
+        page.update_stream(target_xref, new_stream)
+        
+        # 5. 如果有多个 xref，清空其余的，防止旧数据残留
+        if len(xrefs) > 1:
+            for extra_xref in xrefs[1:]:
+                # 将多余的流更新为空字节流
+                page.update_stream(extra_xref, b"")
+
+    # 6. 保存文件
+    # garbage=4 会彻底清理那些被清空的 xref 对象
+    doc.save(output_path, garbage=4, deflate=True)
     doc.close()
+    print(f"\n处理完成！已保存至: {output_path}")
 
 # --- 使用示例 ---
 if __name__ == "__main__":
-    input_pdf = "/Users/teacher/Desktop/百度网盘下载/信息技术笔记_已解密.pdf"
-    output_pdf = "output.pdf"
+    input_pdf = "/Users/teacher/Desktop/百度网盘下载/信息技术笔记_已解密.pdf"  # 替换为你的文件名
+    output_pdf = "output_fixed.pdf"
     
-    # 1. 先遍历查看所有图层
-    list_pdf_layers(input_pdf)
-    
-    # 2. 删除自定义的图层（传入图层名称列表）
-    target_layers = ["Watermark", "Draft", "隐藏图层"] 
-    # delete_pdf_layers(input_pdf, output_pdf, target_layers)
+    delete_last_drawings_safe(input_pdf, output_pdf, count=10)
