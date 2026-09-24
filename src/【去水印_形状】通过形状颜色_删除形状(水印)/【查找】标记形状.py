@@ -28,7 +28,9 @@ def remove_shapes_from_pdf(input_pdf, output_pdf, is_target_shape_func):
             shape.draw_rect(rect)
             shape.finish(color=(0, 1, 0), fill=(0, 1, 0), width=2, fill_opacity=0.5) # 绿色半透明覆盖
         shape.commit(overlay=True)
-        print(f"[Dry Run] 页面 {page_num + 1} 发现 {len(rects_to_process)} 个匹配的形状，已标记为绿色。")
+
+        if (len(rects_to_process) > 0):
+            print(f"[Dry Run] 页面 {page_num + 1} 发现 {len(rects_to_process)} 个匹配的形状，已标记为绿色。")
 
     # garbage=4 用于清理冗余对象，deflate=True 用于压缩
     doc.save(output_pdf, garbage=4, deflate=True)
@@ -37,8 +39,6 @@ def remove_shapes_from_pdf(input_pdf, output_pdf, is_target_shape_func):
 
 # --- 使用示例 ---
 if __name__ == "__main__":
-    input_pdf = "/Users/teacher/Desktop/百度网盘下载/去水印-四上阅读/四上阅读理解与答题模板.pdf"
-    output_pdf = input_pdf.replace('.pdf', '_output_删形状.pdf')
 
 
     def check_target_shape_func(shape):
@@ -53,7 +53,11 @@ if __name__ == "__main__":
         
         width = rect[2] - rect[0]
         height = rect[3] - rect[1]
+        if (height > 11.5 and height < 12.5 and rect[2] > 546):
+            print(rect)
+            return True
 
+        return False
 
         
         # 2. 尺寸判断
@@ -92,6 +96,9 @@ if __name__ == "__main__":
         return False
 
 
+
+    input_pdf = "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/初二下合_output_删除图片_output_遮挡.pdf"
+    output_pdf = input_pdf.replace('.pdf', '_output_删形状.pdf')
     remove_shapes_from_pdf(
         input_pdf=input_pdf, 
         output_pdf=output_pdf, 
