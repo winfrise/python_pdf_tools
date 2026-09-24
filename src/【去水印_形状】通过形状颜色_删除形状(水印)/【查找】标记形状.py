@@ -1,13 +1,12 @@
 import fitz  # PyMuPDF
 
-def remove_shapes_from_pdf(input_pdf, output_pdf, is_target_shape_func):
+def mark_shapes(input_pdf, output_pdf, is_target_shape_func):
     """
     删除 PDF 中的形状，支持试运行模式。
     
     :param input_pdf: 输入 PDF 路径
     :param output_pdf: 输出 PDF 路径
-    :param dry_run: 试运行模式，若为 True 则不删除，仅将匹配的形状变为绿色
-    :param shape_filter_kwargs: 传递给 is_shape_to_delete 的参数
+    :param is_target_shape_func: 判断是否是目标形状
     """
     doc = fitz.open(input_pdf)
     
@@ -26,7 +25,7 @@ def remove_shapes_from_pdf(input_pdf, output_pdf, is_target_shape_func):
         shape = page.new_shape()
         for rect in rects_to_process:
             shape.draw_rect(rect)
-            shape.finish(color=(0, 1, 0), fill=(0, 1, 0), width=2, fill_opacity=0.5) # 绿色半透明覆盖
+            shape.finish(fill=(0, 1, 0), fill_opacity=0.5, color=None)  # 仅填充绿色半透明，无边框
         shape.commit(overlay=True)
 
         if (len(rects_to_process) > 0):
@@ -40,8 +39,8 @@ def remove_shapes_from_pdf(input_pdf, output_pdf, is_target_shape_func):
 # --- 使用示例 ---
 if __name__ == "__main__":
 
-
-    def check_target_shape_func(shape):
+    # 通过高度判断
+    def check_target_shape_by_height(shape):
         """
         默认的形状判断逻辑：根据形状颜色（包括透明度）和尺寸来判断是否删除。
         你可以在此基础上修改判断条件。
@@ -59,14 +58,8 @@ if __name__ == "__main__":
 
         return False
 
-        
-        # 2. 尺寸判断
-        # if width < min_width or height < min_height:
-        #     return False
-            
-        # 3. 颜色与透明度判断
-        # 注意：PyMuPDF 中 stroke_color 和 fill_color 可能为 None
-
+    # 通过填充颜色和透明度判断
+    def check_target_shape_by_fill_opacity(shape):
         fill_color = shape.get("fill")
         fill_opacity = shape.get("fill_opacity", 1.0)
 
@@ -98,19 +91,11 @@ if __name__ == "__main__":
 
 
     input_pdf = "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/初二下合_output_删除图片_output_遮挡.pdf"
-    output_pdf = input_pdf.replace('.pdf', '_output_删形状.pdf')
-    remove_shapes_from_pdf(
+    output_pdf = input_pdf.replace('.pdf', '_output_标记目标形状.pdf')
+    is_target_shape_func = check_target_shape_by_height
+
+    mark_shapes(
         input_pdf=input_pdf, 
         output_pdf=output_pdf, 
-        is_target_shape_func = check_target_shape_func
+        is_target_shape_func = is_target_shape_func
     )
-    
-    # 2. 正式删除
-    # remove_shapes_from_pdf(
-    #     input_pdf="input.pdf", 
-    #     output_pdf="cleaned_output.pdf", 
-    #     dry_run=False, 
-    #     target_color=(1.0, 0.0, 0.0), 
-    #     min_width=20, 
-    #     min_height=20
-    # )
