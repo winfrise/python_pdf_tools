@@ -18,6 +18,8 @@ def make_watermark_invisible(pdf_path, out_path, gray="0.949"):
 
         # 2. 只在水印块内，把填充符 f/f* 换成 n（结束路径但不绘制）
         wm = re.sub(r"\bf\*?\b", "n", wm)
+        # 水印变为红色
+        # wm = wm.replace(f"{gray} g", "1 0 0 rg") 
 
         # 3. 写回
         doc.update_stream(xref, (head + wm + tail).encode("latin-1"))
