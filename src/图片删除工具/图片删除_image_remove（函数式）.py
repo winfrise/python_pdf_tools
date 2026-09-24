@@ -50,10 +50,10 @@ def remove_pdf_images(input_pdf, target_sizes, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Desktop/test/森木磊石BP-让天下没有难做的电源.pdf"
+    pdf_file = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/初二下合.pdf"
     
     # target_sizes 改为数组，可以同时指定多个尺寸
-    target_sizes = ["1044x696"]
+    target_sizes = ["2481x3509"]
 
     if os.path.isfile(pdf_file):
         remove_pdf_images(

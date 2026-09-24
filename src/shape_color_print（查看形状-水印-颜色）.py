@@ -62,4 +62,4 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
 
 if __name__ == "__main__":
     # 请确保将路径替换为你自己的文件路径
-    diagnose_pdf_colors("/Users/teacher/Desktop/未命名文件夹 2/提取自2026胡源 高二数学精讲精练.pdf")
+    diagnose_pdf_colors("/Users/teacher/Desktop/百度网盘下载/四上阅读理解与答题模板.pdf")

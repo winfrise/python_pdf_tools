@@ -12,9 +12,9 @@ def change_shapes_to_blue(input_path, output_path):
     doc = fitz.open(input_path)
 
     # 定义目标颜色 (R, G, B)
-    TARGET_COLOR_R = 255
-    TARGET_COLOR_G = 0
-    TARGET_COLOR_B = 0
+    TARGET_COLOR_R = 241
+    TARGET_COLOR_G = 242
+    TARGET_COLOR_B = 241
 
     # 预编译正则表达式，用于匹配 PDF 中的颜色设置指令
     # 匹配 0 g (灰度黑), 0 G, 0 0 0 rg (RGB黑), 0 0 0 RG 等
@@ -83,17 +83,16 @@ if __name__ == "__main__":
         # 例如: (400, 650, 550, 700)
     ]
 
-    input_path = "/Users/teacher/Desktop/20260714去水印/《公基》《常识》系统课讲义（第二至第四章是敏感课内容讲义）.pdf"
-    output_path = "/Users/teacher/Desktop/20260714去水印/《公基》《常识》系统课讲义（第二至第四章是敏感课内容讲义）_2.pdf"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/四上阅读理解与答题模板.pdf"
 
     if os.path.isfile(input_path):
         input_file = input_path
-        output_file = output_path
+        output_file = input_file.replace('.pdf', '_output_颜色.pdf')
 
         change_shapes_to_blue(input_file, output_file)
     elif os.path.isdir(input_path):
         input_folder = input_path
-        output_folder = output_path
+        output_folder = f"{input_folder}_output_颜色"
 
         for root, dirs, files in os.walk(input_folder):
             for file in files:

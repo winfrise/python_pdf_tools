@@ -4,11 +4,14 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils import process_file_with_callback, batch_process_file_with_callback
 
-def add_shape_to_pdf(input_file, output_file, image_configs, page_range):
+def add_shape_to_pdf(input_file, output_file, image_configs, page_range, exclude_pages):
     if not output_file:
         output_file = input_file.replace(".pdf", "_output_遮挡.pdf")
 
     def callback_func(page, page_num, doc):
+        if page_num in exclude_pages:
+            return
+        
         # 遍历配置列表，在同一页添加多张图片
         for config in image_configs:
             img_path = config.get('path')
@@ -84,36 +87,19 @@ def add_shape_to_pdf(input_file, output_file, image_configs, page_range):
 
 
 
-def batch_add_shape(input_folder,image_configs, page_range, output_folder):
-    def callback_func(input_file, output_file):
-        add_shape_to_pdf(
-            input_file=input_file,
-            output_file=output_file,
-            page_range = page_range,
-            image_configs=image_configs
-        )
-
-    batch_process_file_with_callback(
-        input_dir=input_folder,
-        output_dir=output_folder,
-        callback_func=callback_func
-    )
-
-
-
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Downloads/百度网盘Download/去水印/0-中石油历年笔试真题（2014-2025年）⭐_outpout_已解密"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/初二下合_output_删除图片.pdf"
     output_path = "" # 单文件时为空，批量处理时为输入文件夹
 
     page_range = "1-1000" # page_range 示例：1,3, 5-9
-
+    exclude_pages = {1, 13, 27, 39, 51, 65, 78, 91, 103, 104, 105, 116, 128, 141, 149, 156, 166, 202, 215, 229, 253, 266, 277}
     def get_mask_path (page_num):
         # if page_num in [1, 6, 10, 13]:
         #     return "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/mask1.pdf"
 
-        return "/Users/teacher/Downloads/百度网盘Download/去水印/mask.pdf"
+        return "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/mask.pdf"
 
-    my_images = [
+    image_configs = [
         # {
         #     "path": "/Users/teacher/Downloads/百度网盘Download/Desktop-1/mask36.pdf",      # 你的SVG转成的PDF
         #     "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
@@ -134,16 +120,26 @@ if __name__ == "__main__":
     if os.path.isfile(input_path):
         add_shape_to_pdf(
                 input_file=input_path, 
-                image_configs=my_images, 
+                image_configs=image_configs, 
                 page_range=page_range, 
                 output_file = None,
+                exclude_pages = exclude_pages,
         )
     elif os.path.isdir(input_path):
-        batch_add_shape(
-            input_folder=input_path,
-            image_configs=my_images,
-            page_range=page_range,
-            output_folder=output_path
+        def callback_func(input_file, output_file):
+            add_shape_to_pdf(
+                input_file=input_file,
+                output_file=output_file,
+                page_range = page_range,
+                image_configs=image_configs,
+                exclude_pages = exclude_pages,
+            )
+        input_dir = input_path
+        output_dir = f"{input_dir}_output_遮挡"
+        batch_process_file_with_callback(
+            input_dir=input_dir,
+            output_dir=output_dir,
+            callback_func=callback_func
         )
     else:
         print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")
