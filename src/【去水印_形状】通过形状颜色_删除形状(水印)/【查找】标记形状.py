@@ -53,6 +53,8 @@ if __name__ == "__main__":
         
         width = rect[2] - rect[0]
         height = rect[3] - rect[1]
+
+
         
         # 2. 尺寸判断
         # if width < min_width or height < min_height:
@@ -60,7 +62,6 @@ if __name__ == "__main__":
             
         # 3. 颜色与透明度判断
         # 注意：PyMuPDF 中 stroke_color 和 fill_color 可能为 None
-        stroke_color = shape.get("stroke_color")
 
         fill_color = shape.get("fill")
         fill_opacity = shape.get("fill_opacity", 1.0)
