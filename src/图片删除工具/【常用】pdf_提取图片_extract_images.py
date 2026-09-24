@@ -95,7 +95,7 @@ if __name__ == "__main__":
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Downloads/百度网盘Download/传承红旗渠凌云志，践行航空青年报国魂.pdf" 
+    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/信息技术笔记_已解密.pdf" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
     ROTATE_ANGLE = rotate_angele_func
