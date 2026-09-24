@@ -32,8 +32,22 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Users/teacher/Desktop/月考试卷整合/太原五中23-24/试卷"
-    TARGET_SIZES = ['258x258', '260x260']
+    INPUT_PDF = "/Users/teacher/Desktop/百度网盘下载/test/信息技术笔记_已解密.pdf"
+    TARGET_SIZES = [
+"250x249",
+"614x644",
+"584x563",
+"366x365",
+"438x438",
+"418x415",
+"380x430",
+"442x437",
+"507x507",
+"414x414",
+"596x581",
+"580x581"
+        ]
+
     if os.path.isfile(INPUT_PDF):
         delete_images_by_object(
             input_pdf=INPUT_PDF,
