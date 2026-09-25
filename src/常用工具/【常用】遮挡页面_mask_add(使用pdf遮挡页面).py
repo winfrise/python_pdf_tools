@@ -75,7 +75,7 @@ def add_shape_to_pdf(input_file, output_file, image_configs, page_range, exclude
                 print(f"✅ 成功在 Page {page_num} 添加: {img_path}")
 
             except Exception as e:
-                print(f"❌ 处理图片出错 {img_path}: {e}")
+                print(f"❌ 处理出错 {img_path}: {e}")
 
 
     process_file_with_callback(
@@ -88,16 +88,17 @@ def add_shape_to_pdf(input_file, output_file, image_configs, page_range, exclude
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/初二下合_output_删除图片.pdf"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/完成"
     output_path = "" # 单文件时为空，批量处理时为输入文件夹
 
     page_range = "1-1000" # page_range 示例：1,3, 5-9
-    exclude_pages = {1, 13, 27, 39, 51, 65, 78, 91, 103, 104, 105, 116, 128, 141, 149, 156, 166, 202, 215, 229, 253, 266, 277}
+    # exclude_pages = {1, 13, 27}
+    exclude_pages = {}
     def get_mask_path (page_num):
         # if page_num in [1, 6, 10, 13]:
         #     return "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/mask1.pdf"
 
-        return "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/mask.pdf"
+        return "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/水印.pdf"
 
     image_configs = [
         # {
