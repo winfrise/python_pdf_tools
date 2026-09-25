@@ -50,9 +50,9 @@ def make_watermark_invisible(pdf_path, out_path, target_color="0.949"):
     print("处理完成")
 
 if __name__ == "__main__":
-    input_pdf = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/背诵资料/英国文学考研资料.pdf"
+    input_pdf = "/Users/teacher/Desktop/百度网盘下载/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义.pdf"
     output_pdf = input_pdf.replace('.pdf', '_output_透明.pdf')
-    target_color = (0.949, 0.949,0.949) # 支持 灰度："0.949" rgb:(0.949, 0.949,0.949) cmyk: (0.949, 0.949, 0.949, 0.949)
+    target_color = (0.96898, 0.96957, 0.9698) # 支持 灰度："0.949" rgb:(0.949, 0.949,0.949) cmyk: (0.949, 0.949, 0.949, 0.949)
     make_watermark_invisible(
         pdf_path = input_pdf, 
         out_path = output_pdf,

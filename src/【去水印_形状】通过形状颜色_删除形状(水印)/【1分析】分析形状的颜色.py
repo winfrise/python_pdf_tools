@@ -4,6 +4,7 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
     doc = fitz.open(pdf_path)
     print(f"--- 开始诊断文件: {pdf_path} ---")
     for page_num in range(min(max_pages, len(doc))):
+        print(page_num)
         page = doc[page_num]
         drawings = page.get_drawings()
         if not drawings:
@@ -15,7 +16,7 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
             fill = d.get("fill")
 
             if fill is None:
-                return "无填充", None
+                continue
 
             # 判断颜色类型
             fill_color_type = ''
@@ -29,7 +30,7 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
             else:
                 fill_color_type =  "未知"
 
-            fill_rgb_float = (round(fill[0], 5), round(fill[1], 5), round(fill[2], 5))
+            fill_rgb_float = (round(fill[0], 20), round(fill[1], 20), round(fill[2], 20))
             fill_rgb_int = (int(fill[0] * 255), int(fill[1] * 255), int(fill[2] * 255))
 
             # 关键：读取透明度。None 表示未设置，等价于 1.0（完全不透明）
@@ -51,4 +52,4 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
 
 if __name__ == "__main__":
     # 请确保将路径替换为你自己的文件路径
-    diagnose_pdf_colors("/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/背诵资料/美国文学考研资料.pdf")
+    diagnose_pdf_colors("/Users/teacher/Desktop/百度网盘下载/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义.pdf")

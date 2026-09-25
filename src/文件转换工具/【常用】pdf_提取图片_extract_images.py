@@ -95,7 +95,7 @@ if __name__ == "__main__":
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/高中英语人教版课本单词表总汇(1).pdf" 
+    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/02.中间段功能句讲义（含图画图表）.pdf" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
     ROTATE_ANGLE = rotate_angele_func

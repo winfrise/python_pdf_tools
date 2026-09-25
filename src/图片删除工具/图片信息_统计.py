@@ -49,5 +49,5 @@ def analyze_images(pdf_path, output_path=None):
 
 if __name__ == "__main__":
     # 替换为你的 PDF 路径
-    pdf_file = "/Users/teacher/Desktop/百度网盘下载/test/英语笔记_已解密.pdf"
+    pdf_file = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/02.中间段功能句讲义（含图画图表）.pdf"
     analyze_images(pdf_file)

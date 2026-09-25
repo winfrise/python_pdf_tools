@@ -92,10 +92,10 @@ if __name__ == "__main__":
         fill_color = shape.get("fill")
 
         if fill_color:
-            target_color = (0.949, 0.949, 0.949)
+            target_color = (0.968, 0.968, 0.968)
 
-            rounded_fill_color = tuple(round(c, 3) for c in fill_color)
-            rounded_target_color = tuple(round(c, 3) for c in target_color)
+            rounded_fill_color = tuple(round(c, 2) for c in fill_color)
+            rounded_target_color = tuple(round(c, 2) for c in target_color)
 
             # 示例：如果指定了目标颜色，且形状颜色匹配，且透明度匹配，则判定为需要删除
             if rounded_fill_color == rounded_target_color:
@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
 
 
-    input_pdf = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/背诵资料/美国文学考研资料.pdf"
+    input_pdf = "/Users/teacher/Desktop/百度网盘下载/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义.pdf"
     output_pdf = input_pdf.replace('.pdf', '_output_标记目标形状.pdf')
     is_target_shape_func = check_target_shape_by_fill
 

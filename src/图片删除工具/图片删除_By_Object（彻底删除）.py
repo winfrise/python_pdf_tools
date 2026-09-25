@@ -32,20 +32,9 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Users/teacher/Desktop/百度网盘下载/test/信息技术笔记_已解密.pdf"
+    INPUT_PDF = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/02.中间段功能句讲义（含图画图表）.pdf"
     TARGET_SIZES = [
-"250x249",
-"614x644",
-"584x563",
-"366x365",
-"438x438",
-"418x415",
-"380x430",
-"442x437",
-"507x507",
-"414x414",
-"596x581",
-"580x581"
+"1903x357",
         ]
 
     if os.path.isfile(INPUT_PDF):
