@@ -92,12 +92,13 @@ if __name__ == "__main__":
         fill_color = shape.get("fill")
 
         if fill_color:
-            target_color = (0.949, 0.949, 949)
+            target_color = (0.949, 0.949, 0.949)
 
-            rounded_fill_color = tuple(round(c, 2) for c in fill_color) # 保留2位小数
-            rounded_target_color = tuple(round(c, 2) for c in target_color)
+            rounded_fill_color = tuple(round(c, 3) for c in fill_color)
+            rounded_target_color = tuple(round(c, 3) for c in target_color)
+
             # 示例：如果指定了目标颜色，且形状颜色匹配，且透明度匹配，则判定为需要删除
-            if rounded_fill_color == target_color:
+            if rounded_fill_color == rounded_target_color:
                 print("fill_color:", fill_color)
 
                 # 判断谍有类型
