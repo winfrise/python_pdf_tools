@@ -13,22 +13,39 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
         unique_fills = set()
         for d in drawings:
             fill = d.get("fill")
-            if not fill or len(fill) < 3:
-                continue
 
-            rgb_float = (round(fill[0], 2), round(fill[1], 2), round(fill[2], 2))
-            rgb_int = (int(fill[0] * 255), int(fill[1] * 255), int(fill[2] * 255))
+            if fill is None:
+                return "无填充", None
+
+            # 判断颜色类型
+            fill_color_type = ''
+            n = len(fill)
+            if n == 1:
+                fill_color_type =  "灰度(Gray)"
+            elif n == 3:
+                fill_color_type = "RGB"
+            elif n == 4:
+                fill_color_type = "CMYK"
+            else:
+                fill_color_type =  "未知"
+
+            fill_rgb_float = (round(fill[0], 5), round(fill[1], 5), round(fill[2], 5))
+            fill_rgb_int = (int(fill[0] * 255), int(fill[1] * 255), int(fill[2] * 255))
 
             # 关键：读取透明度。None 表示未设置，等价于 1.0（完全不透明）
-            fo = d.get("fill_opacity")     # 填充不透明度
-            so = d.get("stroke_opacity")   # 描边不透明度
-            fo = 1.0 if fo is None else round(fo, 2)
+            fill_opacity = d.get("fill_opacity")     # 填充不透明度
+            stroke_opacity = d.get("stroke_opacity")   # 描边不透明度
 
-            unique_fills.add((rgb_float, rgb_int, fo))
+            unique_fills.add((
+                fill_color_type, 
+                fill_rgb_float, 
+                fill_rgb_int, 
+                fill_opacity
+            ))
 
-        for rgb_f, rgb_i, fo in sorted(unique_fills):
-            flag = "  <-- 疑似水印/底纹(低不透明)" if fo < 0.6 else ""
-            print(f"  Float(0-1): {rgb_f} | Int(0-255): {rgb_i} | fill_opacity: {fo}{flag}")
+        for fill_color_type, fill_rgb_float, fill_rgb_int, fill_opacity in sorted(unique_fills):
+            opacity_flag = "  <-- 疑似水印/底纹(低不透明)" if fill_opacity < 0.6 else ""
+            print(f"Color Type: {fill_color_type}  Float(0-1): {fill_rgb_float} | Int(0-255): {fill_rgb_int} | fill_opacity: {fill_opacity}{opacity_flag}")
 
     doc.close()
 
