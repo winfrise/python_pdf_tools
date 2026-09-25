@@ -34,4 +34,4 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
 
 if __name__ == "__main__":
     # 请确保将路径替换为你自己的文件路径
-    diagnose_pdf_colors("/Users/teacher/Desktop/百度网盘下载/test/信息技术笔记_已解密.pdf")
+    diagnose_pdf_colors("/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/背诵资料/美国文学考研资料.pdf")
