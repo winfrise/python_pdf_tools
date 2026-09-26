@@ -37,7 +37,7 @@ def pdf_to_images(input_file, page_range, dpi=72, img_format="jpg"):
 # --- 使用示例 ---
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/PDF合并_17-230.pdf" 
+    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/0925绿顶青山计划书.pdf" 
     DPI = 300
     PAGE_RANGE = '1-1000'
     IMG_FORMAT = 'jpg'

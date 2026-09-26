@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils import process_file_with_callback, batch_process_file_with_callback
 
-def add_shape_to_pdf(input_file, output_file, image_configs, page_range, exclude_pages):
+def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages,mask_list = []):
     if not output_file:
         output_file = input_file.replace(".pdf", "_output_遮挡.pdf")
 
@@ -13,28 +13,28 @@ def add_shape_to_pdf(input_file, output_file, image_configs, page_range, exclude
             return
         
         # 遍历配置列表，在同一页添加多张图片
-        for config in image_configs:
-            img_path = config.get('path')
-            pos = config.get('pos', (0, 0))
-            size = config.get('size', None) # 默认为None，表示原始尺寸
-            src_page_index = config.get('page_index', 0) # 默认为PDF图片的第0页
-            rotate = config.get('rotate', 0)
+        for mask_item in mask_list:
+            mask_path = mask_item.get('path')
+            pos = mask_item.get('pos', (0, 0))
+            size = mask_item.get('size', None) # 默认为None，表示原始尺寸
+            src_page_index = mask_item.get('page_index', 0) # 默认为PDF图片的第0页
+            rotate = mask_item.get('rotate', 0)
 
             # 执行函数获取实际路径
-            if callable(img_path):
-                img_path = img_path(page_num)
+            if callable(mask_path):
+                mask_path = mask_path(page_num)
 
-            if not os.path.exists(img_path):
-                print(f"⚠️ 警告：图片文件不存在 {img_path}")
+            if not mask_path or not os.path.exists(mask_path):
+                print(f"⚠️ 警告: Mask文件不存在 {mask_path}")
                 continue
 
             try:
                 # --- 关键修改部分 ---
                 # 1. 打开图片PDF文件 (作为对象)
-                img_doc = fitz.open(img_path)
+                mask_doc = fitz.open(mask_path)
                 
                 # 2. 获取源页面的矩形区域（用于获取原始宽高）
-                src_page = img_doc.load_page(src_page_index)
+                src_page = mask_doc.load_page(src_page_index)
                 src_rect = src_page.rect # 获取原始尺寸 rect(x0, y0, x1, y1)
                 original_width = src_rect.width
                 original_height = src_rect.height
@@ -63,19 +63,19 @@ def add_shape_to_pdf(input_file, output_file, image_configs, page_range, exclude
                 # 4. 执行嵌入 (传入 img_doc 对象，而不是路径字符串)
                 # 注意：show_pdf_page 的参数顺序是 (rect, pdf_document, page_number)
                 page.show_pdf_page(
-                    target_rect, img_doc, src_page_index, 
+                    target_rect, mask_doc, src_page_index, 
                     keep_proportion=True,
                     rotate=rotate, 
                     overlay=True
                 )
                 
                 # 5. 关闭图片PDF对象以释放内存
-                img_doc.close()
+                mask_doc.close()
                 
-                print(f"✅ 成功在 Page {page_num} 添加: {img_path}")
+                print(f"✅ 成功在 Page {page_num} 添加: {mask_path}")
 
             except Exception as e:
-                print(f"❌ 处理出错 {img_path}: {e}")
+                print(f"❌ 处理出错 {mask_path}: {e}")
 
 
     process_file_with_callback(
@@ -88,19 +88,18 @@ def add_shape_to_pdf(input_file, output_file, image_configs, page_range, exclude
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/完成"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/初二下合_output_删除图片_output_遮挡_output_标记目标形状_output_Mask遮住.pdf"
     output_path = "" # 单文件时为空，批量处理时为输入文件夹
 
     page_range = "1-1000" # page_range 示例：1,3, 5-9
     # exclude_pages = {1, 13, 27}
     exclude_pages = {}
     def get_mask_path (page_num):
-        # if page_num in [1, 6, 10, 13]:
-        #     return "/Users/teacher/Downloads/百度网盘Download/图纸改公司名/mask1.pdf"
+        if page_num in [10, 24, 36, 48, 62, 75, 88, 99, 113, 126, 138, 147, 154, 174, 200, 212, 226, 238, 250, 263, 274, 284]:
+            return "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/mask2.pdf"
+        # return "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/mask2.pdf"
 
-        return "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/水印.pdf"
-
-    image_configs = [
+    mask_list = [
         # {
         #     "path": "/Users/teacher/Downloads/百度网盘Download/Desktop-1/mask36.pdf",      # 你的SVG转成的PDF
         #     "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
@@ -121,7 +120,7 @@ if __name__ == "__main__":
     if os.path.isfile(input_path):
         add_shape_to_pdf(
                 input_file=input_path, 
-                image_configs=image_configs, 
+                mask_list=mask_list, 
                 page_range=page_range, 
                 output_file = None,
                 exclude_pages = exclude_pages,
@@ -132,7 +131,7 @@ if __name__ == "__main__":
                 input_file=input_file,
                 output_file=output_file,
                 page_range = page_range,
-                image_configs=image_configs,
+                mask_list = mask_list, 
                 exclude_pages = exclude_pages,
             )
         input_dir = input_path
