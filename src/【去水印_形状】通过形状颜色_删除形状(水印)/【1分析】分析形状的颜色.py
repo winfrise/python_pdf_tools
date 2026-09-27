@@ -4,10 +4,10 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
     doc = fitz.open(pdf_path)
     print(f"--- 开始诊断文件: {pdf_path} ---")
     for page_num in range(min(max_pages, len(doc))):
-        print(page_num)
         page = doc[page_num]
         drawings = page.get_drawings()
         if not drawings:
+            print(f"\n[第 {page_num + 1} 页] 没有发现图形对象")
             continue
         print(f"\n[第 {page_num + 1} 页] 共发现 {len(drawings)} 个图形对象")
 
@@ -52,4 +52,4 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
 
 if __name__ == "__main__":
     # 请确保将路径替换为你自己的文件路径
-    diagnose_pdf_colors("/Users/teacher/Desktop/百度网盘下载/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义.pdf")
+    diagnose_pdf_colors("/Users/teacher/Desktop/百度网盘下载/【过渡版】民法采分有料张翔老师讲义/【过渡版】民法采分有料张翔老师讲义.pdf")

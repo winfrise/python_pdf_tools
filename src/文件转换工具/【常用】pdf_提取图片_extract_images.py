@@ -95,7 +95,7 @@ if __name__ == "__main__":
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/物理化学.pdf" 
+    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/字母_音标_去水印/001/1 字母+音标+组合+拆拼2026.pdf" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
     ROTATE_ANGLE = 0

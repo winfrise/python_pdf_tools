@@ -88,16 +88,15 @@ def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages,mask_li
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/初二下合_output_删除图片_output_遮挡_output_标记目标形状_output_Mask遮住.pdf"
-    output_path = "" # 单文件时为空，批量处理时为输入文件夹
+    input_path = "/Users/teacher/Desktop/百度网盘下载/字母_音标_去水印/001"
 
     page_range = "1-1000" # page_range 示例：1,3, 5-9
     # exclude_pages = {1, 13, 27}
     exclude_pages = {}
     def get_mask_path (page_num):
-        if page_num in [10, 24, 36, 48, 62, 75, 88, 99, 113, 126, 138, 147, 154, 174, 200, 212, 226, 238, 250, 263, 274, 284]:
-            return "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/mask2.pdf"
-        # return "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/mask2.pdf"
+        # if page_num in [10, 24]:
+        #     return "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/mask2.pdf"
+        return "/Users/teacher/Desktop/百度网盘下载/字母_音标_去水印/mask.pdf"
 
     mask_list = [
         # {
