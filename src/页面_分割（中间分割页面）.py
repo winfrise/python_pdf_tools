@@ -51,8 +51,8 @@ def split_double_page_pdf(input_path, output_path):
 
 # 使用示例
 if __name__ == "__main__":
-    input_file = "/Users/teacher/Downloads/百度网盘Download/2027.pdf"
-    output_file = "/Users/teacher/Downloads/百度网盘Download/2027_split.pdf"
+    input_file = "/Users/teacher/Desktop/百度网盘下载/页面分割/物理化学_output_旋转.pdf"
+    output_file = input_file.replace('.pdf', '_output_分割.pdf')
     
     try:
         split_double_page_pdf(input_file, output_file)
