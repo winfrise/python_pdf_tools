@@ -33,8 +33,8 @@ def extract_images(input_file, page_range, is_flat_output=True, rotate_angle=0, 
             image_bytes, image_ext = base_image["image"], base_image["ext"]
             
             # 7. 构造图片保存的文件名
-            inner_name = img[7]
-            image_filename = f"page{page_num}_img{img_index + 1}_{inner_name}.{image_ext}"
+            inner_name = img[7] # 文档流中的名字
+            image_filename = f"page{page_num}_img{img_index + 1}.{image_ext}"
             image_full_path = os.path.join(output_dir, image_filename)
 
             # 1. 确定当前页的输出目录
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/001/检测报告 合格证 2026-9-27 131432 1.pdf" 
+    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/物理化学.pdf" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
     ROTATE_ANGLE = 0
