@@ -79,10 +79,10 @@ def process_pdf(input_path: str, page_range: str, background_config: dict):
 
 if __name__ == "__main__":
     # 入参配置（根据实际路径修改）
-    input_path = "/Users/teacher/Desktop/百度网盘下载/谢殊艺/谢殊艺_20260924100957 2026-9-25 225859 1.pdf"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/【过渡版】民法采分有料张翔老师讲义/【过渡版】民法采分有料张翔老师讲义.pdf"
     page_range = "1-1000"  # 示例格式：1,3,5-9,10-20
     background_config = {
-        "path": "/Users/teacher/Desktop/百度网盘下载/谢殊艺/bg.pdf",
+        "path": "/Users/teacher/Desktop/百度网盘下载/【过渡版】民法采分有料张翔老师讲义/tmp.pdf",
     }
 
     process_pdf(input_path, page_range, background_config)
