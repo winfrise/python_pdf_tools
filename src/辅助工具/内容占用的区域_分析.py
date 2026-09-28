@@ -1,6 +1,7 @@
 import fitz  # PyMuPDF
 import os
 import time
+from collections import defaultdict
 
 def pt_to_mm(pt_value):
     """
@@ -37,6 +38,7 @@ def classify_pdf_pages(input_path):
         start_time = time.time()
         print(f"🚀 开始处理: {input_path} (共 {total_pages} 页)")
 
+        size_count = defaultdict(int)      # 记录尺寸 (宽, 高) 出现的次数
         for page in doc:
             # --- 进度打印 ---
             current_page = page.number + 1
@@ -78,7 +80,19 @@ def classify_pdf_pages(input_path):
                 f"{pt_to_mm(actual_w):.2f}",
                 f"{pt_to_mm(actual_h):.2f}"
             )
+
+            size_count[(page_width, page_height, actual_w, actual_h)] += 1
             
+
+        print("\n")
+        for size, count in size_count.items():
+            # size 是一个元组 (width, height)，所以需要分别取值
+            field_page_width = f"page_width: {size[0]}"  
+            field_page_height = f"page_height: {size[1]}" 
+            field_actual_width = f"page_width: {size[2]}"  
+            field_actual_height = f"page_height: {size[3]}" 
+            field_count = f"共 {count} 张"                            # 字段3：数量
+            print(f" {field_page_width:<15} {field_page_height:<10} {field_actual_width:<10} {field_actual_height:<10} {field_count}")
 
     except Exception as e:
         print(f"❌ 处理出错: {e}")
