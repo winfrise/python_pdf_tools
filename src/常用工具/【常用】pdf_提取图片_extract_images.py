@@ -95,7 +95,7 @@ if __name__ == "__main__":
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/卞氏3 - 0928.pdf" 
+    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/试卷/人教版一年级上册数学第一单元《5以内数的认识和加减法》测试卷(1)(1)7687035676479880297.pdf" 
     PAGE_RANGE = "1-1000"
     IS_FLAT_OUTPUT = True
     ROTATE_ANGLE = 0
