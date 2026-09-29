@@ -88,7 +88,7 @@ def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages,mask_li
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/字母_音标_去水印/001"
+    input_path = "/Users/teacher/Desktop/002/111_outpout_去水印形状"
 
     page_range = "1-1000" # page_range 示例：1,3, 5-9
     # exclude_pages = {1, 13, 27}
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     def get_mask_path (page_num):
         # if page_num in [10, 24]:
         #     return "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/mask2.pdf"
-        return "/Users/teacher/Desktop/百度网盘下载/字母_音标_去水印/mask.pdf"
+        return "/Users/teacher/Desktop/002/mask.pdf"
 
     mask_list = [
         # {

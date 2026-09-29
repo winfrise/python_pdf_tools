@@ -1,5 +1,10 @@
 import fitz
 import re
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils import  batch_process_file_with_callback
+
+
 
 def make_watermark_invisible(pdf_path, out_path, target_color="0.949"):
     doc = fitz.open(pdf_path)
@@ -50,11 +55,35 @@ def make_watermark_invisible(pdf_path, out_path, target_color="0.949"):
     print("处理完成")
 
 if __name__ == "__main__":
-    input_pdf = "/Users/teacher/Desktop/百度网盘下载/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义.pdf"
-    output_pdf = input_pdf.replace('.pdf', '_output_透明.pdf')
-    target_color = (0.96898, 0.96957, 0.9698) # 支持 灰度："0.949" rgb:(0.949, 0.949,0.949) cmyk: (0.949, 0.949, 0.949, 0.949)
-    make_watermark_invisible(
-        pdf_path = input_pdf, 
-        out_path = output_pdf,
-        target_color = target_color
-    )
+    input_pdf = "/Users/teacher/Desktop/002/111"
+    target_color = (0.753) # 支持 灰度："0.949" rgb:(0.949, 0.949,0.949) cmyk: (0.949, 0.949, 0.949, 0.949)
+
+
+    if os.path.isfile(input_pdf):
+        output_pdf = input_pdf.replace('.pdf', '_output_透明.pdf')
+        make_watermark_invisible(
+            pdf_path = input_pdf, 
+            out_path = output_pdf,
+            target_color = target_color
+        )
+    elif os.path.isdir(input_pdf):
+        input_dir = input_pdf
+        output_dir = f"{input_dir}_outpout_去水印形状"
+
+        batch_process_file_with_callback
+
+
+        def callback_func(input_file, output_file):
+            make_watermark_invisible(
+                pdf_path = input_file, 
+                out_path = output_file,
+                target_color = target_color
+            )
+
+        batch_process_file_with_callback(
+            input_dir = input_dir,
+            output_dir = output_dir,
+            callback_func = callback_func
+        )
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_pdf}")

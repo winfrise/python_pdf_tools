@@ -76,7 +76,7 @@ def analyze_pdf_colors(pdf_path, pages):
 
 # === 使用示例 ===
 if __name__ == "__main__":
-    pdf_file = "/Users/teacher/Desktop/百度网盘下载/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义.pdf"  
+    pdf_file = "/Users/teacher/Desktop/未命名文件夹/身体使用说明书9.24.pdf"  
     pages = "1-5"
     
     stats = analyze_pdf_colors(
