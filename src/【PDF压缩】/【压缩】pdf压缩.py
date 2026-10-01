@@ -3,6 +3,23 @@ from PIL import Image
 import io
 import os
 
+
+def get_images_total_count(pdf_path):
+    doc = fitz.open(pdf_path)
+    total_image_count = 0
+    
+    # 遍历文档中的每一页
+    for page_num in range(len(doc)):
+        page = doc[page_num]
+        # 获取当前页的图片列表，full=True 会获取更完整的图片信息
+        image_list = page.get_images(full=True) 
+        # 将当前页的图片数量累加到总数中
+        total_image_count += len(image_list) 
+        
+    doc.close()
+    return total_image_count
+
+
 def find_best_quality(img, temp_path, target_size_kb):
     """
     鲁班核心：二分搜索最佳质量参数
@@ -23,7 +40,7 @@ def find_best_quality(img, temp_path, target_size_kb):
             break
     return best_q
 
-def compress_pdf_by_budget(input_path, output_path, target_size_kb=900, overhead_kb = 500, rebuild_pdf = True):
+def compress_pdf_by_budget(input_path, output_path, target_size_kb=900,total_images = None, overhead_kb = 500, rebuild_pdf = True):
     """
     基于预算分配的 PDF 压缩（每页一张图）
     """
@@ -42,12 +59,15 @@ def compress_pdf_by_budget(input_path, output_path, target_size_kb=900, overhead
     doc = fitz.open(input_path)
     total_pages = len(doc)
 
+    if not total_images:
+        total_images = total_pages
+
     if total_pages == 0:
         print("PDF 没有页面！")
         return
 
-    budget_per_page_kb = safe_target_kb / total_pages
-    print(f"目标大小: {target_size_kb} KB | 总页数: {total_pages} | 每页预算: {budget_per_page_kb:.2f} KB")
+    budget_per_page_kb = safe_target_kb / total_images
+    print(f"目标大小: {target_size_kb} KB | 页数: {total_pages} | 图片总数: {total_images} | 每张图预算: {budget_per_page_kb:.2f} KB")
 
     # 2. 遍历每一页进行压缩
     for page_num in range(total_pages):
@@ -147,15 +167,17 @@ def compress_pdf_by_budget(input_path, output_path, target_size_kb=900, overhead
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/未命名文件夹 2/001/未命名文件夹/义乌市北遴电子商务商行欧盟授权代表续费（产品组）协议2026.10.20-2027.10.19.pdf"
+    input_path = "/Users/teacher/Downloads/贫困生佐证材料.pdf"
     output_path = input_path.replace('.pdf', '_压缩.pdf')
     target_size_kb = 5 * 1024
     overhead_kb = 500
-    rebuild_pdf = True
+    total_images = get_images_total_count(input_path)
+    rebuild_pdf = False
     compress_pdf_by_budget(
         input_path=input_path,
         output_path=output_path,
         target_size_kb=target_size_kb,
         overhead_kb = overhead_kb,
+        total_images = total_images,
         rebuild_pdf=rebuild_pdf,
     )

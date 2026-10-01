@@ -10,7 +10,7 @@ from utils import process_file_with_callback, batch_process_file_with_callback
 from PIL import Image
 import io
 
-def extract_images(input_file, page_range, is_flat_output=True, rotate_angle=0, target_img_index = -1):
+def extract_images(input_file, page_range, rotate_angle=0, target_img_index = -1):
     output_dir = os.path.splitext(input_file)[0] + "__提取的图片"
     # 自动创建不存在的文件夹
     os.makedirs(output_dir, exist_ok=True) 
@@ -34,15 +34,8 @@ def extract_images(input_file, page_range, is_flat_output=True, rotate_angle=0, 
             
             # 7. 构造图片保存的文件名
             inner_name = img[7] # 文档流中的名字
-            image_filename = f"page{page_num}_img{img_index + 1}.{image_ext}"
+            image_filename = f"page{page_num}_img{img_index + 1}_{inner_name}.{image_ext}"
             image_full_path = os.path.join(output_dir, image_filename)
-
-            # 1. 确定当前页的输出目录
-            if not is_flat_output:
-                # 非扁平化：创建 "page_页码" 子文件夹（页码从1开始）
-                current_page_dir = os.path.join(output_dir, f"page_{page_num}")
-                os.makedirs(current_page_dir, exist_ok=True)  # 自动创建不存在的文件夹
-                image_full_path = os.path.join(current_page_dir, image_filename)
 
             current_rotate = rotate_angle
             if callable(current_rotate):
@@ -95,9 +88,8 @@ if __name__ == "__main__":
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 4/附件1-2.pdf" 
+    INPUT_FILE = "/Users/teacher/Downloads/贫困生佐证材料.pdf" 
     PAGE_RANGE = "1-1000"
-    IS_FLAT_OUTPUT = True
     ROTATE_ANGLE = 0
     TARGET_IMG_INDEX = -1
 
@@ -105,7 +97,6 @@ if __name__ == "__main__":
         extract_images(
             input_file = INPUT_FILE, 
             page_range = PAGE_RANGE, 
-            is_flat_output = IS_FLAT_OUTPUT,
             rotate_angle = ROTATE_ANGLE,
             target_img_index=TARGET_IMG_INDEX,
         )
@@ -114,7 +105,6 @@ if __name__ == "__main__":
             extract_images(
                 input_file=input_file,
                 page_range = PAGE_RANGE,
-                is_flat_output = IS_FLAT_OUTPUT,
                 rotate_angle = ROTATE_ANGLE,
                 target_img_index=TARGET_IMG_INDEX,
             )
