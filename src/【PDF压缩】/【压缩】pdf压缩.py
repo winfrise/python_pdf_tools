@@ -129,27 +129,35 @@ def compress_pdf_by_budget(input_path, output_path, target_size_kb=900,total_ima
                     #   避免手动只改宽高导致字典与实际流不一致）
                     # 注意：xref 之后是关键字参数，必须写成 stream=...
             
-                    if rebuild_pdf:
-                        # 获取图片原始尺寸
-                        img_w = base_image["width"]
-                        img_h = base_image["height"]
+                    if rebuild_pdf:                
+                        if page_num >= len(new_doc):
+                            new_doc.new_page(
+                                width=page.rect.width, height=page.rect.height
+                            )
 
-                        # 【新模式】：计算适应图片大小的页面矩形
-                        # 直接使用图片宽高作为页面大小，去除多余白边
-                        img_rect = fitz.Rect(0, 0, img_w, img_h)
-                        new_page = new_doc.new_page(width=img_w, height=img_h)
-                        
-                        # 将压缩后的图片插入到新页面，填满整个页面
-                        new_page.insert_image(img_rect, stream=new_image_bytes)
+                        # 再次读取对应页面（此时必定已存在），同页多图复用它
+                        new_page = new_doc[page_num]
+
+                        # 取该图片在原页面中的实际位置矩形，按原位置插入以保留版面
+                        rects = page.get_image_rects(xref)
+                        if rects:
+                            place_rect = rects[0]
+                        else:
+                            # 取不到位置时退化为铺满整页
+                            place_rect = new_page.rect
+
+                        # 将压缩后的图片按原位置插入到对应页面
+                        new_page.insert_image(place_rect, stream=new_image_bytes)
+
                     else:
                         # 【旧模式】：在原文档副本上替换
                         target_page = new_doc[page_num]
                         target_page.replace_image(xref, stream=new_image_bytes)
 
                     # page.replace_image(xref, stream=new_image_bytes)
-                    print(f"[页 {page_num+1}] {original_size_kb:.1f}KB -> {len(new_image_bytes)/1024:.1f}KB (质量:{best_quality})")
+                    print(f"[页 {page_num+1}_{img_idx}] {original_size_kb:.1f}KB -> {len(new_image_bytes)/1024:.1f}KB (质量:{best_quality})")
                 else:
-                    print(f"[页 {page_num+1}] 压缩后体积未减小，保留原图")
+                    print(f"[页 {page_num+1}_{img_idx}] 压缩后体积未减小，保留原图")
 
             except Exception as e:
                 print(f"[页 {page_num+1}] 处理失败: {e}")
@@ -173,7 +181,7 @@ if __name__ == "__main__":
     target_size_kb = 5 * 1024
     overhead_kb = 500
     total_images = get_images_total_count(input_path)
-    rebuild_pdf = False
+    rebuild_pdf = True
     compress_pdf_by_budget(
         input_path=input_path,
         output_path=output_path,
