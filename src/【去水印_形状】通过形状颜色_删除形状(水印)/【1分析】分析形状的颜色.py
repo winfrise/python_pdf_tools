@@ -1,5 +1,24 @@
 import fitz
 
+def get_color_block(r, g, b, width=5):
+    """
+    在控制台输出指定 RGB 颜色的正方形块
+    :param r: 红色通道 (0-255)
+    :param g: 绿色通道 (0-255)
+    :param b: 蓝色通道 (0-255)
+    :param width: 块的宽度 (字符数)
+    :param height: 块的高度 (行数)
+    """
+    # 24位真彩色 ANSI 转义序列
+    color_code = f"\033[38;2;{r};{g};{b}m"
+    reset_code = "\033[0m"
+    
+    # 生成一行由全块字符组成的字符串
+    line = "█" * width
+    
+    # 按指定高度循环输出
+    return (f"{color_code}{line}{reset_code}")
+
 def diagnose_pdf_colors(pdf_path, max_pages=5):
     doc = fitz.open(pdf_path)
     print(f"--- 开始诊断文件: {pdf_path} ---")
@@ -45,11 +64,15 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
             ))
 
         for fill_color_type, fill_rgb_float, fill_rgb_int, fill_opacity in sorted(unique_fills):
+            r, g, b = fill_rgb_int
+            color_block = get_color_block(r, g, b)
+
+
             opacity_flag = "  <-- 疑似水印/底纹(低不透明)" if fill_opacity < 0.6 else ""
-            print(f"Color Type: {fill_color_type}  Float(0-1): {fill_rgb_float} | Int(0-255): {fill_rgb_int} | fill_opacity: {fill_opacity}{opacity_flag}")
+            print(f"{color_block} Color Type: {fill_color_type}  Float(0-1): {fill_rgb_float} | Int(0-255): {fill_rgb_int} | fill_opacity: {fill_opacity}{opacity_flag}")
 
     doc.close()
 
 if __name__ == "__main__":
     # 请确保将路径替换为你自己的文件路径
-    diagnose_pdf_colors("/Users/teacher/Desktop/未命名文件夹/身体使用说明书9.24.pdf")
+    diagnose_pdf_colors("/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/初二下合_output_删除图片_output_遮挡.pdf")
