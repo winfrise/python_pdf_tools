@@ -176,12 +176,12 @@ def compress_pdf_by_budget(input_path, output_path, target_size_kb=900,total_ima
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Downloads/贫困生佐证材料.pdf"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 3/中华本草-苗药卷.pdf"
     output_path = input_path.replace('.pdf', '_压缩.pdf')
-    target_size_kb = 5 * 1024
+    target_size_kb = 75 * 1024
     overhead_kb = 500
     total_images = get_images_total_count(input_path)
-    rebuild_pdf = True
+    rebuild_pdf = False
     compress_pdf_by_budget(
         input_path=input_path,
         output_path=output_path,
