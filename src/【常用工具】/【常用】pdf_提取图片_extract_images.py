@@ -88,8 +88,8 @@ if __name__ == "__main__":
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Downloads/贫困生佐证材料.pdf" 
-    PAGE_RANGE = "1-1000"
+    INPUT_FILE = "/Users/teacher/Desktop/pdf_command/pdf解密/output/2026高考真题解析v12-咖啡哐哐-发布版（新增北京卷）_色阶去水印.pdf" 
+    PAGE_RANGE = "1-5"
     ROTATE_ANGLE = 0
     TARGET_IMG_INDEX = -1
 
