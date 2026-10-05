@@ -1,21 +1,21 @@
-import fitz  # PyMuPDF
-import os
-
-import sys
-import os
+import fitz 
+import sys, io, os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from utils import process_file_with_callback, batch_process_file_with_callback
+from utils import parse_page_range, batch_process_file_with_callback
 from PIL import Image
-import io
 
 def extract_images(input_file, page_range):
     output_dir = os.path.splitext(input_file)[0] + "__提取的图片"
     # 自动创建不存在的文件夹
     os.makedirs(output_dir, exist_ok=True) 
 
-    def callback_func(page, page_num, doc):
+    doc = fitz.open(input_file)
+    total_pages = len(doc)
+    target_pages = parse_page_range(page_range, total_pages)
+
+    for page_num in target_pages:
+        page = doc[page_num]
 
         # 获取当前页面的所有图片列表
         image_list = page.get_images(full=True)
@@ -31,7 +31,7 @@ def extract_images(input_file, page_range):
             
             # 7. 构造图片保存的文件名
             inner_name = img[7] # 文档流中的名字
-            image_filename = f"page{page_num}_img{img_index + 1}_{inner_name}.{image_ext}"
+            image_filename = f"page{page_num + 1}_img{img_index + 1}_{inner_name}.{image_ext}"
             image_full_path = os.path.join(output_dir, image_filename)
     
             # 8. 将图片写入本地文件
@@ -41,12 +41,6 @@ def extract_images(input_file, page_range):
 
             print(f"✅ 已保存: {image_filename}")
 
-    process_file_with_callback(
-        input_file=input_file, 
-        output_file="NOT_SAVE", 
-        page_range=page_range, 
-        callback_func=callback_func,
-    )
 
 
 
