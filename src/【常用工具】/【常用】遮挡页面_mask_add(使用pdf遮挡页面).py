@@ -88,11 +88,11 @@ def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages,mask_li
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/专业课背诵笔记.pdf"
+    input_path = "/Users/teacher/Desktop/企业画册/常为行星样册.pdf"
 
-    page_range = "1-1000" # page_range 示例：1,3, 5-9
+    page_range = "7-1000" # page_range 示例：1,3, 5-9
     # exclude_pages = {1, 13, 27}
-    exclude_pages = {}
+    exclude_pages = {10, 11, 19, 23, 29, 34, 39, 44, 49, 53, 58, 62, 70, 73}
     def get_mask_path (page_num):
         # if page_num in [10, 24]:
         #     return "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/mask2.pdf"
