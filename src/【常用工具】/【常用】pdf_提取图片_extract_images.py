@@ -76,14 +76,6 @@ def extract_images(input_file, page_range, rotate_angle=0):
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    def rotate_angele_func (page, img_info):
-        # width = img_info['width']
-        # height = img_info['height']
-
-        # if width > height:
-        #     return -90
-        # 正数：逆时针旋转，负数：顺时针旋转
-        return 0
 
     INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/学业质量测评语文4上.pdf" 
     PAGE_RANGE = "1-1000"
