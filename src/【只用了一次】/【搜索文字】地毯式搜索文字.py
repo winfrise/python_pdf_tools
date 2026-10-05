@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import fitz
 import re
+from collections import defaultdict
 
 PDF = "/Users/teacher/Desktop/百度网盘下载/001/黄坪营黄氏挂图_副本.pdf"
 doc = fitz.open(PDF)
@@ -14,14 +15,30 @@ for pno, page in enumerate(doc):
     txt = page.get_text()
     if "百家有谱" in txt:
         print(f"  page {pno+1}: get_text() 里含 '百家有谱'")
+
+        # 统计
+        span_stats = defaultdict(int)
+
         # 看它属于哪个 span
         d = page.get_text("dict")
         for block in d["blocks"]:
             for line in block.get("lines", []):
+
+
                 for span in line["spans"]:
                     if "百家有谱" in span["text"]:
-                        print(f"    font={span['font']} size={span['size']} "
-                              f"color={span['color']:#08x} bbox={span['bbox']}")
+                        x0, y0, x1, y1 = span['bbox']
+                        bbox_width = round(x1 - x0)
+                        bbox_height = round(y1 - y0)
+                        span_key = (span['font'], round(span['size'], 2), span['color'], bbox_width, bbox_height)
+                        span_stats[span_key] += 1
+
+        # 打印汇总报告
+        if span_stats:
+            print("\n=== 样式统计报告 ===")
+            for span_item, count in span_stats.items():
+                print(f"font: {span_item[0]}, font_size: {span_item[1]}, color: {span_item[2]:#08x}, width={span_item[3]}, height={span_item[4]} -> 共 {count} 个")
+    
     else:
         print(f"  page {pno+1}: get_text() 里没有 '百家有谱'")
 
@@ -29,12 +46,11 @@ print()
 print("=" * 60)
 print("2) 按位置搜索")
 print("=" * 60)
+
 for pno, page in enumerate(doc):
     rects = page.search_for("百家有谱")
     if rects:
         print(f"  page {pno+1}: 找到 {len(rects)} 处")
-        for r in rects:
-            print(f"    bbox = {r}")
     else:
         print(f"  page {pno+1}: 没找到")
 
