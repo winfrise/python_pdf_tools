@@ -12,6 +12,8 @@ def remove_fm3(input_pdf, output_pdf):
             if not raw:
                 continue
             text = raw.decode("latin-1")
+
+            # 查找目标，并替换为空字符串
             new_text, n = re.subn(r"/Fm3\s+Do\b", "", text)
             if n:
                 doc.update_stream(xref, new_text.encode("latin-1"))
