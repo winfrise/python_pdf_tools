@@ -67,5 +67,5 @@ def save_raw_content_streams(input_pdf):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 将这里的路径替换为你实际的 PDF 文件路径
-    pdf_path = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹 2/背诵资料/美国文学考研资料.pdf" 
+    pdf_path = "/Users/teacher/Desktop/百度网盘下载/001/黄坪营黄氏挂图_副本.pdf" 
     save_raw_content_streams(pdf_path)
