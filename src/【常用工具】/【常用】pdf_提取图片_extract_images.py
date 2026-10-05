@@ -10,7 +10,7 @@ from utils import process_file_with_callback, batch_process_file_with_callback
 from PIL import Image
 import io
 
-def extract_images(input_file, page_range, rotate_angle=0, target_img_index = -1):
+def extract_images(input_file, page_range, rotate_angle=0):
     output_dir = os.path.splitext(input_file)[0] + "__提取的图片"
     # 自动创建不存在的文件夹
     os.makedirs(output_dir, exist_ok=True) 
@@ -22,10 +22,7 @@ def extract_images(input_file, page_range, rotate_angle=0, target_img_index = -1
 
         # 6. 遍历当前页面的所有图片
         for img_index, img in enumerate(image_list):
-
-            if (target_img_index >= 0) & (img_index != target_img_index):
-                continue
-            
+        
             xref = img[0]  # 图片的引用ID (xref)
             
             # 根据 xref 提取图片的原始数据
@@ -88,17 +85,15 @@ if __name__ == "__main__":
         # 正数：逆时针旋转，负数：顺时针旋转
         return 0
 
-    INPUT_FILE = "/Users/teacher/Downloads/2026年下事业单位联考C类《职测》绝密押题卷（一）.pdf" 
+    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/学业质量测评语文4上.pdf" 
     PAGE_RANGE = "1-1000"
     ROTATE_ANGLE = 0
-    TARGET_IMG_INDEX = -1
 
     if os.path.isfile(INPUT_FILE):
         extract_images(
             input_file = INPUT_FILE, 
             page_range = PAGE_RANGE, 
             rotate_angle = ROTATE_ANGLE,
-            target_img_index=TARGET_IMG_INDEX,
         )
     elif os.path.isdir(INPUT_FILE):
         def callback_func(input_file, output_file):
@@ -106,7 +101,6 @@ if __name__ == "__main__":
                 input_file=input_file,
                 page_range = PAGE_RANGE,
                 rotate_angle = ROTATE_ANGLE,
-                target_img_index=TARGET_IMG_INDEX,
             )
         input_dir = INPUT_FILE
         batch_process_file_with_callback(
