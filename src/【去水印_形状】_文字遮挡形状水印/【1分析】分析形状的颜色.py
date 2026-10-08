@@ -19,42 +19,43 @@ def get_color_block(r, g, b, width=5):
     # 按指定高度循环输出
     return (f"{color_code}{line}{reset_code}")
 
-def diagnose_pdf_colors(pdf_path, max_pages=5):
-    doc = fitz.open(pdf_path)
-    print(f"--- 开始诊断文件: {pdf_path} ---")
+def diagnose_pdf_colors(input_path, max_pages=5):
+    doc = fitz.open(input_path)
+    print(f"--- 开始诊断文件: {input_path} ---")
+
     for page_num in range(min(max_pages, len(doc))):
         page = doc[page_num]
+
+        # 获取页面中所有形状
         drawings = page.get_drawings()
         if not drawings:
             print(f"\n[第 {page_num + 1} 页] 没有发现图形对象")
             continue
+
         print(f"\n[第 {page_num + 1} 页] 共发现 {len(drawings)} 个图形对象")
 
         unique_fills = set()
-        for d in drawings:
-            fill = d.get("fill")
+        for shape in drawings:
+            fill_color = shape.get("fill")
+            fill_opacity = shape.get("fill_opacity")     # 填充不透明度
+            stroke_opacity = shape.get("stroke_opacity")   # 描边不透明度
 
-            if fill is None:
+            if fill_color is None:
                 continue
 
             # 判断颜色类型
-            fill_color_type = ''
-            n = len(fill)
-            if n == 1:
-                fill_color_type =  "灰度(Gray)"
-            elif n == 3:
-                fill_color_type = "RGB"
-            elif n == 4:
-                fill_color_type = "CMYK"
-            else:
-                fill_color_type =  "未知"
+            fill_color_type = {
+                1: "灰度(Gray)", 
+                3: "RGB", 
+                4: "CMYK"
+            }.get(len(fill_color), "未知")
 
-            fill_rgb_float = (round(fill[0], 20), round(fill[1], 20), round(fill[2], 20))
-            fill_rgb_int = (int(fill[0] * 255), int(fill[1] * 255), int(fill[2] * 255))
+            # 1. 浮点数保留3位小数
+            fill_rgb_float = tuple(map(lambda x: round(x, 3), fill_color))
 
-            # 关键：读取透明度。None 表示未设置，等价于 1.0（完全不透明）
-            fill_opacity = d.get("fill_opacity")     # 填充不透明度
-            stroke_opacity = d.get("stroke_opacity")   # 描边不透明度
+            # 2. 转换为 0-255 整数
+            fill_rgb_int = tuple(map(lambda x: int(x * 255), fill_color))
+
 
             unique_fills.add((
                 fill_color_type, 
@@ -67,12 +68,20 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
             r, g, b = fill_rgb_int
             color_block = get_color_block(r, g, b)
 
+            opacity_flag = " <-- 疑似水印/底纹(低不透明)" if fill_opacity < 0.6 else ""
 
-            opacity_flag = "  <-- 疑似水印/底纹(低不透明)" if fill_opacity < 0.6 else ""
-            print(f"{color_block} Color Type: {fill_color_type}  Float(0-1): {fill_rgb_float} | Int(0-255): {fill_rgb_int} | fill_opacity: {fill_opacity}{opacity_flag}")
+            # 使用圆括号 () 包裹，允许在内部自由换行
+            print(
+                f"{color_block} Color Type: {fill_color_type}  "
+                f"Float(0-1): {fill_rgb_float} | "
+                f"Int(0-255): {fill_rgb_int} | "
+                f"fill_opacity: {fill_opacity}{opacity_flag}"
+            )
 
     doc.close()
 
 if __name__ == "__main__":
-    # 请确保将路径替换为你自己的文件路径
-    diagnose_pdf_colors("/Users/teacher/Desktop/pdf_command/pdf解密/output/001/01.pdf")
+    input_path = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/Lesson 1.pdf"
+    diagnose_pdf_colors(
+        input_path = input_path
+    )

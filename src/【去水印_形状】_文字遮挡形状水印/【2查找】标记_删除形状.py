@@ -60,63 +60,42 @@ def mark_shapes(input_pdf, output_pdf, is_target_shape_func, dry_run=True):
 # --- 使用示例 ---
 if __name__ == "__main__":
 
-    def check_target_shape_by_height(shape):
+    def check_target_shape(shape):
+        fill_color = shape.get("fill")
+        fill_opacity = shape.get("fill_opacity", 1.0)
+
         rect = shape.get("rect")
-        if not rect:
-            return False
-        width = rect[2] - rect[0]
-        height = rect[3] - rect[1]
-        if (height > 11.5 and height < 12.5 and rect[2] > 546):
-            print(rect)
-            return True
-        return False
+        shape_width = rect[2] - rect[0]
+        shape_height = rect[3] - rect[1]
 
-    def check_target_shape_by_fill_opacity(shape):
-        fill_color = shape.get("fill")
-        fill_opacity = shape.get("fill_opacity", 1.0)
-        if fill_color and fill_opacity:
-            target_color = (0.95, 0.95, 0.95)
-            target_fill_opacity = 0.32
-            rounded_fill_color = tuple(round(c, 2) for c in fill_color)
-            rounded_fill_opacity = round(fill_opacity, 2)
-            if rounded_fill_color == target_color and rounded_fill_opacity == target_fill_opacity:
-                print("fill_color:", fill_color)
-                print("fill_opacity:", fill_opacity)
-                n = len(fill_color)
-                kind = {3: "RGB/灰度", 4: "CMYK", 1: "灰度"}.get(n, "未知")
-                print("颜色类型：", kind)
-                return True
-        return False
 
-    def check_target_shape_by_fill(shape):
-        fill_color = shape.get("fill")
-        fill_opacity = shape.get("fill_opacity", 1.0)
-        check_mode = "opacity"
-        if check_mode == 'opacity':
+        CHECK_MODE = "fill_color"
+
+        # 通过透明度判断
+        if CHECK_MODE == 'opacity':
             target_fill_opacity = 0.2
             if fill_opacity and (round(fill_opacity, 2) == round(target_fill_opacity, 2)):
                 return True
-        elif check_mode == 'fill_color':
+        # 通过填充色判断
+        elif CHECK_MODE == 'fill_color':
             if fill_color:
-                target_color = (0.968, 0.968, 0.968)
+                target_color = (0.75, 0.75, 0.75)
                 rounded_fill_color = tuple(round(c, 2) for c in fill_color)
                 rounded_target_color = tuple(round(c, 2) for c in target_color)
                 if rounded_fill_color == rounded_target_color:
-                    print("fill_color:", fill_color)
-                    n = len(fill_color)
-                    kind = {3: "RGB/灰度", 4: "CMYK", 1: "灰度"}.get(n, "未知")
-                    print("颜色类型：", kind)
                     return True
+                
         return False
 
-    input_pdf = "/Users/teacher/Desktop/pdf_command/pdf解密/output/001/01.pdf"
+    input_pdf = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/Lesson 1.pdf"
     output_pdf = input_pdf.replace('.pdf', '_output_标记目标形状.pdf')
-    is_target_shape_func = check_target_shape_by_fill
+    is_target_shape_func = check_target_shape
+    dry_run = True
 
     # 建议流程：先 dry_run=True 确认命中准确，再改 False 正式删除
     mark_shapes(
         input_pdf=input_pdf,
         output_pdf=output_pdf,
         is_target_shape_func=is_target_shape_func,
-        dry_run=True,   # ← 改成 False 即彻底删除
+        dry_run=dry_run,  
     )
