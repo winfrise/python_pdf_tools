@@ -13,8 +13,9 @@ import sys
 import fitz
 
 # 目标颜色指令(逐字节匹配，注意 0.051 后是两个空格)
-TARGET = b"0 0 0 0.051  scn"
-WHITE  = b"0 0 0 0  scn"   # CMYK 白色(分量个数与目标一致)
+TARGET = b"0 0 0 scn"
+# WHITE  = b"0 0 0 0  scn"   # CMYK 黑色(分量个数与目标一致)
+WHITE  = b"0 1 0 scn "   # CMYK 白色(分量个数与目标一致)
 
 
 def hide_by_whitening(doc):
@@ -26,6 +27,7 @@ def hide_by_whitening(doc):
             if not data:
                 continue
             hit = data.count(TARGET)
+            print(f"【{TARGET}】count:{hit}")
             if hit:
                 doc.update_stream(xref, data.replace(TARGET, WHITE))
                 total += hit
@@ -51,7 +53,7 @@ def hide_by_transparency(doc):
 
 
 if __name__ == "__main__":
-    src = "/Users/teacher/Desktop/百度网盘下载/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义.pdf"
+    src = "/Users/teacher/Desktop/pdf_command/pdf解密/output/001/01.pdf"
     out = src.replace('.pdf', '_output.pdf')
     transparent = None
     doc = fitz.open(src)
