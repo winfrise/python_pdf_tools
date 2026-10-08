@@ -75,4 +75,4 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
 
 if __name__ == "__main__":
     # 请确保将路径替换为你自己的文件路径
-    diagnose_pdf_colors("/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/初二下合_output_删除图片_output_遮挡.pdf")
+    diagnose_pdf_colors("/Users/teacher/Desktop/pdf_command/pdf解密/output/001/01.pdf")

@@ -90,34 +90,44 @@ if __name__ == "__main__":
 
     def check_target_shape_by_fill(shape):
         fill_color = shape.get("fill")
+        fill_opacity = shape.get("fill_opacity", 1.0)
 
-        if fill_color:
-            target_color = (0.968, 0.968, 0.968)
+        check_mode = "opacity"
 
-            rounded_fill_color = tuple(round(c, 2) for c in fill_color)
-            rounded_target_color = tuple(round(c, 2) for c in target_color)
-
-            # 示例：如果指定了目标颜色，且形状颜色匹配，且透明度匹配，则判定为需要删除
-            if rounded_fill_color == rounded_target_color:
-                print("fill_color:", fill_color)
-
-                # 判断谍有类型
-                n = len(fill_color)
-                if n == 3:
-                    kind = "RGB/灰度"
-                elif n == 4:
-                    kind = "CMYK"
-                elif n == 1:
-                    kind = "灰度"
-                print("颜色类型：", kind)
-
+        if (check_mode == 'opacity'):
+            # 通过透明度判断
+            target_fill_opacity = 0.2
+            if fill_opacity and (round(fill_opacity, 2) == round(target_fill_opacity, 2)):
                 return True
-            
+        elif check_mode == 'fill_color':
+            # 通过填充色判断
+            if fill_color:
+                target_color = (0.968, 0.968, 0.968)
+
+                rounded_fill_color = tuple(round(c, 2) for c in fill_color)
+                rounded_target_color = tuple(round(c, 2) for c in target_color)
+
+                # 示例：如果指定了目标颜色，且形状颜色匹配，且透明度匹配，则判定为需要删除
+                if rounded_fill_color == rounded_target_color:
+                    print("fill_color:", fill_color)
+
+                    # 判断谍有类型
+                    n = len(fill_color)
+                    if n == 3:
+                        kind = "RGB/灰度"
+                    elif n == 4:
+                        kind = "CMYK"
+                    elif n == 1:
+                        kind = "灰度"
+                    print("颜色类型：", kind)
+
+                    return True
+                
         return False
 
 
 
-    input_pdf = "/Users/teacher/Desktop/百度网盘下载/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义/1.【言语】理论刷题合集讲义&答案（全）-粉笔名师-讲义.pdf"
+    input_pdf = "/Users/teacher/Desktop/pdf_command/pdf解密/output/001/01.pdf"
     output_pdf = input_pdf.replace('.pdf', '_output_标记目标形状.pdf')
     is_target_shape_func = check_target_shape_by_fill
 
