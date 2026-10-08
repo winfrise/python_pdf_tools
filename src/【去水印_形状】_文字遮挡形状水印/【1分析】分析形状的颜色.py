@@ -81,7 +81,7 @@ def diagnose_pdf_colors(input_path, max_pages=5):
     doc.close()
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/Lesson 1.pdf"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/初二下合_output_删除图片_output_遮挡左右_output_遮挡.pdf"
     diagnose_pdf_colors(
         input_path = input_path
     )

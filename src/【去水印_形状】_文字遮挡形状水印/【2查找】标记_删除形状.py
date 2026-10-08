@@ -1,6 +1,23 @@
 import fitz  # PyMuPDF
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils import parse_page_range
+from utils import  batch_process_file_with_callback
 
-def mark_shapes(input_pdf, output_pdf, is_target_shape_func, dry_run=True):
+def hex_to_pymupdf_color(hex_color: str) -> tuple:
+    """
+    将 16 进制颜色转换为 PyMuPDF 的小数色值元组 (R, G, B)
+    :param hex_color: 16进制颜色字符串，如 '#FF5733' 或 'FF5733'
+    :return: (r, g, b) 元组，值范围 0.0 - 1.0
+    """
+    hex_color = hex_color.lstrip('#')  # 去掉可能存在的 '#'
+    r = int(hex_color[0:2], 16) / 255.0
+    g = int(hex_color[2:4], 16) / 255.0
+    b = int(hex_color[4:6], 16) / 255.0
+    return (round(r, 4), round(g, 4), round(b, 4))
+
+
+def mark_shapes(input_pdf, output_pdf, is_target_shape_func, page_range=None, dry_run=True):
     """
     删除 PDF 中的形状，支持试运行模式。
     
@@ -11,7 +28,10 @@ def mark_shapes(input_pdf, output_pdf, is_target_shape_func, dry_run=True):
     """
     doc = fitz.open(input_pdf)
     
-    for page_num in range(doc.page_count):
+    total_pages = len(doc)
+    target_pages = parse_page_range(page_range, total_pages)
+
+    for page_num in target_pages:
         page = doc[page_num]
         paths = page.get_drawings()
         
@@ -65,6 +85,8 @@ if __name__ == "__main__":
         fill_opacity = shape.get("fill_opacity", 1.0)
 
         rect = shape.get("rect")
+        shape_pos_x = rect[0]
+        shape_pos_y = rect[1]
         shape_width = rect[2] - rect[0]
         shape_height = rect[3] - rect[1]
 
@@ -79,23 +101,27 @@ if __name__ == "__main__":
         # 通过填充色判断
         elif CHECK_MODE == 'fill_color':
             if fill_color:
-                target_color = (0.75, 0.75, 0.75)
+                # target_color = (0.961, 0.584, 0.596)
+                target_color = hex_to_pymupdf_color("#fee4b8")
                 rounded_fill_color = tuple(round(c, 2) for c in fill_color)
                 rounded_target_color = tuple(round(c, 2) for c in target_color)
                 if rounded_fill_color == rounded_target_color:
+
                     return True
                 
         return False
 
-    input_pdf = "/Users/teacher/Desktop/百度网盘下载/未命名文件夹/Lesson 1.pdf"
+    input_pdf = "/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/初二下合_output_删除图片_output_遮挡左右_output_遮挡.pdf"
     output_pdf = input_pdf.replace('.pdf', '_output_标记目标形状.pdf')
     is_target_shape_func = check_target_shape
-    dry_run = True
+    dry_run = False
+    page_range = "1-1000"
 
     # 建议流程：先 dry_run=True 确认命中准确，再改 False 正式删除
     mark_shapes(
         input_pdf=input_pdf,
         output_pdf=output_pdf,
         is_target_shape_func=is_target_shape_func,
+        page_range = page_range,
         dry_run=dry_run,  
     )

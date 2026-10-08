@@ -4,68 +4,43 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils import process_file_with_callback, batch_process_file_with_callback
 
-def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages,mask_list = []):
+def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages, mask_pdf_path ):
     if not output_file:
         output_file = input_file.replace(".pdf", "_output_遮挡.pdf")
 
     def callback_func(page, page_num, doc):
         if page_num in exclude_pages:
             return
-        
-        # 遍历配置列表，在同一页添加多张图片
-        for mask_item in mask_list:
-            mask_path = mask_item.get('path')
-            pos = mask_item.get('pos', (0, 0))
-            size = mask_item.get('size', None) # 默认为None，表示原始尺寸
-            src_page_index = mask_item.get('page_index', 0) # 默认为PDF图片的第0页
-            rotate = mask_item.get('rotate', 0)
 
-            # 执行函数获取实际路径
-            if callable(mask_path):
-                mask_path = mask_path(page_num)
+        mask_path = mask_pdf_path
+        if callable(mask_path):
+            mask_path = mask_path(page_num)
+
 
             if not mask_path or not os.path.exists(mask_path):
                 print(f"⚠️ 警告: Mask文件不存在 {mask_path}")
-                continue
+                return
 
             try:
                 # --- 关键修改部分 ---
                 # 1. 打开图片PDF文件 (作为对象)
                 mask_doc = fitz.open(mask_path)
                 
-                # 2. 获取源页面的矩形区域（用于获取原始宽高）
-                src_page = mask_doc.load_page(src_page_index)
-                src_rect = src_page.rect # 获取原始尺寸 rect(x0, y0, x1, y1)
-                original_width = src_rect.width
-                original_height = src_rect.height
-                
-                # 3. 计算插入区域
-                x, y = pos
-                if size is None:
-                    # 如果size为None，使用原始尺寸
-                    w, h = original_width, original_height
-                elif size == 'fullscreen':
-                    w, h = page.rect.width, page.rect.height
-                else:
-                    w, h = size
-                
+                mask_page = mask_doc.load_page(0)
+                mask_page_width = mask_page.rect.width
+                mask_page_height = mask_page.rect.height
+            
+
                 # 定义目标矩形：(左上x, 左上y, 右下x, 右下y)
-                # target_rect = fitz.Rect(x, y, x + w, y + h)
+                target_rect = fitz.Rect(0, 0, mask_page_width, mask_page_height)
 
-                rect_width = x + w
-                rect_height = y + h
-
-                if rotate in [90, -90, 270, -270]:
-                    target_rect = fitz.Rect(y, x, rect_height, rect_width)
-                else:
-                    target_rect = fitz.Rect(x, y, rect_width, rect_height)
 
                 # 4. 执行嵌入 (传入 img_doc 对象，而不是路径字符串)
                 # 注意：show_pdf_page 的参数顺序是 (rect, pdf_document, page_number)
                 page.show_pdf_page(
-                    target_rect, mask_doc, src_page_index, 
+                    target_rect, mask_doc, 0, 
                     keep_proportion=True,
-                    rotate=rotate, 
+                    rotate=0, 
                     overlay=True
                 )
                 
@@ -88,38 +63,23 @@ def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages,mask_li
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/企业画册/常为行星样册_output_遮挡.pdf"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/初二下合_output_删除图片_output_遮挡左右.pdf"
 
-    page_range = "10, 11, 19, 23, 29, 34, 39, 44, 49, 53, 58, 62, 70, 73" # page_range 示例：1,3, 5-9
+    # page_range 示例：1,3, 5-9
+    page_range = "10, 24, 36, 48, 62, 75, 88, 99, 113, 126, 138, 147, 154, 163, 174, 200, 212, 226, 238, 250, 263, 274, 284"
+    exclude_pages = {}
     # exclude_pages = {1, 13, 27}
-    exclude_pages = {10, 11, 19, 23, 29, 34, 39, 44, 49, 53, 58, 62, 70, 73}
-    def get_mask_path (page_num):
-        # if page_num in [10, 24]:
-        #     return "/Users/teacher/Desktop/百度网盘下载/去水印-初二下合/mask2.pdf"
-        return "/Users/teacher/Desktop/企业画册/常为行星样册_output_遮挡.pdf"
 
-    mask_list = [
-        # {
-        #     "path": "/Users/teacher/Downloads/百度网盘Download/Desktop-1/mask36.pdf",      # 你的SVG转成的PDF
-        #     "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
-        #     "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
-        #     "page_index": 0,          # 取该PDF的第0页
-        #     "rotate": 0,  # 新增：设置为True以旋转90度
-        # },
-        {
-            "path": get_mask_path,      # 你的SVG转成的PDF
-            "pos": (0, 0),         # 距离左边50，距离底部50 (坐标系原点在左下角)
-            "size": None,      # None：表示原尺寸添加；(200, 200)：表示宽200，高200 fullscreen:表示全屏添加
-            "page_index": 0          # 取该PDF的第0页
-        },
-        # 可以继续添加更多图片配置...
-    ]
+    def get_mask_path (page_num):
+        return "/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/mask2.pdf"
+
+    mask_pdf_path = get_mask_path
 
     # 单个文件处理
     if os.path.isfile(input_path):
         add_shape_to_pdf(
                 input_file=input_path, 
-                mask_list=mask_list, 
+                mask_pdf_path=mask_pdf_path, 
                 page_range=page_range, 
                 output_file = None,
                 exclude_pages = exclude_pages,
@@ -130,7 +90,7 @@ if __name__ == "__main__":
                 input_file=input_file,
                 output_file=output_file,
                 page_range = page_range,
-                mask_list = mask_list, 
+                mask_pdf_path = mask_pdf_path, 
                 exclude_pages = exclude_pages,
             )
         input_dir = input_path
