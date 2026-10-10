@@ -66,7 +66,7 @@ if __name__ == "__main__":
     input_path = "/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/初二下合_output_删除图片_output_遮挡左右.pdf"
 
     # page_range 示例：1,3, 5-9
-    page_range = "10, 24, 36, 48, 62, 75, 88, 99, 113, 126, 138, 147, 154, 163, 174, 200, 212, 226, 238, 250, 263, 274, 284"
+    page_range = "1-999"
     exclude_pages = {}
     # exclude_pages = {1, 13, 27}
 
