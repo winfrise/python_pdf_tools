@@ -32,8 +32,8 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Users/teacher/Desktop/百度网盘下载/50+10元/昆明机场豪生酒店方案汇报20250825(1).pdf"
-    TARGET_SIZES = ["2196x1238"]
+    INPUT_PDF = "/Users/teacher/Desktop/百度网盘下载/凯斯丽亚/3.pdf"
+    TARGET_SIZES = ["405x123"]
 
     if os.path.isfile(INPUT_PDF):
         delete_images_by_object(
