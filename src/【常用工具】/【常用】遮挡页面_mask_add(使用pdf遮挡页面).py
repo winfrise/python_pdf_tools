@@ -63,7 +63,7 @@ def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages, mask_p
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/初二下合_output_删除图片_output_遮挡左右.pdf"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/凯斯丽亚/3_去水印.pdf"
 
     # page_range 示例：1,3, 5-9
     page_range = "1-999"
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     # exclude_pages = {1, 13, 27}
 
     def get_mask_path (page_num):
-        return "/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/mask2.pdf"
+        return "/Users/teacher/Desktop/百度网盘下载/凯斯丽亚/logo_black.pdf"
 
     mask_pdf_path = get_mask_path
 
