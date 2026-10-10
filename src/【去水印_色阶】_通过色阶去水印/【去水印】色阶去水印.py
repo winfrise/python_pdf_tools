@@ -121,7 +121,7 @@ def process_pdf_by_levels(
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/pdf_command/pdf解密/output/三层透视，四步解题：高考英语阅读的确定性得分系统 by咖啡哐哐_发布版.pdf"
+    input_path = "/Users/teacher/Desktop/百度网盘下载/2M/（已压缩）郑州市课题_扫描版__提取的图片"
     output_path = input_path.replace('.pdf', '_色阶去水印.pdf')
 
     # ==== 色阶参数（PS「设置白场」等价控制）====
