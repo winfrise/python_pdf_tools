@@ -32,8 +32,8 @@ def scale_pdf_by_width_cm(input_path, output_path, new_width_cm):
     print(f"缩放完成，新宽度为: {new_width_cm} 厘米")
 
 # 使用示例：将PDF缩放为宽度 400 点
-input_path = "/Users/teacher/Downloads/高鸿泽-作品集.pdf"
-new_width_cm = 30
+input_path = "/Users/teacher/Desktop/未命名文件夹/组合 1.pdf"
+new_width_cm = 15
 output_path = input_path.replace('.pdf', f"_width_{new_width_cm}.pdf")
 
 scale_pdf_by_width_cm(
