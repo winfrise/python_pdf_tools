@@ -63,15 +63,15 @@ def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages, mask_p
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Downloads/mask/3719986870XL-B100-8017-C1615-S.pdf"
+    input_path = "/Users/teacher/Downloads/英语单词去水印/艾宾浩斯单词课件 (1)_output_删除图片.pdf"
 
     # page_range 示例：1,3, 5-9
-    page_range = "1-999"
+    page_range = "1-10000"
     exclude_pages = {}
     # exclude_pages = {1, 13, 27}
 
     def get_mask_path (page_num):
-        return "/Users/teacher/Downloads/mask/mask.pdf"
+        return "/Users/teacher/Downloads/英语单词去水印/mask.pdf"
 
     mask_pdf_path = get_mask_path
 

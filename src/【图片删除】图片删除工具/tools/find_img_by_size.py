@@ -1,4 +1,5 @@
 import fitz  # PyMuPDF
+import re
 from collections import defaultdict
 
 def find_img_by_size(input_pdf, target_sizes):

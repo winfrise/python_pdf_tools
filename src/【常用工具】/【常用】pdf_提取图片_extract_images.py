@@ -47,7 +47,7 @@ def extract_images(input_file, page_range):
 # ================= 使用示例 =================
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Users/teacher/Downloads/英语单词去水印/艾宾浩斯单词课件 (1).pdf" 
+    INPUT_FILE = "/Users/teacher/Downloads/英语单词去水印/艾宾浩斯单词课件 (1)_output_删除图片.pdf" 
     PAGE_RANGE = "1-5"
 
     if os.path.isfile(INPUT_FILE):
