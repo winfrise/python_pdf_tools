@@ -61,7 +61,7 @@ def merge_two_pages_to_one(input_pdf, output_pdf):
 
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/检索证明/001"   # 输入的 2 页 PDF
+    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/检索证明/001_副本"   # 输入的 2 页 PDF
 
     if os.path.isfile(INPUT_FILE):
         input_path = INPUT_FILE
