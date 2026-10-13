@@ -59,6 +59,6 @@ def merge_two_pages_to_one(input_pdf, output_pdf):
 
 
 # 调用函数（替换为你的输入/输出路径）
-input_pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/RT-2026-4186_i_21584-副本2.pdf"   # 输入的 2 页 PDF
+input_pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/RT-2026-4186_i_21584_转静态.pdf"   # 输入的 2 页 PDF
 output_pdf_path = input_pdf_path.replace('.pdf', '_合并.pdf')
 merge_two_pages_to_one(input_pdf_path, output_pdf_path)
