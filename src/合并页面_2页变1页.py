@@ -15,8 +15,9 @@ def merge_two_pages_to_one(input_pdf, output_pdf):
     new_doc = fitz.open()
     new_page = new_doc.new_page(width=a4_height, height=a4_width)  # 横版
 
-    page1 = doc[0]
-    page2 = doc[1]
+    page1 = doc[0] # 第一页
+    # page2 = doc[1] # 第2页
+    page2 = doc[len(doc) - 1] # 最后一页
 
     scale = a4_width / page1.rect.height          # 595/842 ≈ 0.706
     scaled_width = page1.rect.width * scale       # 原页缩放后的宽度
@@ -61,7 +62,7 @@ def merge_two_pages_to_one(input_pdf, output_pdf):
 
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/检索证明/001_副本"   # 输入的 2 页 PDF
+    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/检索02/001"   # 输入的 2 页 PDF
 
     if os.path.isfile(INPUT_FILE):
         input_path = INPUT_FILE
