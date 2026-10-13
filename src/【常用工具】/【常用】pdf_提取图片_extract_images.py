@@ -47,8 +47,8 @@ def extract_images(input_file, page_range):
 # ================= 使用示例 =================
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/9-12月雅思口语题库完整版/9-12月雅思口语题库完整版.pdf" 
-    PAGE_RANGE = "1-1000"
+    INPUT_FILE = "/Users/teacher/Downloads/英语单词去水印/艾宾浩斯单词课件 (1).pdf" 
+    PAGE_RANGE = "1-5"
 
     if os.path.isfile(INPUT_FILE):
         extract_images(
