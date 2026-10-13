@@ -1,4 +1,3 @@
-import fitz  # PyMuPDF
 import fitz
 
 def remove_watermark_by_logic(pdf_path, output_path):
