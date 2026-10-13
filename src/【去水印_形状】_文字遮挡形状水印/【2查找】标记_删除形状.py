@@ -91,31 +91,34 @@ if __name__ == "__main__":
         shape_height = rect[3] - rect[1]
 
 
-        CHECK_MODE = "fill_color"
+        CHECK_MODE = "opacity"
 
         # 通过透明度判断
         if CHECK_MODE == 'opacity':
-            target_fill_opacity = 0.2
+            target_fill_opacity = 0.5
             if fill_opacity and (round(fill_opacity, 2) == round(target_fill_opacity, 2)):
+                print(1)
                 return True
-        # 通过填充色判断
-        elif CHECK_MODE == 'fill_color':
-            if fill_color:
-                # target_color = (0.961, 0.584, 0.596)
-                target_color = hex_to_pymupdf_color("#fee4b8")
-                rounded_fill_color = tuple(round(c, 2) for c in fill_color)
-                rounded_target_color = tuple(round(c, 2) for c in target_color)
-                if rounded_fill_color == rounded_target_color:
+        # # 通过填充色判断
+        # elif CHECK_MODE == 'fill_color':
+        #     if fill_color:
+        #         # target_color = (0.961, 0.584, 0.596)
+        #         target_color = hex_to_pymupdf_color("#fee4b8")
+        #         rounded_fill_color = tuple(round(c, 2) for c in fill_color)
+        #         rounded_target_color = tuple(round(c, 2) for c in target_color)
+        #         if rounded_fill_color == rounded_target_color:
 
-                    return True
+        #             return True
                 
         return False
 
-    input_pdf = "/Users/teacher/Desktop/百度网盘下载/20260928不要删/去水印-初二下合/初二下合_output_删除图片_output_遮挡左右_output_遮挡.pdf"
-    output_pdf = input_pdf.replace('.pdf', '_output_标记目标形状.pdf')
+    input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/专题一：德育类 -去水印/专题一：德育类 .pdf"
     is_target_shape_func = check_target_shape
     dry_run = False
     page_range = "1-1000"
+
+    output_suffix = "标记目标形状" if dry_run else "去水印"
+    output_pdf = input_pdf.replace('.pdf', f'_{output_suffix}.pdf')
 
     # 建议流程：先 dry_run=True 确认命中准确，再改 False 正式删除
     mark_shapes(
