@@ -95,9 +95,8 @@ if __name__ == "__main__":
 
         # 通过透明度判断
         if CHECK_MODE == 'opacity':
-            target_fill_opacity = 0.5
+            target_fill_opacity = 0.72
             if fill_opacity and (round(fill_opacity, 2) == round(target_fill_opacity, 2)):
-                print(1)
                 return True
         # # 通过填充色判断
         # elif CHECK_MODE == 'fill_color':
@@ -112,7 +111,7 @@ if __name__ == "__main__":
                 
         return False
 
-    input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/专题一：德育类 -去水印/专题一：德育类 .pdf"
+    input_pdf = "/Users/teacher/Desktop/pdf_command/pdf解密/output/去水印10个文件/蓝色水印/背诵-27考研押题专项考点班-方剂学.pdf"
     is_target_shape_func = check_target_shape
     dry_run = False
     page_range = "1-1000"

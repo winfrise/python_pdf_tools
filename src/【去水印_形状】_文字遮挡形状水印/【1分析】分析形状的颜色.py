@@ -81,7 +81,7 @@ def diagnose_pdf_colors(input_path, max_pages=5):
     doc.close()
 
 if __name__ == "__main__":
-    input_path = "/Volumes/西数4T外置/百度网盘默认下载/专题一：德育类 -去水印/专题一：德育类 .pdf"
+    input_path = "/Users/teacher/Desktop/pdf_command/pdf解密/output/去水印10个文件/蓝色水印/背诵-27考研押题专项考点班-方剂学.pdf"
     diagnose_pdf_colors(
         input_path = input_path
     )
