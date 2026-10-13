@@ -24,7 +24,7 @@ def batch_process_file_with_callback(input_dir, output_dir, callback_func):
     for dirpath, dirnames, filenames in os.walk(input_dir):
         for filename in filenames:
             # 3. 公共逻辑：筛选特定后缀的文件
-            if filename.lower().endswith('.pdf'):
+            if filename.lower().endswith('.pdf') and not filename.startswith('.'):
                 input_file = os.path.join(dirpath, filename)
 
                 # 计算当前遍历到的文件夹相对于 input_dir 的路径
