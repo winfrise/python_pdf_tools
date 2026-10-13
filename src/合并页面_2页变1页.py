@@ -1,4 +1,7 @@
 import fitz  # PyMuPDF
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils import parse_page_range, batch_process_file_with_callback
 
 def merge_two_pages_to_one(input_pdf, output_pdf):
     doc = fitz.open(input_pdf)
@@ -56,9 +59,31 @@ def merge_two_pages_to_one(input_pdf, output_pdf):
     doc.close()
     print(f"合并完成！输出文件：{output_pdf}")
 
+if __name__ == "__main__":
+
+    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/检索证明/001"   # 输入的 2 页 PDF
+
+    if os.path.isfile(INPUT_FILE):
+        input_path = INPUT_FILE
+        output_path = input_path.replace('.pdf', '_合并.pdf')
+        merge_two_pages_to_one(
+            input_pdf = input_path, 
+            output_pdf = output_path, 
+        )
+    elif os.path.isdir(INPUT_FILE):
+        def callback_func(input_file, output_file):
+            merge_two_pages_to_one(
+                input_pdf = input_file, 
+                output_pdf = output_file, 
+            )
+        input_dir = INPUT_FILE
+        output_dir = f"{input_dir}_merge"
+        batch_process_file_with_callback(
+            input_dir=input_dir, 
+            output_dir=output_dir,
+            callback_func=callback_func    
+        )
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {INPUT_FILE}")
 
 
-# 调用函数（替换为你的输入/输出路径）
-input_pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/RT-2026-4186_i_21584_转静态.pdf"   # 输入的 2 页 PDF
-output_pdf_path = input_pdf_path.replace('.pdf', '_合并.pdf')
-merge_two_pages_to_one(input_pdf_path, output_pdf_path)
