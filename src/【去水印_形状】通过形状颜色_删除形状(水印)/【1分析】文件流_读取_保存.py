@@ -67,5 +67,5 @@ def save_raw_content_streams(input_pdf):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 将这里的路径替换为你实际的 PDF 文件路径
-    pdf_path = "/Users/teacher/Desktop/pdf_command/pdf解密/output/001/01.pdf" 
+    pdf_path = "/Users/teacher/Desktop/pdf_command/pdf解密/output/去水印10个文件/蓝色水印/背诵-27考研押题专项考点班-方剂学_替换颜色.pdf" 
     save_raw_content_streams(pdf_path)
