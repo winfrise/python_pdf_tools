@@ -1,15 +1,12 @@
-import os
+import os,sys
 import fitz  # PyMuPDF
-from utils import process_file_with_callback, batch_process_file_with_callback
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils import parse_page_range, batch_process_file_with_callback
 
-INPUT_FILE = "/Volumes/西数4T外置/Pdf修改资料/2026年8月/完成/试卷去水印ing/2026胡源 高二数学精讲精练·配套习题(1).pdf" 
-DPI = 300
 
-def convert_to_scanned_pdf(input_file, dpi=300):
-    
-    output_file = input_file.replace(".pdf", "_转图片版.pdf")
+def convert_to_scanned_pdf(input_path, output_path, dpi=300):
 
-    print(f"📄 输入文件: {input_file}")
+    print(f"📄 输入文件: {input_path}")
     print(f"⚙️ 设置分辨率: {dpi} DPI")
     
 
@@ -17,7 +14,7 @@ def convert_to_scanned_pdf(input_file, dpi=300):
     new_doc = fitz.open()
 
     # 打开原始 PDF
-    doc = fitz.open(input_file)
+    doc = fitz.open(input_path)
     
     # 2. 计算缩放倍率 (PyMuPDF 基础分辨率为 72 DPI)
     # 例如：300 / 72 ≈ 4.16 倍
@@ -48,15 +45,40 @@ def convert_to_scanned_pdf(input_file, dpi=300):
         print(f"   ...已处理 {page_num + 1}/{doc.page_count} 页")
 
     # 3. 保存新文件
-    new_doc.save(output_file)
+    new_doc.save(output_path)
     new_doc.close()
     doc.close()
 
-    print(f"✅ 转换完成！文件已保存至: {output_file}")
+    print(f"✅ 转换完成！文件已保存至: {output_path}")
 
 # --- 使用示例 ---
 if __name__ == "__main__":
-    convert_to_scanned_pdf(
-        input_file = INPUT_FILE,
-        dpi = DPI,
-    )
+
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/证书（胡泸予）/实习实践证明_副本" 
+    dpi = 72
+
+    if os.path.isfile(input_path):
+        output_path = input_path.replace('.pdf', '_扫描版.pdf')
+        convert_to_scanned_pdf(
+            input_path = input_path,
+            output_path = output_path,
+            dpi = dpi,
+        )
+    elif os.path.isdir(input_path):
+        input_dir = input_path
+        output_dir = f"{input_dir}_扫描版"
+
+        def callback_func(input_file, output_file):
+            convert_to_scanned_pdf(
+                input_path = input_file,
+                output_path = output_file,
+                dpi = dpi,
+            )
+
+        batch_process_file_with_callback(
+            input_dir=input_dir, 
+            output_dir=output_dir,
+            callback_func=callback_func    
+        )
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")
