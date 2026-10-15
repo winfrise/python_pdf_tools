@@ -1,12 +1,16 @@
 import fitz  # PyMuPDF
+import sys, io, os
 
-def remove_links_from_pdf(input_pdf_path, output_pdf_path):
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils import parse_page_range, batch_process_file_with_callback
+
+def remove_links_from_pdf(input_path, output_path):
     """
     删除PDF文档中的所有超链接，并打印每页删除的链接数量。
     """
     try:
         # 1. 打开PDF文档
-        doc = fitz.open(input_pdf_path)
+        doc = fitz.open(input_path)
         total_deleted = 0
 
         # 2. 遍历文档中的每一页
@@ -30,18 +34,39 @@ def remove_links_from_pdf(input_pdf_path, output_pdf_path):
             total_deleted += deleted_count
 
         # 3. 保存修改后的文档到新文件
-        doc.save(output_pdf_path)
+        doc.save(output_path)
         doc.close()
         
         print("-" * 30)
         print(f"处理完成！共删除 {total_deleted} 个链接。")
-        print(f"新文档已保存至: {output_pdf_path}")
 
     except Exception as e:
         print(f"处理PDF时发生错误: {e}")
 
-# 使用示例
+
+
 if __name__ == "__main__":
-    input_file = "/Users/teacher/Desktop/百度网盘下载/附件1-2.pdf"      # 替换为你的PDF文件路径
-    output_file = input_file.replace('.pdf', '_output_删除链接.pdf')
-    remove_links_from_pdf(input_file, output_file)
+
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/上传材料/001"      # 替换为你的PDF文件路径
+
+    if os.path.isfile(input_path):
+        output_path = input_path.replace('.pdf', '_output_删除链接.pdf')
+        remove_links_from_pdf(
+            input_path = input_path, 
+            output_path = output_path, 
+        )
+    elif os.path.isdir(input_path):
+        def callback_func(input_file, output_file):
+            remove_links_from_pdf(
+                input_path = input_file, 
+                output_path = output_file, 
+            )
+        input_dir = input_path
+        output_dir = f"{input_dir}_删除超链接"
+        batch_process_file_with_callback(
+            input_dir=input_dir, 
+            output_dir=output_dir,
+            callback_func=callback_func    
+        )
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")

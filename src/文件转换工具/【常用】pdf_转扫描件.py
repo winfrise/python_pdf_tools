@@ -54,7 +54,7 @@ def convert_to_scanned_pdf(input_path, output_path, dpi=300):
 # --- 使用示例 ---
 if __name__ == "__main__":
 
-    input_path = "/Volumes/西数4T外置/百度网盘默认下载/证书（胡泸予）/实习实践证明_副本" 
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/证书（胡泸予）/实习实践证明" 
     dpi = 72
 
     if os.path.isfile(input_path):
