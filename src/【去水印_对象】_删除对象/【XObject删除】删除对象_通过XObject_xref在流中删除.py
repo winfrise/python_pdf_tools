@@ -37,7 +37,7 @@ def blank_fm2(input_pdf: str, output_pdf: str, target_name: str = "Fm3"):
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/001/黄坪营黄氏挂图_副本_去百家有谱.pdf"
-    target_name = "Fm3"
+    input_path = "/Users/teacher/Desktop/pdf_command/pdf解密/output/2026——高一化学（必修一）P152---水印版.pdf"
+    target_name = "Fm0"
     output_path = input_path.replace('.pdf', f'_去水印_{target_name}.pdf')
     blank_fm2(input_path, output_path, target_name)

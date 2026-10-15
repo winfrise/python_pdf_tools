@@ -1,15 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-打印 PDF 中所有 XObject 对象的信息。
 
-用法:
-    python dump_xobjects.py input.pdf
-    python dump_xobjects.py input.pdf 3        # 只看第 3 页
-"""
-
-import sys
+import sys, os
 import re
 import fitz  # PyMuPDF
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils import parse_page_range, batch_process_file_with_callback
 
 
 def get_xref_object(doc, xref):
@@ -73,15 +67,24 @@ def get_xref_stream(doc, xref):
     print(f"  {preview}")
 
 
-def dump_xobjects(pdf_path, detail_mode = False):
+def dump_xobjects(pdf_path, page_range, detail_mode = False):
     doc = fitz.open(pdf_path)
+
+
+
     print(f"PDF: {pdf_path}")
-    print(f"总页数: {len(doc)}\n")
 
     # 已处理过的 xref，避免多页共用一个 XObject 时重复打印
     seen_xrefs = set()
 
-    for page_num, page in enumerate(doc):
+
+    total_pages = len(doc)
+    target_pages = parse_page_range(page_range, total_pages)
+
+    print(f"总页数: {total_pages}\n")
+
+    for page_num in target_pages:
+        page = doc[page_num]
         print("=" * 70)
         print(f"页面 {page_num + 1}  (xref={page.xref})")
         print("=" * 70)
@@ -114,6 +117,12 @@ def dump_xobjects(pdf_path, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf = "/Users/teacher/Desktop/百度网盘下载/001/黄坪营黄氏挂图.pdf"
+    pdf_path = "/Users/teacher/Desktop/pdf_command/pdf解密/output/2026——高一化学（必修一）P152---水印版.pdf"
+    page_range = '1-2'
     detail_mode = False
-    dump_xobjects(pdf, detail_mode)
+
+    dump_xobjects(
+        pdf_path = pdf_path, 
+        detail_mode = detail_mode, 
+        page_range = page_range
+    )
