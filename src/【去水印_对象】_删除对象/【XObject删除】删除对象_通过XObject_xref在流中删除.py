@@ -9,7 +9,7 @@ import sys
 import fitz  # PyMuPDF
 
 
-def blank_fm2(input_pdf: str, output_pdf: str, target_name: str = "Fm3"):
+def blank_fm2(input_pdf: str, output_pdf: str, target_name: str = "Fm3", try_run = True):
     doc = fitz.open(input_pdf)
     found = 0
 
@@ -20,9 +20,20 @@ def blank_fm2(input_pdf: str, output_pdf: str, target_name: str = "Fm3"):
             if name != target_name:
                 continue
 
-            print(f"page {pno+1}: 找到 {name} (xref={xref})，清空其内容流", flush=True)
-            # 用一个空流替换，Fm2 变成什么都不画
-            doc.update_stream(xref, b" ")
+            if try_run: 
+                rect_tuple = xo[3] 
+                xobject_rect = fitz.Rect(rect_tuple)
+                page.draw_rect(
+                    xobject_rect, 
+                    color=(0, 1, 0),  # 绿色边框
+                    fill=(0, 1, 0),   # 绿色填充
+                    width=2
+                )
+            else:
+                print(f"page {pno+1}: 找到 {name} (xref={xref})，清空其内容流", flush=True)
+                # 用一个空流替换，Fm2 变成什么都不画
+                doc.update_stream(xref, b" ")
+
             found += 1
 
     if found == 0:
