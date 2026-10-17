@@ -76,7 +76,7 @@ def analyze_pdf_colors(pdf_path, pages):
 
 # === 使用示例 ===
 if __name__ == "__main__":
-    pdf_file = "/Users/teacher/Desktop/pdf_command/pdf解密/output/去水印10个文件/蓝色水印/背诵-27考研押题专项考点班-方剂学.pdf"  
+    pdf_file = "/Users/teacher/Desktop/百度网盘下载/口腔医学中心/002/1.pdf"  
     pages = "1-5"
     
     stats = analyze_pdf_colors(

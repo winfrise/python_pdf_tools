@@ -32,7 +32,7 @@ def repair_pdf_with_pymupdf(input_path, output_path):
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/图纸/图纸-2026年第十三师火箭农场、红星二场高标准农田建设项目/图纸-2026年第十三师火箭农场、红星二场高标准农田建设项目_337-504.pdf"
+    input_path = "/Users/teacher/Downloads/覃冰简历.pdf"
     output_path = input_path.replace('.pdf', '_修复.pdf')
     repair_pdf_with_pymupdf(
         input_path = input_path,
