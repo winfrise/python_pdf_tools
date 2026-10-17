@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils import process_file_with_callback, batch_process_file_with_callback
 
-def pdf_to_images(input_file, page_range, dpi=72, img_format="jpg"):
+def pdf_to_images(input_file,  page_range, dpi=72, img_format="jpg"):
 
     base_name, ext = os.path.splitext(input_file)
     output_dir = f"{base_name}__合成的图片_DPI_{dpi}"
@@ -37,14 +37,33 @@ def pdf_to_images(input_file, page_range, dpi=72, img_format="jpg"):
 # --- 使用示例 ---
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/公式大全.pdf" 
+    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/去水印/001_output_删除图片_Object/用所选项目新建的文件夹" 
     DPI = 300
     PAGE_RANGE = '1-1000'
     IMG_FORMAT = 'jpg'
 
-    pdf_to_images(
-        input_file = INPUT_FILE,
-        dpi = DPI,
-        page_range = PAGE_RANGE,
-        img_format = IMG_FORMAT
-    )
+
+
+    if os.path.isfile(INPUT_PDF):
+        pdf_to_images(
+            input_file = INPUT_PDF,
+            dpi = DPI,
+            page_range = PAGE_RANGE,
+            img_format = IMG_FORMAT
+        )
+    elif os.path.isdir(INPUT_PDF):
+        def callback_func(input_file, output_file):
+            pdf_to_images(
+                input_file = input_file,
+                dpi = DPI,
+                page_range = PAGE_RANGE,
+                img_format = IMG_FORMAT
+            )
+        input_dir = INPUT_PDF
+        batch_process_file_with_callback(
+            input_dir=input_dir, 
+            output_dir="NOT_SAVE",
+            callback_func=callback_func    
+        )
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {INPUT_PDF}")

@@ -32,7 +32,7 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/用所选项目新建的文件夹/001_删水印"
+    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/去水印/001_output_删除图片_Object/用所选项目新建的文件夹"
     
     def target_sizes_func (img_info):
         img_w = img_info['width']
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         return False
 
     # TARGET_SIZES = target_sizes_func
-    TARGET_SIZES = ["160x160"]
+    TARGET_SIZES = ["1094x1538"]
 
     if os.path.isfile(INPUT_PDF):
         delete_images_by_object(

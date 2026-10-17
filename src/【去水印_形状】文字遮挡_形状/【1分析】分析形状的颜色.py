@@ -81,7 +81,7 @@ def diagnose_pdf_colors(input_path, max_pages=5):
     doc.close()
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/口腔医学中心/002/1.pdf"
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/001/222.pdf"
     diagnose_pdf_colors(
         input_path = input_path
     )
