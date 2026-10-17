@@ -3,11 +3,6 @@ import re
 from collections import defaultdict
 
 def find_img_by_size(input_pdf, target_sizes):
-    # 将所有目标尺寸解析为 (宽, 高) 元组列表
-    target_pairs = []
-    for ts in target_sizes:
-        w, h = map(int, ts.split('x'))
-        target_pairs.append((w, h))
 
     doc = fitz.open(input_pdf) 
 
@@ -33,20 +28,27 @@ def find_img_by_size(input_pdf, target_sizes):
             img_h = img_info['height']
 
 
-            for target_w, target_h in target_pairs:
-                if img_w == target_w and img_h == target_h:
 
-                    ratio = round(w / h, 2)  # 宽高比保留两位小数
-                    
-                    size_count[(w, h)] += 1
-                    image_details.append({
-                        'page': page_num,
-                        'xref': xref,
-                        'width': w,
-                        'height': h,
-                        'ratio': ratio,
-                        'name': img[7]
-                    })
+            is_target_img = False
+
+            if callable(target_sizes):
+                is_target_img = target_sizes(img_info)
+            elif f"{img_w}x{img_h}" in target_sizes:
+                is_target_img = True
+                
+            if is_target_img:
+
+                ratio = round(img_w / img_h, 2)  # 宽高比保留两位小数
+                
+                size_count[(img_w, img_h)] += 1
+                image_details.append({
+                    'page': page_num,
+                    'xref': xref,
+                    'width': img_w,
+                    'height': img_h,
+                    'ratio': ratio,
+                    'name': img[7]
+                })
 
     # 2. 打印统计结果
     print(f"统计完成！该 PDF 共有 {len(image_details)} 张【符合要求】的图片。")

@@ -12,7 +12,7 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
     )
 
     if output_path is None:
-        output_path = input_pdf.replace('.pdf', '_output_删除图片对象.pdf')
+        output_path = input_pdf.replace('.pdf', '_output_删除图片.pdf')
 
     doc = fitz.open(input_pdf)
     removed_count = 0
@@ -32,8 +32,18 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/踢球去水印/001"
-    TARGET_SIZES = ["650x1000"]
+    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/用所选项目新建的文件夹/001_删水印"
+    
+    def target_sizes_func (img_info):
+        img_w = img_info['width']
+        img_h = img_info['height']
+        if img_w >= 650 and img_h >= 1000:
+            return True
+
+        return False
+
+    # TARGET_SIZES = target_sizes_func
+    TARGET_SIZES = ["160x160"]
 
     if os.path.isfile(INPUT_PDF):
         delete_images_by_object(
