@@ -32,7 +32,7 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/去水印/001_output_删除图片_Object/用所选项目新建的文件夹"
+    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/足协/001/实践课教案"
     
     def target_sizes_func (img_info):
         img_w = img_info['width']
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         return False
 
     # TARGET_SIZES = target_sizes_func
-    TARGET_SIZES = ["1094x1538"]
+    TARGET_SIZES = ["650x1000"]
 
     if os.path.isfile(INPUT_PDF):
         delete_images_by_object(
@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 target_sizes=TARGET_SIZES
             )
         input_dir = INPUT_PDF
-        output_dir = f"{input_dir}_output_删除图片_Object"
+        output_dir = f"{input_dir}_删除图片"
         batch_process_file_with_callback(
             input_dir=input_dir, 
             output_dir=output_dir,
