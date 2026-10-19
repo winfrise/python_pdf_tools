@@ -47,7 +47,7 @@ def extract_images(input_file, page_range):
 # ================= 使用示例 =================
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/足协/001/实践课教案/带球-实践课教案.pdf" 
+    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/2027·语法的奥秘（800题+120）_20261019_143004/2027·语法的奥秘（800题+120）_20261019_143004_已解密.pdf" 
     PAGE_RANGE = "1-4"
 
     if os.path.isfile(INPUT_FILE):

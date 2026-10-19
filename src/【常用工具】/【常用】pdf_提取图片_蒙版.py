@@ -87,8 +87,8 @@ def extract_pdf_images(pdf_path, output_dir, page_range):
 
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Users/teacher/Desktop/百度网盘下载/test/未命名文件夹/test.pdf" 
-    PAGE_RANGE = "1-1000"
+    INPUT_FILE = "/Users/teacher/Downloads/2025年专转本计算机专业综合理论复习教程.pdf" 
+    PAGE_RANGE = "1-10"
 
     if os.path.isfile(INPUT_FILE):
         base_name, ext = os.path.splitext(INPUT_FILE)

@@ -48,9 +48,9 @@ def blank_fm2(input_pdf: str, output_pdf: str, target_name: str = "Fm3", try_run
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/pdf_command/pdf解密/output/2026——高一化学（必修一）P152---水印版（原）.pdf"
-    target_name = "Fm0"
-    try_run = False
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/2027·语法的奥秘（800题+120）_20261019_143004/2027·语法的奥秘（800题+120）_20261019_143004_已解密.pdf"
+    target_name = "KSPX1524"
+    try_run = True
 
     output_suffix = "标记" if try_run else "去水印"
     output_path = input_path.replace('.pdf', f'_去水印_{output_suffix}_{target_name}.pdf')

@@ -117,7 +117,7 @@ def dump_xobjects(pdf_path, page_range, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf_path = "/Users/teacher/Desktop/pdf_command/pdf解密/output/2026——高一化学（必修一）P152---水印版.pdf"
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/2027·语法的奥秘（800题+120）_20261019_143004/2027·语法的奥秘（800题+120）_20261019_143004.pdf"
     page_range = '1-2'
     detail_mode = False
 
