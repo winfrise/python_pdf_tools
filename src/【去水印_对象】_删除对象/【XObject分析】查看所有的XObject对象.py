@@ -117,7 +117,7 @@ def dump_xobjects(pdf_path, page_range, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/2027·语法的奥秘（800题+120）_20261019_143004/2027·语法的奥秘（800题+120）_20261019_143004.pdf"
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/未命名文件夹/黄粤辉-档案资源的数字化新范式.pdf"
     page_range = '1-2'
     detail_mode = False
 

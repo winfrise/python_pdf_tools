@@ -52,6 +52,6 @@ def analyze_pdf_colors(pdf_path, pages):
     doc.close()
 
 if __name__ == "__main__":
-    pdf_file = "/Users/teacher/Downloads/2025年专转本计算机专业综合理论复习教程.pdf"  
-    pages = "8-10"
+    pdf_file = "/Volumes/西数4T外置/百度网盘默认下载/未命名文件夹/黄粤辉-档案资源的数字化新范式.pdf"  
+    pages = "1-1000"
     stats = analyze_pdf_colors(pdf_path=pdf_file, pages=pages)

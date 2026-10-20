@@ -81,7 +81,7 @@ def diagnose_pdf_colors(input_path, max_pages=5):
     doc.close()
 
 if __name__ == "__main__":
-    input_path = "/Volumes/西数4T外置/百度网盘默认下载/【老客】2027·语法的奥秘（800题+120）_20261019_143004/2027·语法的奥秘（800题+120）_20261019_143004_已解密.pdf"
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/未命名文件夹/黄粤辉-档案资源的数字化新范式.pdf"
     diagnose_pdf_colors(
         input_path = input_path,
         max_pages = 5,

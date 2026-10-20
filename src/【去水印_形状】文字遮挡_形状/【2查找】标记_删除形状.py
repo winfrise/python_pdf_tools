@@ -91,29 +91,35 @@ if __name__ == "__main__":
         shape_height = rect[3] - rect[1]
 
 
-        CHECK_MODE = "opacity"
+        CHECK_MODE = "fill_color"
 
         # 通过透明度判断
         if CHECK_MODE == 'opacity':
             target_fill_opacity = 0.2
             if fill_opacity and (round(fill_opacity, 2) == round(target_fill_opacity, 2)):
                 return True
-        # # 通过填充色判断
-        # elif CHECK_MODE == 'fill_color':
-        #     if fill_color:
-        #         # target_color = (0.961, 0.584, 0.596)
-        #         target_color = hex_to_pymupdf_color("#fee4b8")
-        #         rounded_fill_color = tuple(round(c, 2) for c in fill_color)
-        #         rounded_target_color = tuple(round(c, 2) for c in target_color)
-        #         if rounded_fill_color == rounded_target_color:
+        # 通过填充色判断
+        elif CHECK_MODE == 'fill_color':
+            if fill_color:
+                # target_color = (0.961, 0.584, 0.596)
+                target_color = hex_to_pymupdf_color("#dededf")
+                rounded_fill_color = tuple(round(c, 2) for c in fill_color)
+                rounded_target_color = tuple(round(c, 2) for c in target_color)
+                
+                rounded_target_color = (0.83, 0.83, 0.84)
+                
+                print(rounded_fill_color)
+                print(rounded_target_color)
+                print('---')
+                if rounded_fill_color == rounded_target_color:
 
-        #             return True
+                    return True
                 
         return False
 
-    input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/001/222.pdf"
+    input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/未命名文件夹/黄粤辉-档案资源的数字化新范式.pdf"
     is_target_shape_func = check_target_shape
-    dry_run = False
+    dry_run = True
     page_range = "1-1000"
 
     output_suffix = "标记目标形状" if dry_run else "去水印"
