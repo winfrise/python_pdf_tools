@@ -117,7 +117,7 @@ def dump_xobjects(pdf_path, page_range, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/未命名文件夹/黄粤辉-档案资源的数字化新范式.pdf"
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/国家电网有限公司“四不两直”安全督查工作手册（2026年9月） (1).pdf"
     page_range = '1-2'
     detail_mode = False
 
