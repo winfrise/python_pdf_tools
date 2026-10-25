@@ -198,8 +198,8 @@ def run_stream_file(txt_in, txt_out, mode):
 
 if __name__ == '__main__':
 
-    src = "/Volumes/西数4T外置/百度网盘默认下载/test/TSG 08—2026 特种设备使用管理规则 .pdf"
-    dst = "/Volumes/西数4T外置/百度网盘默认下载/test/TSG 08—2026 特种设备使用管理规则222.pdf"
+    src = "/Volumes/西数4T外置/百度网盘默认下载/国家电网有限公司“四不两直”安全督查工作手册（2026年9月） (1).pdf"
+    dst = "/Volumes/西数4T外置/百度网盘默认下载/国家电网有限公司“四不两直”安全督查工作手册（2026年9月） (1)222.pdf"
     mode = "transparent" # 'mode 只能是 transparent 或 remove'
     if src.lower().endswith('.pdf'):
         run_pdf(src, dst, mode)

@@ -32,7 +32,7 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/RAZ L翻译-黑白178_已解密.pdf"
+    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/【2】高中地理完整版答题模板（模板+空白题目）_已解密.pdf"
     
     def target_sizes_func (img_info):
         img_w = img_info['width']
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         return False
 
     # TARGET_SIZES = target_sizes_func
-    TARGET_SIZES = ["434x199"]
+    TARGET_SIZES = ["1016x942"]
 
     if os.path.isfile(INPUT_PDF):
         delete_images_by_object(

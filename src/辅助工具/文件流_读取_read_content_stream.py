@@ -67,5 +67,5 @@ def save_raw_content_streams(input_pdf):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 将这里的路径替换为你实际的 PDF 文件路径
-    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/未命名文件夹/黄粤辉-档案资源的数字化新范式.pdf" 
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/国家电网有限公司“四不两直”安全督查工作手册（2026年9月） (1).pdf" 
     save_raw_content_streams(pdf_path)

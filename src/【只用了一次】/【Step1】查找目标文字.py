@@ -229,5 +229,5 @@ def find_target(pdf_path, target="百家有谱", tol=6.0):
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/家谱/黄坪营黄氏挂图.pdf"
-    find_target(input_path, "百家有谱")
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/国家电网有限公司“四不两直”安全督查工作手册（2026年9月） (1).pdf"
+    find_target(input_path, "张洋洋")

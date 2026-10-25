@@ -87,8 +87,8 @@ def extract_pdf_images(pdf_path, output_dir, page_range):
 
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/未命名文件夹/黄粤辉-档案资源的数字化新范式.pdf" 
-    PAGE_RANGE = "1-1"
+    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/30元/955513191141249讲义：电磁学（含答案）.pdf" 
+    PAGE_RANGE = "1-1000"
 
     if os.path.isfile(INPUT_FILE):
         base_name, ext = os.path.splitext(INPUT_FILE)
