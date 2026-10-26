@@ -42,7 +42,7 @@ def remove_watermark_from_stream(input_path, output_path):
 
 
 # 使用示例 1：通过水印文本定位
-input_path = "/Users/teacher/Desktop/test/与治理层的沟通函.pdf"
+input_path = "/Users/teacher/Downloads/《高等数学(上)》精讲课-配套电子讲义1+2.pdf"
 output_path = input_path.replace('.pdf', '_output.pdf')
 remove_watermark_from_stream(input_path, output_path)
 

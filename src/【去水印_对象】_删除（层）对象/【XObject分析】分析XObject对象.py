@@ -117,7 +117,7 @@ def dump_xobjects(pdf_path, page_range, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/国家电网有限公司“四不两直”安全督查工作手册（2026年9月） (1).pdf"
+    pdf_path = "/Users/teacher/Downloads/《高等数学(上)》精讲课-配套电子讲义1+2.pdf"
     page_range = '1-2'
     detail_mode = False
 
