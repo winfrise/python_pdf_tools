@@ -52,6 +52,6 @@ def analyze_pdf_colors(pdf_path, pages):
     doc.close()
 
 if __name__ == "__main__":
-    pdf_file = "/Users/teacher/Downloads/《高等数学(上)》精讲课-配套电子讲义1+2.pdf"  
+    pdf_file = "/Users/teacher/Downloads/药物化学背诵手册.pdf"  
     pages = "1-2"
     stats = analyze_pdf_colors(pdf_path=pdf_file, pages=pages)

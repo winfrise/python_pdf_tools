@@ -59,11 +59,11 @@ def replace_color_in_stream(pdf_path, output_path, old_color_str, new_color_str)
     doc.close()
 # --- 使用示例 ---
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Downloads/《高等数学(上)》精讲课-配套电子讲义1+2.pdf"
+    input_path = "/Users/teacher/Downloads/药物化学背诵手册_替换颜色.pdf"
     output_path = input_path.replace('.pdf', '_替换颜色.pdf')
     replace_color_in_stream(
         pdf_path=input_path, 
         output_path=output_path, 
-        old_color_str="0.906 0.902 0.902 rg", 
-        new_color_str="1 1 1 rg"
+        old_color_str="0.502 g",  # 0.502 g 0.498
+        new_color_str="1 g"
     )
