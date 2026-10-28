@@ -1,5 +1,8 @@
 import fitz
+import os, sys
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils import process_file_with_callback, batch_process_file_with_callback
 
 def parse_range(range_str, total=None):
     """
@@ -209,11 +212,28 @@ def remove_signatures(input_path, output_path = None):
 
 if __name__ == "__main__":
     # 使用示例
-    input_file = "/Volumes/西数4T外置/百度网盘默认下载/给排水-文件包/1-A号楼/01@给水排水设计施工通用说明一@A1.pdf"
-
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/删签名/001"
     is_check = True
-    if is_check:
-        # 检查签名类型
-        check_signature_type(input_file)
 
-    remove_signatures(input_file)
+
+    if os.path.isfile(input_path):
+        if is_check:
+            check_signature_type(input_path) # 检查签名类型
+
+        remove_signatures(input_path)
+    elif os.path.isdir(input_path):
+        def callback_func(input_file, output_file):
+            remove_signatures(
+                input_path = input_file,
+                output_path = output_file
+            )
+
+        input_dir = input_path
+        output_dir = f"{input_dir}_删除签名"
+        batch_process_file_with_callback(
+            input_dir=input_dir,
+            output_dir=output_dir,
+            callback_func=callback_func
+        )
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_path}")
