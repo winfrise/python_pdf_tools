@@ -209,7 +209,7 @@ def remove_signatures(input_path, output_path = None):
 
 if __name__ == "__main__":
     # 使用示例
-    input_file = "/Users/teacher/Desktop/改字/原/DP26054444 樱艺EN71,BS EN71.pdf"
+    input_file = "/Volumes/西数4T外置/百度网盘默认下载/给排水-文件包/1-A号楼/01@给水排水设计施工通用说明一@A1.pdf"
 
     is_check = True
     if is_check:
