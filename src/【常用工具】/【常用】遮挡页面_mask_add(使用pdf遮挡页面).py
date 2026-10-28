@@ -77,8 +77,6 @@ if __name__ == "__main__":
     # exclude_pages = {1, 13, 27}
 
     def get_mask_path (page_num):
-        if is_odd(page_num):
-            return "/Volumes/西数4T外置/百度网盘默认下载/体育督学（上册）答案_1/mask_7.pdf"
         return "/Volumes/西数4T外置/百度网盘默认下载/体育督学（上册）答案_1/mask_8.pdf"
     
     mask_pdf_path = get_mask_path
