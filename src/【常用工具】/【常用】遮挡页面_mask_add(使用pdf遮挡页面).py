@@ -61,18 +61,26 @@ def add_shape_to_pdf(input_file, output_file,  page_range, exclude_pages, mask_p
     )
 
 
+def is_odd(number):
+    return number % 2 != 0
+
+def is_even(number):
+    return number % 2 == 0
+
 
 if __name__ == "__main__":
-    input_path = "/Volumes/西数4T外置/百度网盘默认下载/去水印/001_output_删除图片_Object/未命名文件夹"
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/体育督学（上册）答案_1/体育督学（上册）答案_1.pdf"
 
     # page_range 示例：1,3, 5-9
-    page_range = "1-10000"
+    page_range = "5-1000"
     exclude_pages = {}
     # exclude_pages = {1, 13, 27}
 
     def get_mask_path (page_num):
-        return "/Volumes/西数4T外置/百度网盘默认下载/去水印/001_output_删除图片_Object/mask.pdf"
-
+        if is_odd(page_num):
+            return "/Volumes/西数4T外置/百度网盘默认下载/体育督学（上册）答案_1/mask_7.pdf"
+        return "/Volumes/西数4T外置/百度网盘默认下载/体育督学（上册）答案_1/mask_8.pdf"
+    
     mask_pdf_path = get_mask_path
 
     # 单个文件处理
