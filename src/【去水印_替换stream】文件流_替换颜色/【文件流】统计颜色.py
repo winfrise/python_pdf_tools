@@ -52,6 +52,6 @@ def analyze_pdf_colors(pdf_path, pages):
     doc.close()
 
 if __name__ == "__main__":
-    pdf_file = "/Users/teacher/Downloads/药物化学背诵手册.pdf"  
+    pdf_file = "/Volumes/西数4T外置/百度网盘默认下载/AKA红猪 资料分析·全考点全考法·考前冲刺·抄袭必究(1)/AKA红猪 资料分析·全考点全考法·考前冲刺·抄袭必究(1).pdf"  
     pages = "1-2"
     stats = analyze_pdf_colors(pdf_path=pdf_file, pages=pages)
