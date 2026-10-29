@@ -1,4 +1,7 @@
 import fitz  # PyMuPDF
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils import process_file_with_callback, batch_process_file_with_callback
 
 def add_watermark_pdf(
         input_pdf_path, 
@@ -68,15 +71,37 @@ def add_watermark_pdf(
 
 # ================= 使用示例 =================
 if __name__ == "__main__":
-    input_pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/0001/11/test.pdf"
+    input_pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/0001/11/未命名文件夹"
     watermark_pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/0001/11/watermark.pdf"
-    output_pdf_path = input_pdf_path.replace('.pdf', '_加水印.pdf')
+
     overlay = True  #True为覆盖在文字上方，False为置于文字下方
     oc_index = None # 层级
-    add_watermark_pdf(
-        input_pdf_path=input_pdf_path,
-        output_pdf_path=output_pdf_path,
-        watermark_pdf_path=watermark_pdf_path,
-        overlay=overlay,
-        oc_index=oc_index
-    )
+
+
+    if os.path.isfile(input_pdf_path):
+        output_pdf_path = input_pdf_path.replace('.pdf', '_加水印.pdf')
+        add_watermark_pdf(
+            input_pdf_path=input_pdf_path,
+            output_pdf_path=output_pdf_path,
+            watermark_pdf_path=watermark_pdf_path,
+            overlay=overlay,
+            oc_index=oc_index
+        )
+    elif os.path.isdir(input_pdf_path):
+        def callback_func(input_file, output_file):
+            add_watermark_pdf(
+                input_pdf_path=input_file,
+                output_pdf_path=output_file,
+                watermark_pdf_path=watermark_pdf_path,
+                overlay=overlay,
+                oc_index=oc_index
+            )
+        input_dir = input_pdf_path
+        output_dir = f"{input_dir}_加水印"
+        batch_process_file_with_callback(
+            input_dir=input_dir,
+            output_dir=output_dir,
+            callback_func=callback_func
+        )
+    else:
+        print(f"【错误】：输入路径既不是文件也不是目录 -> {input_pdf_path}")
