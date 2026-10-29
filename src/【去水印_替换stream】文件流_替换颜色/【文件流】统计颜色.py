@@ -5,6 +5,36 @@ from collections import Counter
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils import parse_page_range
 
+def render_color(color_str):
+    """
+    解析 PDF/PS 格式的颜色字符串并在控制台渲染色块
+    支持格式: '0 g', '1 g', '0.212 0.373 0.569 rg'
+    """
+    parts = color_str.strip().split()
+    r, g, b = 0, 0, 0
+    
+    try:
+        if parts[-1] == 'g':
+            # 灰度模式: 只有一个数值，R=G=B
+            val = int(float(parts[0]) * 255)
+            r, g, b = val, val, val
+        elif parts[-1] == 'rg':
+            # RGB模式: 有三个数值
+            r = int(float(parts[0]) * 255)
+            g = int(float(parts[1]) * 255)
+            b = int(float(parts[2]) * 255)
+        else:
+            return f"未知格式: {color_str}"
+            
+        # 使用 ANSI 24位真彩色转义序列渲染背景色块
+        # \033[48;2;R;G;Bm 设置背景色
+        # "   " 是显示的色块内容（空格）
+        # \033[0m 重置颜色
+        return f"\033[48;2;{r};{g};{b}m      \033[0m RGB({r},{g},{b}) {color_str}"
+        
+    except (ValueError, IndexError):
+        return f"解析错误: {color_str}"
+
 def analyze_pdf_colors(pdf_path, pages):
     WS = r'[ \t\r\n]+'
     NUM = r'(?:\d+\.?\d*|\.\d+)' 
@@ -48,6 +78,8 @@ def analyze_pdf_colors(pdf_path, pages):
         print(f"{'排名':<6}{'颜色 (RGB)':<80}{'出现次数':<40}")
         for rank, (color, count) in enumerate(raw_counter.most_common(), 1):
             print(f"{rank:<6}{str(color):<80}| {count:<40}")
+            print(render_color(color))
+            print()
 
     doc.close()
 
