@@ -117,7 +117,7 @@ def dump_xobjects(pdf_path, page_range, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf_path = "/Users/teacher/Downloads/《高等数学(上)》精讲课-配套电子讲义1+2.pdf"
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/考历史综合题答题模板——文字水印/1_高考历史综合题答题模板.pdf"
     page_range = '1-2'
     detail_mode = False
 

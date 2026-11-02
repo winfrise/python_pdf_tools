@@ -121,12 +121,12 @@ def process_pdf_by_levels(
 
 
 if __name__ == "__main__":
-    input_path = "/Users/teacher/Desktop/百度网盘下载/2M/（已压缩）郑州市课题_扫描版__提取的图片"
-    output_path = input_path.replace('.pdf', '_色阶去水印.pdf')
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/001/图片"
+    output_path = input_path.replace('.pdf', '_色阶.pdf')
 
     # ==== 色阶参数（PS「设置白场」等价控制）====
-    black = 100        # 黑场，一般保持 0
-    white = 178      # 白场：阈值越低，越多浅色像素被推成纯白(去水印更狠)；越高越保守
+    black = 0        # 黑场，一般保持 0
+    white = 170      # 白场：阈值越低，越多浅色像素被推成纯白(去水印更狠)；越高越保守
     gamma = 1.0      # 中间调：1.0 线性，>1 提亮中间调，<1 压暗
     rebuild_pdf = False   # True=按原位置重建；False=原文档原地替换图片流
 
