@@ -32,7 +32,7 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/1【灵天记】人间悟道指南-小红书水印/1【灵天记】人间悟道指南-精校1.30版7664983952856135849.pdf"
+    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/【长沙家长说整理】2025年四大名校集团最新初三模考真题/001"
     
     def target_sizes_func (img_info):
         img_w = img_info['width']
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         return False
 
     # TARGET_SIZES = target_sizes_func
-    TARGET_SIZES = ["106x32"]
+    TARGET_SIZES = ["600x600"]
 
     if os.path.isfile(INPUT_PDF):
         delete_images_by_object(
