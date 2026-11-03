@@ -34,7 +34,11 @@ def remove_text_watermark_safe(input_path, output_path):
     doc.close()
     print("处理完成！")
 
+if __name__ == "__main__":
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/百家有谱/2222222_已解密.pdf"
+    output_path = input_path.replace('.pdf', '_删除百家有谱文字.pdf')
 
-# 运行
-remove_text_watermark_safe("/Volumes/西数4T外置/百度网盘默认下载/百家有谱/2222222_已解密.pdf", 
-                      "/Volumes/西数4T外置/百度网盘默认下载/百家有谱/2222222_已解密_33.pdf")
+    remove_text_watermark_safe(
+        input_path=input_path,
+        output_path = output_path
+    )
