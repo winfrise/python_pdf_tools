@@ -102,11 +102,12 @@ if __name__ == "__main__":
         elif CHECK_MODE == 'fill_color':
             if fill_color:
                 # target_color = (0.961, 0.584, 0.596)
-                target_color = hex_to_pymupdf_color("#dededf")
                 rounded_fill_color = tuple(round(c, 2) for c in fill_color)
-                rounded_target_color = tuple(round(c, 2) for c in target_color)
-                
-                rounded_target_color = (0.83, 0.83, 0.84)
+
+
+                # target_color = hex_to_pymupdf_color("#dededf")
+                # rounded_target_color = tuple(round(c, 2) for c in target_color)
+                rounded_target_color = (1.0, 0.0, 0.0)
                 
                 print(rounded_fill_color)
                 print(rounded_target_color)
@@ -117,9 +118,9 @@ if __name__ == "__main__":
                 
         return False
 
-    input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/未命名文件夹/黄粤辉-档案资源的数字化新范式.pdf"
+    input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/001/《天星风水龙穴砂水》精华版-韦冠成(1).pdf"
     is_target_shape_func = check_target_shape
-    dry_run = True
+    dry_run = False
     page_range = "1-1000"
 
     output_suffix = "标记目标形状" if dry_run else "去水印"

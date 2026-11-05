@@ -117,7 +117,7 @@ def dump_xobjects(pdf_path, page_range, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/考历史综合题答题模板——文字水印/1_高考历史综合题答题模板.pdf"
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/001/未命名文件夹/谢淙《天星择日讲义》.pdf"
     page_range = '1-2'
     detail_mode = False
 

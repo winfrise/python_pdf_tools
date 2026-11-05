@@ -84,6 +84,6 @@ def analyze_pdf_colors(pdf_path, pages):
     doc.close()
 
 if __name__ == "__main__":
-    pdf_file = "/Volumes/西数4T外置/百度网盘默认下载/附件2：高压电工作业实操考试题库（2026年版）(1).pdf"  
+    pdf_file = "/Volumes/西数4T外置/百度网盘默认下载/30元/微生物学名词解释背诵手册 (1).pdf" 
     pages = "1-2"
     stats = analyze_pdf_colors(pdf_path=pdf_file, pages=pages)
