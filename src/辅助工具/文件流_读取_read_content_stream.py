@@ -1,7 +1,7 @@
 import fitz
 import os
 
-def save_raw_content_streams(input_pdf):
+def save_raw_content_streams(input_pdf, ouput_dir):
     """
     提取 PDF 每一页的原始内容流（Content Stream）并保存为 txt 文件。
     保存路径为 PDF 同目录下的 content 文件夹。
@@ -10,10 +10,6 @@ def save_raw_content_streams(input_pdf):
     if not os.path.exists(input_pdf):
         print(f"错误：找不到文件 {input_pdf}")
         return
-
-    # 2. 准备输出目录 (PDF 同级目录下的 content 文件夹)
-    base_dir = os.path.dirname(os.path.abspath(input_pdf))
-    output_dir = os.path.join(base_dir, "content")
     
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -67,5 +63,12 @@ def save_raw_content_streams(input_pdf):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 将这里的路径替换为你实际的 PDF 文件路径
-    pdf_path = "/Users/teacher/Downloads/《高等数学(上)》精讲课-配套电子讲义1+2.pdf" 
-    save_raw_content_streams(pdf_path)
+    pdf_path = "/Volumes/西数4T外置/Chrome下载目录/Employment+Reference+Letter_Yang+Wanli(2).pdf" 
+
+    base_name, ext = os.path.splitext(pdf_path)
+    output_dir = f"{base_name}_content"
+
+    save_raw_content_streams(
+        input_pdf=pdf_path,
+        ouput_dir = output_dir
+    )

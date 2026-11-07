@@ -81,7 +81,7 @@ def diagnose_pdf_colors(input_path, max_pages=5):
     doc.close()
 
 if __name__ == "__main__":
-    input_path = "/Volumes/西数4T外置/百度网盘默认下载/001/《天星风水龙穴砂水》精华版-韦冠成(1).pdf"
+    input_path = "/Volumes/西数4T外置/Chrome下载目录/Employment+Reference+Letter_Yang+Wanli(2).pdf"
     diagnose_pdf_colors(
         input_path = input_path,
         max_pages = 5,
