@@ -43,7 +43,7 @@ if __name__ == "__main__":
         return False
 
     # TARGET_SIZES = target_sizes_func
-    TARGET_SIZES = ["260x260"]
+    TARGET_SIZES = ["260x260"] # 全能扫描王二维码尺寸260*260
 
     if os.path.isfile(INPUT_PDF):
         delete_images_by_object(
