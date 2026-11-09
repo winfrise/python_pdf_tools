@@ -93,7 +93,7 @@ if __name__ == "__main__":
         fill_opacity = shape.get("fill_opacity", 1.0)
         check_mode = "opacity"
         if check_mode == 'opacity':
-            target_fill_opacity = 0.2
+            target_fill_opacity = 0.0
             if fill_opacity and (round(fill_opacity, 2) == round(target_fill_opacity, 2)):
                 return True
         elif check_mode == 'fill_color':
@@ -109,7 +109,7 @@ if __name__ == "__main__":
                     return True
         return False
 
-    input_pdf = "/Users/teacher/Desktop/pdf_command/pdf解密/output/001/01.pdf"
+    input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/1-14/1.pdf"
     output_pdf = input_pdf.replace('.pdf', '_output_标记目标形状.pdf')
     is_target_shape_func = check_target_shape_by_fill
 
@@ -118,5 +118,5 @@ if __name__ == "__main__":
         input_pdf=input_pdf,
         output_pdf=output_pdf,
         is_target_shape_func=is_target_shape_func,
-        dry_run=True,   # ← 改成 False 即彻底删除
+        dry_run=False,   # ← 改成 False 即彻底删除
     )

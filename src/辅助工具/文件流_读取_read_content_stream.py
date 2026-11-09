@@ -63,7 +63,7 @@ def save_raw_content_streams(input_pdf, ouput_dir):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 将这里的路径替换为你实际的 PDF 文件路径
-    pdf_path = "/Volumes/西数4T外置/Chrome下载目录/Employment+Reference+Letter_Yang+Wanli(2).pdf" 
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/1-14/1.pdf" 
 
     base_name, ext = os.path.splitext(pdf_path)
     output_dir = f"{base_name}_content"

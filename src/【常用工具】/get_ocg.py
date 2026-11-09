@@ -27,5 +27,5 @@ def list_pdf_ocgs(pdf_path):
 
 # 使用示例
 if __name__ == "__main__":
-    pdf_file = "/Volumes/西数4T外置/百度网盘默认下载/未命名文件夹/10.29 2024级补充的相关重点文化常识 2026-11-2 11851 1.pdf"  # 替换为你的 PDF 文件路径
+    pdf_file = "/Volumes/西数4T外置/百度网盘默认下载/1-14/1.pdf"  # 替换为你的 PDF 文件路径
     list_pdf_ocgs(pdf_file)

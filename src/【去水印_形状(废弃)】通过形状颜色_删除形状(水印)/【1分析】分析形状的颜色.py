@@ -75,4 +75,4 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
 
 if __name__ == "__main__":
     # 请确保将路径替换为你自己的文件路径
-    diagnose_pdf_colors("/Users/teacher/Desktop/pdf_command/pdf解密/output/001/01.pdf")
+    diagnose_pdf_colors("/Volumes/西数4T外置/百度网盘默认下载/1-14/1.pdf")

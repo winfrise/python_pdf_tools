@@ -117,8 +117,8 @@ def dump_xobjects(pdf_path, page_range, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/001/未命名文件夹/谢淙《天星择日讲义》.pdf"
-    page_range = '1-2'
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/1-14/1.pdf"
+    page_range = '2-5'
     detail_mode = False
 
     dump_xobjects(

@@ -94,15 +94,15 @@ def images_to_pdf(folder_path, pdf_path, page_size=None):
     
     # 1. 获取文件列表
     try:
-        all_files = os.listdir(folder_path)
+        all_files = [f for f in os.listdir(folder_path) if not f.startswith('.')]
     except FileNotFoundError:
         print(f"错误：找不到文件夹 {folder_path}")
         return
 
     image_files = [
-        os.path.join(folder_path, f) 
-        for f in all_files 
-        if f.lower().endswith(supported_formats)
+        os.path.join(folder_path, f)
+        for f in all_files
+        if not f.startswith('.') and f.lower().endswith(supported_formats)
     ]
     
     if not image_files:
@@ -160,11 +160,38 @@ def images_to_pdf(folder_path, pdf_path, page_size=None):
 
 # --- 测试调用示例 ---
 if __name__ == "__main__":
-    input_dir = "/Users/teacher/Desktop/20260830/去水印001-110元/图片"      # 替换为你的图片文件夹路径
-    output_pdf = f"{input_dir}/output_图片合并.pdf"
-    # 示例 1: 使用 A4 宽度，高度自动伸缩 (适合长图)
-    print("正在生成 A4 宽度自适应高度的 PDF...")
-    images_to_pdf(input_dir, output_pdf, page_size="A4_width")
+
+    batch = True
+    input_dir = "/Volumes/西数4T外置/百度网盘默认下载/1-14/001_output_遮挡_图片_调色阶"      # 替换为你的图片文件夹路径
+    page_size="A4_v"
+
+    if batch:
+        target_dir = input_dir
+        entries = [f for f in os.listdir(target_dir) if not f.startswith('.')]
+
+        sub_dirs = []
+        for entry in entries:
+            # 拼接成完整路径
+            full_path = os.path.join(target_dir, entry)
+            if os.path.isdir(full_path):
+                sub_dirs.append(full_path)
+
+        for sub_dir in sub_dirs:
+            pdf_path = f"{sub_dir}.pdf"
+            images_to_pdf(
+                folder_path = sub_dir, 
+                pdf_path = pdf_path, 
+                page_size=page_size
+            )
+
+    else:
+        output_pdf = f"{input_dir}/output_图片合并.pdf"
+        images_to_pdf(
+            folder_path = input_dir, 
+            pdf_path = output_pdf, 
+            page_size=page_size
+        )
+
     
     # ==========================================
     # page_size 参数调用示例大全
