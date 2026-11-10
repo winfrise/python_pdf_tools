@@ -162,7 +162,7 @@ def images_to_pdf(folder_path, pdf_path, page_size=None):
 if __name__ == "__main__":
 
     batch = True
-    input_dir = "/Volumes/西数4T外置/百度网盘默认下载/1-14/001_output_遮挡_图片_调色阶"      # 替换为你的图片文件夹路径
+    input_dir = "/Users/teacher/Desktop/2/001"      # 替换为你的图片文件夹路径
     page_size="A4_v"
 
     if batch:
