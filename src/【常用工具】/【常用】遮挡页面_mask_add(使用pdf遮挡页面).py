@@ -69,7 +69,7 @@ def is_even(number):
 
 
 if __name__ == "__main__":
-    input_path = "/Volumes/西数4T外置/百度网盘默认下载/1-14/001"
+    input_path = "/Volumes/西数4T外置/百度网盘默认下载/解密/27届西安工程大学强化班第一套(展示).pdf"
 
     # page_range 示例：1,3, 5-9
     page_range = "1-1000"
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # exclude_pages = {13, 26, 37, 48}
 
     def get_mask_path (page_num):
-        return "/Volumes/西数4T外置/百度网盘默认下载/1-14/mask.pdf"
+        return "/Volumes/西数4T外置/百度网盘默认下载/解密/mask.pdf"
     
     mask_pdf_path = get_mask_path
 

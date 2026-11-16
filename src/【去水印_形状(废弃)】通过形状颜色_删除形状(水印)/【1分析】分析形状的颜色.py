@@ -19,7 +19,7 @@ def get_color_block(r, g, b, width=5):
     # 按指定高度循环输出
     return (f"{color_code}{line}{reset_code}")
 
-def diagnose_pdf_colors(pdf_path, max_pages=5):
+def diagnose_pdf_colors(pdf_path, max_pages=15):
     doc = fitz.open(pdf_path)
     print(f"--- 开始诊断文件: {pdf_path} ---")
     for page_num in range(min(max_pages, len(doc))):
@@ -75,4 +75,4 @@ def diagnose_pdf_colors(pdf_path, max_pages=5):
 
 if __name__ == "__main__":
     # 请确保将路径替换为你自己的文件路径
-    diagnose_pdf_colors("/Volumes/西数4T外置/百度网盘默认下载/1-14/1.pdf")
+    diagnose_pdf_colors("/Volumes/西数4T外置/百度网盘默认下载/1.「在这里→」TestDaily原创-AP微积分BC手册9.0版.pdf")

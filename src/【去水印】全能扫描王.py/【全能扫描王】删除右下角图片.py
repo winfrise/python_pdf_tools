@@ -32,7 +32,7 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/教学资料/2027河北省事考讲义-言语理解-学生版.pdf"
+    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/刘佳琪 20260351372.pdf"
     
     def target_sizes_func (img_info):
         img_w = img_info['width']

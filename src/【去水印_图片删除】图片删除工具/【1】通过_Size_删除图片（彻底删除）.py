@@ -32,18 +32,21 @@ def delete_images_by_object(input_pdf, output_path, target_sizes):
 
     
 if __name__ == "__main__":
-    INPUT_PDF = "/Volumes/西数4T外置/百度网盘默认下载/教学资料/2027河北省事考讲义-言语理解-学生版.pdf"
+    INPUT_PDF = "/Users/teacher/Desktop/未命名文件夹/桔子3.0产品安装设计稿_output_删除图片.pdf"
     
     def target_sizes_func (img_info):
         img_w = img_info['width']
         img_h = img_info['height']
-        if img_w >= 650 and img_h >= 1000:
+        if (img_w >= 785 and img_w <= 788)  and (img_h >= 298 and img_h <= 301):
             return True
+
+        # if img_w == 449 and img_h == 277:
+        #     return True
 
         return False
 
     # TARGET_SIZES = target_sizes_func
-    TARGET_SIZES = ["1092x1535"]
+    TARGET_SIZES = ["1280x398"]
 
     if os.path.isfile(INPUT_PDF):
         delete_images_by_object(
