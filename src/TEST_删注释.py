@@ -14,7 +14,7 @@ def delete_all_annotations(input_pdf, output_pdf):
     doc.save(output_pdf)
     print(f"注释已全部删除，文件已保存为: {output_pdf}")
 
-input_pdf = "/Users/teacher/Downloads/《高等数学(上)》精讲课-配套电子讲义1+2.pdf"
+input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/用所选项目新建的文件夹/01 自主招生——大志老师专属志愿填填报版.pdf"
 output_pdf = input_pdf.replace('.pdf', '_删除注释.pdf')
 delete_all_annotations(input_pdf, output_pdf)
 

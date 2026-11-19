@@ -45,11 +45,11 @@ def delete_images_by_name(
 
 # ========== 使用示例 ==========
 if __name__ == "__main__":
-    input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/解密/5华南地区.pdf"
+    input_pdf = "/Volumes/西数4T外置/百度网盘默认下载/用所选项目新建的文件夹/大志老师专属-浦东中考志愿填报工具箱.pdf"
     output_pdf = input_pdf.replace('.pdf', '_删除图片.pdf')
 
     # 要删除的图片内部名称（可多个）
-    target_names = ["IM11", "IM9"]
+    target_names = ["KSPX1"]
 
     result = delete_images_by_name(input_pdf, output_pdf, target_names)
     print(f"\n完成。共删除 {len(result['deleted_xrefs'])} 张图片：{result['deleted_xrefs']}")

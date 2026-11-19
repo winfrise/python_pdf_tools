@@ -72,7 +72,7 @@ def remove_watermark_from_stream(input_path, output_path):
 
 if __name__ == "__main__":
 
-    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/xxx/001"
+    INPUT_FILE = "/Volumes/西数4T外置/百度网盘默认下载/2026高一化学（必修一）.pdf"
 
 
     if os.path.isfile(INPUT_FILE):

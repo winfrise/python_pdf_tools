@@ -84,6 +84,6 @@ def analyze_pdf_colors(pdf_path, pages):
     doc.close()
 
 if __name__ == "__main__":
-    pdf_file = "/Volumes/西数4T外置/百度网盘默认下载/1.「在这里→」TestDaily原创-AP微积分BC手册9.0版.pdf" 
-    pages = "11-15"
+    pdf_file = "/Volumes/西数4T外置/百度网盘默认下载/2026高一化学（必修一）一课一练 (1).pdf" 
+    pages = "1-5"
     stats = analyze_pdf_colors(pdf_path=pdf_file, pages=pages)

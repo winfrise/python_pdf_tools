@@ -204,7 +204,7 @@ def remove_signatures(input_path, output_path = None):
     remove_digital_signatures(doc)
 
     if not output_path:
-        output_path = input_file.replace('.pdf', '_output_remove_sign.pdf')
+        output_path = input_path.replace('.pdf', '_output_remove_sign.pdf')
 
     # 保存文档，garbage=4 会进行最高级别的垃圾回收，彻底清除未引用的签名数据
     doc.save(output_path, garbage=4, deflate=True)
@@ -212,7 +212,7 @@ def remove_signatures(input_path, output_path = None):
 
 if __name__ == "__main__":
     # 使用示例
-    input_path = "/Volumes/西数4T外置/百度网盘默认下载/删签名/001"
+    input_path = "//Volumes/西数4T外置/百度网盘默认下载/2026高一化学（必修一）一课一练 (1).pdf"
     is_check = True
 
 
