@@ -117,7 +117,7 @@ def dump_xobjects(pdf_path, page_range, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/用所选项目新建的文件夹/01 自主招生——大志老师专属志愿填填报版.pdf"
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/2026高一化学（必修一）一课一练 (1).pdf"
     page_range = '2-5'
     detail_mode = False
 

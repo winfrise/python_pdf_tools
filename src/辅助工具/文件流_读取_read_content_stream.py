@@ -63,7 +63,7 @@ def save_raw_content_streams(input_pdf, ouput_dir):
 # --- 使用示例 ---
 if __name__ == "__main__":
     # 将这里的路径替换为你实际的 PDF 文件路径
-    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/1.「在这里→」TestDaily原创-AP微积分BC手册9.0版.pdf" 
+    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/2026高一化学（必修一）一课一练 (1).pdf" 
 
     base_name, ext = os.path.splitext(pdf_path)
     output_dir = f"{base_name}_content"
