@@ -117,7 +117,7 @@ def dump_xobjects(pdf_path, page_range, detail_mode = False):
 
 
 if __name__ == "__main__":
-    pdf_path = "/Volumes/西数4T外置/百度网盘默认下载/2026高一化学（必修一）一课一练 (1).pdf"
+    pdf_path = "/Volumes/西数4T外置/Chrome下载目录/英国文学2026笔记自己整理.pdf"
     page_range = '2-5'
     detail_mode = False
 
