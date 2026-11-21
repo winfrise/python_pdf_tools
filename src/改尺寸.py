@@ -14,15 +14,26 @@ def get_target_size(img_width, img_height):
     is_landscape = img_width >= img_height
 
     if is_landscape:
-        # 横版：宽度缩放到 1279
-        target_width = 1279
-        target_height = round(img_height * (1279 / img_width))
-        standard_width, standard_height = 1279, 1280
-    else:
-        # 竖版：高度缩放到 1280
+        # 横版：高度缩放到 1280
+        ratio_w_h = img_width / img_height
+
+        standard_height = 1280
+        standard_width = round(standard_height * ratio_w_h)
+
         target_height = 1280
-        target_width = round(img_width * (1280 / img_height))
-        standard_width, standard_height = 1279, 1280
+        target_width = round(target_height * ratio_w_h)
+
+    else:
+        # 竖版：宽度缩放到 1279
+
+        # 1. 先算原图的高度比 (高/宽)
+        ratio_h_w = img_height / img_width
+        
+        standard_width = 1279
+        standard_height = round(standard_width * ratio_h_w)
+
+        target_width = 1279
+        target_height = round(target_width * ratio_h_w)
 
     return {
         'is_landscape': is_landscape,
@@ -53,10 +64,8 @@ def resize_image(input_path, output_path, size_func=get_target_size):
     target_h       = size_info['target_height']
 
     # 1. 判断原图是否符合标准尺寸（横版看宽，竖版看高）
-    if is_landscape:
-        already_standard = (orig_w == standard_w)
-    else:
-        already_standard = (orig_h == standard_h)
+
+    already_standard = (orig_h == standard_h) and (orig_w == standard_w)
 
     # 2. 不符合则同比缩放
     if not already_standard:
@@ -83,7 +92,7 @@ def resize_image(input_path, output_path, size_func=get_target_size):
         img = canvas
 
     # 4. 保存
-    img.save(output_path)
+    img.save(output_path, quality=95, subsampling=0)
     print(f"完成: {output_path} | 原 {orig_w}x{orig_h} "
           f"-> 缩放 {target_w}x{target_h} -> 最终 {img.size[0]}x{img.size[1]}")
     return img.size
